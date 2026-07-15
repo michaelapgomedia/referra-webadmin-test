@@ -20,10 +20,8 @@
   html,body{ margin:0; }
   .rf{ font-family:var(--font); color:var(--ink); background:var(--ground); min-height:100vh; display:flex; flex-direction:column;}
   .win{ width:100%; flex:1; background:var(--ground); display:flex; flex-direction:column;}
-  a{ color:inherit; }
   :focus-visible{ outline:2px solid var(--coral); outline-offset:2px; border-radius:4px; }
 
-  /* nav */
   nav{ display:flex; align-items:center; gap:22px; padding:13px 26px; background:var(--navy); position:sticky; top:0; z-index:30; box-shadow:0 1px 0 rgba(0,0,0,.15);}
   nav .brand{ display:flex; align-items:center; gap:9px; color:#fff; font-size:15px; font-weight:900;}
   nav .brand .logo-badge{ width:32px; height:32px; border-radius:8px; background:#fff; display:flex; align-items:center; justify-content:center; flex-shrink:0;}
@@ -51,7 +49,11 @@
   .grid4{ display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-top:16px;}
   @media (max-width:900px){ .grid4{ grid-template-columns:repeat(2,1fr);} }
 
-  .kpi{ background:var(--navy); border:1px solid rgba(255,255,255,.08); border-radius:13px; padding:16px 18px;}
+  .kpi{ position:relative; background:var(--navy); border:1px solid rgba(255,255,255,.08); border-radius:13px; padding:16px 18px; box-shadow:0 12px 26px -14px rgba(22,49,79,.5);}
+  .kpi.clk{ cursor:pointer; transition:transform .13s ease, box-shadow .13s ease;}
+  .kpi.clk:hover{ transform:translateY(-3px); box-shadow:0 20px 34px -14px rgba(22,49,79,.6);}
+  .kpi .go{ position:absolute; top:13px; right:14px; color:rgba(255,255,255,.4); font-size:16px; font-weight:700;}
+  .kpi.clk:hover .go{ color:var(--coral);}
   .kpi .lab{ font-size:11px; font-weight:700; color:rgba(255,255,255,.5); text-transform:uppercase; letter-spacing:.07em;}
   .kpi .num{ font-size:30px; font-weight:900; color:#fff; margin-top:5px; font-variant-numeric:tabular-nums;}
   .kpi:nth-child(even) .num{ color:var(--coral);}
@@ -87,7 +89,6 @@
   .livechip{ font-family:var(--mono); font-size:9px; font-weight:700; color:#fff; background:var(--good); border-radius:5px; padding:2px 6px; margin-right:6px;}
   .empty{ padding:26px 18px; text-align:center; color:var(--faint); font-size:13px; font-weight:600;}
 
-  /* dropdown */
   .dd{ position:relative; cursor:pointer; user-select:none; }
   .dd .car{ color:var(--faint); margin-left:4px; }
   .dd-menu{ position:absolute; top:calc(100% + 6px); left:0; min-width:190px; background:#fff; border:1px solid var(--line); border-radius:10px; box-shadow:0 14px 34px rgba(22,49,79,.2); padding:6px; z-index:60; max-height:280px; overflow:auto; animation:pop .12s ease;}
@@ -96,7 +97,6 @@
   .dd-opt:hover{ background:var(--coral-soft); color:var(--coral);}
   .dd-opt.sel{ color:var(--coral); font-weight:800;}
 
-  /* panels / forms */
   .panel{ background:var(--card); border:1px solid var(--line); border-radius:13px; padding:18px; display:flex; flex-direction:column; gap:13px;}
   .fld label{ font-size:11px; font-weight:700; color:var(--faint); letter-spacing:.04em; text-transform:uppercase; display:block; margin-bottom:6px;}
   .fld .inp{ min-height:40px; border:1.5px solid #D8CFBE; border-radius:10px; display:flex; align-items:center; justify-content:space-between; padding:8px 14px; font-size:13px; color:var(--ink); background:#fff;}
@@ -114,6 +114,19 @@
   .swatch{ width:22px; height:22px; border-radius:6px; border:1px solid rgba(0,0,0,.1);}
   h4.sec{ font-size:11px; font-weight:700; color:var(--faint); text-transform:uppercase; letter-spacing:.07em; margin:0 0 4px;}
   .note{ font-size:12px; color:var(--muted); line-height:1.5; background:#F7F2E8; border:1px solid var(--line); border-radius:10px; padding:12px 14px;}
+  .bar{ height:8px; border-radius:999px; background:var(--coral); }
+  .barbg{ background:#EFE7D9; border-radius:999px; height:8px; flex:1; overflow:hidden;}
+
+  .crumb{ margin-bottom:14px;}
+  .crumb button{ height:30px; padding:0 13px 0 9px; border:1.5px solid #D8CFBE; background:#fff; border-radius:8px; font-size:12.5px; font-weight:700; color:var(--navy); cursor:pointer; font-family:var(--font);}
+  .dhead{ display:flex; align-items:center; gap:14px; background:var(--card); border:1px solid var(--line); border-radius:13px; padding:18px; flex-wrap:wrap;}
+  .dhead .av{ width:52px; height:52px; border-radius:50%; font-size:16px;}
+  .dhead h2{ margin:0; font-size:19px; font-weight:900; color:var(--navy);}
+  .dhead .dm{ color:var(--muted); font-size:13px; margin-top:2px;}
+
+  .gps-foot{ display:flex; align-items:center; justify-content:center; gap:8px; padding:16px; border-top:1px solid var(--line); background:var(--ground); font-size:11.5px; color:var(--muted);}
+  .gps-foot img{ width:16px; height:16px; display:block;}
+  .gps-foot b{ color:var(--muted); font-weight:700;}
 
   .modal-bg{ position:fixed; inset:0; background:rgba(8,20,34,.55); display:none; align-items:center; justify-content:center; z-index:80; padding:20px;}
   .modal-bg.on{ display:flex;}
@@ -122,19 +135,6 @@
   .modal input{ height:42px; border:1.5px solid #D8CFBE; border-radius:10px; padding:0 14px; font-size:14px; font-family:var(--font);}
   .toast{ position:fixed; bottom:26px; left:50%; transform:translateX(-50%); background:var(--navy); color:#fff; font-size:13px; font-weight:700; padding:12px 20px; border-radius:999px; opacity:0; pointer-events:none; transition:opacity .25s; z-index:90;}
   .toast.on{ opacity:1;}
-
-  /* doctor drill-in */
-  .crumb{ margin-bottom:14px;}
-  .crumb button{ height:30px; padding:0 13px 0 9px; border:1.5px solid #D8CFBE; background:#fff; border-radius:8px; font-size:12.5px; font-weight:700; color:var(--navy); cursor:pointer; font-family:var(--font);}
-  .dhead{ display:flex; align-items:center; gap:14px; background:var(--card); border:1px solid var(--line); border-radius:13px; padding:18px; flex-wrap:wrap;}
-  .dhead .av{ width:52px; height:52px; border-radius:50%; font-size:16px;}
-  .dhead h2{ margin:0; font-size:19px; font-weight:900; color:var(--navy);}
-  .dhead .dm{ color:var(--muted); font-size:13px; margin-top:2px;}
-
-  /* powered-by footer */
-  .gps-foot{ display:flex; align-items:center; justify-content:center; gap:8px; padding:16px; border-top:1px solid var(--line); background:var(--ground); font-size:11.5px; color:var(--muted);}
-  .gps-foot img{ width:16px; height:16px; display:block;}
-  .gps-foot b{ color:var(--muted); font-weight:700;}
 </style>
 
 <div class="rf">
@@ -151,37 +151,37 @@
         <button class="tab" data-tab="settings">Settings</button>
       </div>
       <div class="spacer"></div>
-      <div class="live"><span class="blink"></span><b>Live · 3 from app</b></div>
+      <div class="live"><span class="blink"></span><b>Live · from the app</b></div>
       <button class="me" data-tab="settings" title="Kelly Reavis · Admin">KR</button>
     </nav>
 
     <main>
       <!-- DASHBOARD -->
       <section class="screen on" id="dash">
-        <div class="greet"><h2>Good morning, Kelly</h2><p>Here's how your doctors are tracking this month — every activity, as it lands from the app.</p></div>
+        <div class="greet"><h2>Good morning, Kelly</h2><p>Gladwell Orthodontics · how your 7 doctors are tracking — every activity, as it lands from the app.</p></div>
         <div class="grid4">
-          <div class="kpi"><div class="lab">Activities · July</div><div class="num">312</div><div class="sub">▲ live from the field</div></div>
-          <div class="kpi"><div class="lab">Practices reached</div><div class="num">32 <small>/ 41</small></div><div class="sub">9 need attention</div></div>
-          <div class="kpi"><div class="lab">Doctors active today</div><div class="num">4 <small>/ 5</small></div><div class="sub">on pace</div></div>
-          <div class="kpi"><div class="lab">Referrals · June</div><div class="num">21</div><div class="sub">manual load · until Edge API</div></div>
+          <div class="kpi clk" data-kpi="activities"><span class="go">›</span><div class="lab">Activities · all-time</div><div class="num">995</div><div class="sub">▲ live from the field</div></div>
+          <div class="kpi clk" data-kpi="practices"><span class="go">›</span><div class="lab">Practices</div><div class="num">94</div><div class="sub">across 7 doctors</div></div>
+          <div class="kpi clk" data-kpi="doctors"><span class="go">›</span><div class="lab">Active doctors</div><div class="num">6 <small>/ 7</small></div><div class="sub">1 inactive</div></div>
+          <div class="kpi clk" data-kpi="referrals"><span class="go">›</span><div class="lab">Referrals · YTD</div><div class="num">676</div><div class="sub">Oct 2025 – Jun 2026</div></div>
         </div>
         <div class="card">
           <div class="card-h">
-            <h3>All doctors — every activity</h3>
+            <h3>All doctors — recent activity</h3>
             <div class="filters">
-              <div class="chip dd" data-table="feed" data-filter="doctor" data-options="All doctors|Dr. Sarah Anders|Dr. Omar Reyes|Dr. Lena Petritz|Dr. Hannah Cole|Dr. Emily Carter"><span class="dd-val">All doctors</span><span class="car">▾</span></div>
-              <div class="chip dd" data-table="feed" data-filter="type" data-options="All types|Lunch|Text|Call|Visit|Email"><span class="dd-val">All types</span><span class="car">▾</span></div>
+              <div class="chip dd" data-table="feed" data-filter="doctor" data-options="All doctors|Dr. Anders|Dr. Partrick|Dr. Petritz|Dr. Rudey|Dr. Adrian|Dr. Laster"><span class="dd-val">All doctors</span><span class="car">▾</span></div>
+              <div class="chip dd" data-table="feed" data-filter="type" data-options="All types|Text Message|Email|Phone Call|Lunch|Dinner / Event / Hospitality"><span class="dd-val">All types</span><span class="car">▾</span></div>
             </div>
           </div>
           <div class="tbl-wrap">
             <table data-table="feed">
-              <thead><tr><th>Doctor</th><th>Practice</th><th>Type</th><th>Outcome</th><th>When</th></tr></thead>
+              <thead><tr><th>Doctor</th><th>Practice</th><th>Type</th><th>When</th></tr></thead>
               <tbody>
-                <tr data-doctor="Dr. Sarah Anders" data-type="Lunch"><td class="p">Dr. Sarah Anders</td><td class="m">Upton &amp; Baker Dental</td><td><span class="tag">LUNCH</span></td><td class="m">Positive — referral committed</td><td class="m"><span class="livechip">LIVE</span>just now</td></tr>
-                <tr data-doctor="Dr. Omar Reyes" data-type="Text"><td class="p">Dr. Omar Reyes</td><td class="m">Bull City Dental</td><td><span class="tag">TXT</span></td><td class="m">Follow-up needed</td><td class="m">4m ago</td></tr>
-                <tr data-doctor="Dr. Lena Petritz" data-type="Call"><td class="p">Dr. Lena Petritz</td><td class="m">Raleigh Pediatric Dentistry</td><td><span class="tag">CALL</span></td><td class="m">Left voicemail</td><td class="m">28m ago</td></tr>
-                <tr data-doctor="Dr. Hannah Cole" data-type="Visit"><td class="p">Dr. Hannah Cole</td><td class="m">Wake Forest Family Dental</td><td><span class="tag">VISIT</span></td><td class="m">Positive — relationship building</td><td class="m">1h ago</td></tr>
-                <tr data-doctor="Dr. Emily Carter" data-type="Email"><td class="p">Dr. Emily Carter</td><td class="m">Midtown Smile Studio</td><td><span class="tag">EMAIL</span></td><td class="m">Sent materials</td><td class="m">2h ago</td></tr>
+                <tr data-doctor="Dr. Laster" data-type="Text Message"><td class="p">Dr. Laster</td><td class="m">Sean Mooring (CLA/ZEB)</td><td><span class="tag">TXT</span></td><td class="m"><span class="livechip">LIVE</span>just now</td></tr>
+                <tr data-doctor="Dr. Petritz" data-type="Dinner / Event / Hospitality"><td class="p">Dr. Petritz</td><td class="m">Britt Dental</td><td><span class="tag">DEH</span></td><td class="m">18m ago</td></tr>
+                <tr data-doctor="Dr. Anders" data-type="Email"><td class="p">Dr. Anders</td><td class="m">Upton &amp; Baker</td><td><span class="tag">EML</span></td><td class="m">40m ago</td></tr>
+                <tr data-doctor="Dr. Partrick" data-type="Lunch"><td class="p">Dr. Partrick</td><td class="m">Smiles Stories Dentistry</td><td><span class="tag">LUN</span></td><td class="m">1h ago</td></tr>
+                <tr data-doctor="Dr. Adrian" data-type="Phone Call"><td class="p">Dr. Adrian</td><td class="m">TFD-Rolesville</td><td><span class="tag">CALL</span></td><td class="m">2h ago</td></tr>
               </tbody>
             </table>
           </div>
@@ -190,18 +190,20 @@
 
       <!-- DOCTORS -->
       <section class="screen" id="doctors">
-        <div class="greet"><h2>Doctors</h2><p>Account holders who log activity on behalf of their practice.</p></div>
+        <div class="greet"><h2>Doctors</h2><p>Account holders who log activity on behalf of their practices.</p></div>
         <div class="card">
-          <div class="card-h"><h3>Account holders · 5</h3><button class="btn" data-invite="doctor">+ Invite doctor</button></div>
+          <div class="card-h"><h3>Account holders · 7</h3><button class="btn" data-invite="doctor">+ Invite doctor</button></div>
           <div class="tbl-wrap">
             <table data-table="doctors">
-              <thead><tr><th>Doctor</th><th>Practice</th><th>Email</th><th>Status</th><th>Last active</th><th class="num-col">Touches (Jul)</th></tr></thead>
+              <thead><tr><th>Doctor</th><th>Email</th><th>Status</th><th class="num-col">Practices</th><th class="num-col">Activities</th></tr></thead>
               <tbody>
-                <tr class="link" data-person="Dr. Sarah Anders"><td class="p">Dr. Sarah Anders</td><td class="m">Upton &amp; Baker Dental</td><td class="m">sanders@…</td><td><span class="pill good">Active</span></td><td class="m">just now</td><td class="num-col">28</td></tr>
-                <tr class="link" data-person="Dr. Lena Petritz"><td class="p">Dr. Lena Petritz</td><td class="m">Raleigh Pediatric Dentistry</td><td class="m">lpetritz@…</td><td><span class="pill good">Active</span></td><td class="m">28m ago</td><td class="num-col">24</td></tr>
-                <tr class="link" data-person="Dr. Omar Reyes"><td class="p">Dr. Omar Reyes</td><td class="m">Bull City Dental</td><td class="m">oreyes@…</td><td><span class="pill good">Active</span></td><td class="m">4m ago</td><td class="num-col">19</td></tr>
-                <tr class="link" data-person="Dr. Hannah Cole"><td class="p">Dr. Hannah Cole</td><td class="m">Wake Forest Family Dental</td><td class="m">hcole@…</td><td><span class="pill warn">Invited</span></td><td class="m">—</td><td class="num-col">0</td></tr>
-                <tr class="link" data-person="Dr. Emily Carter"><td class="p">Dr. Emily Carter</td><td class="m">Midtown Smile Studio</td><td class="m">ecarter@…</td><td><span class="pill good">Active</span></td><td class="m">2h ago</td><td class="num-col">15</td></tr>
+                <tr class="link" data-person="Dr. Anders"><td class="p">Dr. Anders</td><td class="m">drb@gladwellorthodontics.com</td><td><span class="pill good">Active</span></td><td class="num-col">10</td><td class="num-col">171</td></tr>
+                <tr class="link" data-person="Dr. Partrick"><td class="p">Dr. Partrick</td><td class="m">drm@gladwellorthodontics.com</td><td><span class="pill good">Active</span></td><td class="num-col">12</td><td class="num-col">162</td></tr>
+                <tr class="link" data-person="Dr. Petritz"><td class="p">Dr. Petritz</td><td class="m">drp@gladwellorthodontics.com</td><td><span class="pill good">Active</span></td><td class="num-col">12</td><td class="num-col">197</td></tr>
+                <tr class="link" data-person="Dr. Rudey"><td class="p">Dr. Rudey</td><td class="m">drfr@gladwellorthodontics.com</td><td><span class="pill good">Active</span></td><td class="num-col">12</td><td class="num-col">50</td></tr>
+                <tr class="link" data-person="Dr. Adrian"><td class="p">Dr. Adrian</td><td class="m">drah@gladwellorthodontics.com</td><td><span class="pill good">Active</span></td><td class="num-col">10</td><td class="num-col">70</td></tr>
+                <tr class="link" data-person="Dr. Laster"><td class="p">Dr. Laster</td><td class="m">drsl@gladwellorthodontics.com</td><td><span class="pill good">Active</span></td><td class="num-col">33</td><td class="num-col">336</td></tr>
+                <tr class="link" data-person="Dr. Wiese"><td class="p">Dr. Wiese</td><td class="m">— (no longer with GO)</td><td><span class="pill bad">Inactive</span></td><td class="num-col">5</td><td class="num-col">9</td></tr>
               </tbody>
             </table>
           </div>
@@ -210,27 +212,32 @@
 
       <!-- PRACTICES + ASSIGN -->
       <section class="screen" id="practices">
-        <div class="greet"><h2>Practices</h2><p>The master list, and who's connected to each. Click a practice to assign.</p></div>
+        <div class="greet"><h2>Practices</h2><p>94 practices across the GO network. Click one to re-assign.</p></div>
         <div class="row" style="margin-top:16px">
           <div class="card" style="flex:1.7;margin-top:0">
-            <div class="card-h"><h3>Practice master · 41</h3><button class="btn" data-toast="Add practice — opens a new practice form">+ Add practice</button></div>
+            <div class="card-h"><h3>Practice master · 94</h3><button class="btn" data-toast="Add practice — opens a new practice form">+ Add practice</button></div>
             <div class="tbl-wrap">
               <table data-table="practices">
-                <thead><tr><th>Practice</th><th>Market</th><th>Connected doctor</th><th>Frequency</th></tr></thead>
+                <thead><tr><th>Practice</th><th>Connected doctor</th><th class="num-col">Activities</th></tr></thead>
                 <tbody>
-                  <tr class="link" data-name="Upton &amp; Baker Dental" data-rep="Dr. Sarah Anders"><td class="p">Upton &amp; Baker Dental</td><td class="m">Cary / Apex</td><td>Dr. Sarah Anders</td><td><span class="pill good">2× / week</span></td></tr>
-                  <tr class="link" data-name="Raleigh Pediatric Dentistry" data-rep="Dr. Lena Petritz"><td class="p">Raleigh Pediatric Dentistry</td><td class="m">North Raleigh</td><td>Dr. Lena Petritz</td><td><span class="pill good">1× / week</span></td></tr>
-                  <tr class="link" data-name="Bull City Dental" data-rep="Dr. Omar Reyes"><td class="p">Bull City Dental</td><td class="m">Durham / Chapel Hill</td><td>Dr. Omar Reyes</td><td><span class="pill warn">3× / month</span></td></tr>
-                  <tr class="link" data-name="Wells Family Dental" data-rep="Unassigned"><td class="p">Wells Family Dental</td><td class="m">Cary / Apex</td><td class="m">Unassigned</td><td><span class="pill bad">Not set</span></td></tr>
-                  <tr class="link" data-name="Midtown Smile Studio" data-rep="Dr. Emily Carter"><td class="p">Midtown Smile Studio</td><td class="m">Midtown Raleigh</td><td>Dr. Emily Carter</td><td><span class="pill good">1× / week</span></td></tr>
+                  <tr class="link" data-name="Raleigh Pediatric Dentistry" data-rep="Dr. Anders"><td class="p">Raleigh Pediatric Dentistry</td><td>Dr. Anders</td><td class="num-col">22</td></tr>
+                  <tr class="link" data-name="Upton &amp; Baker" data-rep="Dr. Anders"><td class="p">Upton &amp; Baker</td><td>Dr. Anders</td><td class="num-col">27</td></tr>
+                  <tr class="link" data-name="CPD-Wakefield" data-rep="Dr. Anders"><td class="p">CPD-Wakefield</td><td>Dr. Anders</td><td class="num-col">10</td></tr>
+                  <tr class="link" data-name="Smiles Stories Dentistry" data-rep="Dr. Partrick"><td class="p">Smiles Stories Dentistry</td><td>Dr. Partrick</td><td class="num-col">23</td></tr>
+                  <tr class="link" data-name="St Mary's" data-rep="Dr. Partrick"><td class="p">St Mary's — Dr. Linda Shafik</td><td>Dr. Partrick</td><td class="num-col">19</td></tr>
+                  <tr class="link" data-name="Britt Dental" data-rep="Dr. Petritz"><td class="p">Britt Dental</td><td>Dr. Petritz</td><td class="num-col">14</td></tr>
+                  <tr class="link" data-name="Sean Mooring" data-rep="Dr. Laster"><td class="p">Sean Mooring (CLA/ZEB)</td><td>Dr. Laster</td><td class="num-col">28</td></tr>
+                  <tr class="link" data-name="wells family BB" data-rep="Dr. Laster"><td class="p">wells family BB — Lamura, Patel, Woll</td><td>Dr. Laster</td><td class="num-col">12</td></tr>
+                  <tr class="link" data-name="TFD-Rolesville" data-rep="Dr. Adrian"><td class="p">TFD-Rolesville</td><td>Dr. Adrian</td><td class="num-col">9</td></tr>
+                  <tr class="link" data-name="Leesville Dental Studio" data-rep="Dr. Rudey"><td class="p">Leesville Dental Studio</td><td>Dr. Rudey</td><td class="num-col">7</td></tr>
                 </tbody>
               </table>
             </div>
           </div>
           <div class="panel" style="flex:1">
-            <h3 style="margin:0;font-size:14px;font-weight:900;color:var(--navy)">Assign — <span id="asgName">Wells Family Dental</span></h3>
-            <div class="fld"><label>Practice type</label><div class="inp dd" data-options="General Dentistry|Pediatric Dentistry|Family Dentistry|Cosmetic Dentistry|Periodontics|Endodontics"><span class="dd-val">General Dentistry</span><span class="car">▾</span></div></div>
-            <div class="fld"><label>Connect to doctor</label><div class="inp dd act" id="asgRep" data-options="Dr. Sarah Anders|Dr. Lena Petritz|Dr. Omar Reyes|Dr. Hannah Cole|Dr. Emily Carter|Unassigned"><span class="dd-val">Dr. Sarah Anders</span><span class="car">▾</span></div></div>
+            <h3 style="margin:0;font-size:14px;font-weight:900;color:var(--navy)">Assign — <span id="asgName">Raleigh Pediatric Dentistry</span></h3>
+            <div class="fld"><label>Practice type</label><div class="inp dd" data-options="Pediatric Dentistry|General Dentistry|Family Dentistry|Cosmetic Dentistry|Periodontics|Endodontics"><span class="dd-val">Pediatric Dentistry</span><span class="car">▾</span></div></div>
+            <div class="fld"><label>Connect to doctor</label><div class="inp dd act" id="asgRep" data-options="Dr. Anders|Dr. Partrick|Dr. Petritz|Dr. Rudey|Dr. Adrian|Dr. Laster"><span class="dd-val">Dr. Anders</span><span class="car">▾</span></div></div>
             <div class="fld">
               <label>Target frequency</label>
               <div style="display:flex;gap:9px;align-items:center;flex-wrap:wrap">
@@ -240,33 +247,32 @@
               </div>
             </div>
             <button class="btn navy" style="height:42px" data-toast="Assignment saved — pre-fills the doctor's app instantly">Save assignment</button>
-            <p class="hint">Saving pre-fills that doctor's app instantly — they only ever see their own list, and it drops in as a task + reminder.</p>
+            <p class="hint">Saving pre-fills that doctor's app instantly — they only see their own list; it drops in as a task + reminder.</p>
           </div>
         </div>
       </section>
 
       <!-- ACTIVITIES -->
       <section class="screen" id="activities">
-        <div class="greet"><h2>Activities</h2><p>Every logged interaction — filter it any way you need.</p></div>
+        <div class="greet"><h2>Activities</h2><p>All 995 logged interactions — filter by practice, doctor, type, or date range.</p></div>
         <div class="card">
           <div class="card-h">
-            <h3>Activity log</h3>
+            <h3>Activity log · 995</h3>
             <div class="filters">
-              <div class="chip dd" data-table="acts" data-filter="practice" data-options="All practices|Upton &amp; Baker Dental|Raleigh Pediatric|Bull City Dental|Wake Forest Family|Midtown Smile Studio"><span class="dd-val">All practices</span><span class="car">▾</span></div>
-              <div class="chip dd" data-table="acts" data-filter="doctor" data-options="All doctors|Dr. Sarah Anders|Dr. Omar Reyes|Dr. Lena Petritz|Dr. Hannah Cole|Dr. Emily Carter"><span class="dd-val">All doctors</span><span class="car">▾</span></div>
-              <div class="chip dd" data-table="acts" data-filter="type" data-options="All types|Lunch|Text|Call|Dinner|Email"><span class="dd-val">All types</span><span class="car">▾</span></div>
-              <div class="chip dd" data-options="Jul 1 – Jul 14|June|This quarter|All time"><span class="dd-val">Jul 1 – Jul 14</span><span class="car">▾</span></div>
+              <div class="chip dd" data-table="acts" data-filter="doctor" data-options="All doctors|Dr. Anders|Dr. Partrick|Dr. Petritz|Dr. Rudey|Dr. Adrian|Dr. Laster"><span class="dd-val">All doctors</span><span class="car">▾</span></div>
+              <div class="chip dd" data-table="acts" data-filter="type" data-options="All types|Text Message|Email|Phone Call|Lunch|Dinner / Event / Hospitality"><span class="dd-val">All types</span><span class="car">▾</span></div>
+              <div class="chip dd" data-options="Oct 2025 – Jun 2026|This quarter|This month|All time"><span class="dd-val">Oct 2025 – Jun 2026</span><span class="car">▾</span></div>
             </div>
           </div>
           <div class="tbl-wrap">
             <table data-table="acts">
-              <thead><tr><th>Date</th><th>Doctor</th><th>Practice</th><th>Type</th><th>Outcome</th><th class="num-col">Spend</th></tr></thead>
+              <thead><tr><th>Date</th><th>Doctor</th><th>Practice</th><th>Type</th><th>Note</th></tr></thead>
               <tbody>
-                <tr data-practice="Upton &amp; Baker Dental" data-doctor="Dr. Sarah Anders" data-type="Lunch"><td class="m">Jul 14</td><td class="p">Dr. Sarah Anders</td><td class="m">Upton &amp; Baker Dental</td><td><span class="tag">LUNCH</span></td><td class="m">Referral committed</td><td class="num-col">$120</td></tr>
-                <tr data-practice="Bull City Dental" data-doctor="Dr. Omar Reyes" data-type="Text"><td class="m">Jul 14</td><td class="p">Dr. Omar Reyes</td><td class="m">Bull City Dental</td><td><span class="tag">TXT</span></td><td class="m">Follow-up needed</td><td class="num-col">—</td></tr>
-                <tr data-practice="Raleigh Pediatric" data-doctor="Dr. Lena Petritz" data-type="Call"><td class="m">Jul 13</td><td class="p">Dr. Lena Petritz</td><td class="m">Raleigh Pediatric</td><td><span class="tag">CALL</span></td><td class="m">Left voicemail</td><td class="num-col">—</td></tr>
-                <tr data-practice="Wake Forest Family" data-doctor="Dr. Hannah Cole" data-type="Dinner"><td class="m">Jul 13</td><td class="p">Dr. Hannah Cole</td><td class="m">Wake Forest Family</td><td><span class="tag">DINNER</span></td><td class="m">Relationship building</td><td class="num-col">$210</td></tr>
-                <tr data-practice="Midtown Smile Studio" data-doctor="Dr. Emily Carter" data-type="Email"><td class="m">Jul 12</td><td class="p">Dr. Emily Carter</td><td class="m">Midtown Smile Studio</td><td><span class="tag">EMAIL</span></td><td class="m">Sent materials</td><td class="num-col">—</td></tr>
+                <tr data-doctor="Dr. Anders" data-type="Text Message"><td class="m">Jun 24, 2026</td><td class="p">Dr. Anders</td><td class="m">Raleigh Pediatric Dentistry</td><td><span class="tag">TXT</span></td><td class="m">—</td></tr>
+                <tr data-doctor="Dr. Petritz" data-type="Dinner / Event / Hospitality"><td class="m">Jun 2, 2026</td><td class="p">Dr. Petritz</td><td class="m">Daurity Family</td><td><span class="tag">DEH</span></td><td class="m">HB delivered Christmas basket</td></tr>
+                <tr data-doctor="Dr. Partrick" data-type="Lunch"><td class="m">May 30, 2026</td><td class="p">Dr. Partrick</td><td class="m">Smiles Stories Dentistry</td><td><span class="tag">LUN</span></td><td class="m">Referred pt</td></tr>
+                <tr data-doctor="Dr. Laster" data-type="Email"><td class="m">Apr 15, 2026</td><td class="p">Dr. Laster</td><td class="m">Sean Mooring (CLA/ZEB)</td><td><span class="tag">EML</span></td><td class="m">—</td></tr>
+                <tr data-doctor="Dr. Rudey" data-type="Phone Call"><td class="m">Feb 19, 2026</td><td class="p">Dr. Rudey</td><td class="m">Leesville Dental Studio</td><td><span class="tag">CALL</span></td><td class="m">HB</td></tr>
               </tbody>
             </table>
           </div>
@@ -275,10 +281,10 @@
 
       <!-- TASKS -->
       <section class="screen" id="tasks">
-        <div class="greet"><h2>Tasks</h2><p>Push a task to a doctor — it lands in their app with a reminder.</p></div>
+        <div class="greet"><h2>Tasks</h2><p>Push a task to a doctor — it lands in their app with a 24h reminder.</p></div>
         <div class="row" style="margin-top:16px">
           <div class="card" style="flex:1.7;margin-top:0">
-            <div class="card-h"><h3>Assigned tasks · 12</h3>
+            <div class="card-h"><h3>Assigned tasks</h3>
               <div class="filters">
                 <div class="chip seg act" data-seg="all">All</div>
                 <div class="chip seg" data-seg="outstanding">Outstanding</div>
@@ -289,21 +295,20 @@
               <table data-table="taskt">
                 <thead><tr><th>Task</th><th>Doctor</th><th>Practice</th><th>Due</th><th>Status</th></tr></thead>
                 <tbody>
-                  <tr data-status="outstanding"><td class="p">Drop off referral pads</td><td>Dr. Sarah Anders</td><td class="m">Upton &amp; Baker</td><td class="m">Jul 16</td><td><span class="pill warn">Outstanding</span></td></tr>
-                  <tr data-status="outstanding"><td class="p">Schedule a Lunch &amp; Learn</td><td>Dr. Omar Reyes</td><td class="m">Bull City Dental</td><td class="m">Jul 18</td><td><span class="pill warn">Outstanding</span></td></tr>
-                  <tr data-status="completed"><td class="p">Quarterly office visit</td><td>Dr. Lena Petritz</td><td class="m">Raleigh Pediatric</td><td class="m">Jul 12</td><td><span class="pill good">Completed</span></td></tr>
-                  <tr data-status="completed"><td class="p">Thank-you note</td><td>Dr. Emily Carter</td><td class="m">Midtown Smile</td><td class="m">Jul 10</td><td><span class="pill good">Completed</span></td></tr>
+                  <tr data-status="outstanding"><td class="p">Drop off referral pads</td><td>Dr. Laster</td><td class="m">Sean Mooring</td><td class="m">Jul 18</td><td><span class="pill warn">Outstanding</span></td></tr>
+                  <tr data-status="outstanding"><td class="p">Schedule a Lunch &amp; Learn</td><td>Dr. Partrick</td><td class="m">St Mary's</td><td class="m">Jul 21</td><td><span class="pill warn">Outstanding</span></td></tr>
+                  <tr data-status="completed"><td class="p">Quarterly office visit</td><td>Dr. Anders</td><td class="m">Upton &amp; Baker</td><td class="m">Jun 24</td><td><span class="pill good">Completed</span></td></tr>
                 </tbody>
               </table>
             </div>
           </div>
           <div class="panel" style="flex:1">
             <h3 style="margin:0;font-size:14px;font-weight:900;color:var(--navy)">New task</h3>
-            <div class="fld"><label>Doctor</label><div class="inp dd act" data-options="Dr. Sarah Anders|Dr. Lena Petritz|Dr. Omar Reyes|Dr. Hannah Cole|Dr. Emily Carter"><span class="dd-val">Dr. Hannah Cole</span><span class="car">▾</span></div></div>
-            <div class="fld"><label>Practice</label><div class="inp dd" data-options="Wake Forest Family Dental|Upton &amp; Baker Dental|Bull City Dental|Midtown Smile Studio"><span class="dd-val">Wake Forest Family Dental</span><span class="car">▾</span></div></div>
-            <div class="fld"><label>Task</label><div class="inp dd" data-options="Drop off referral pads|Schedule a Lunch &amp; Learn|Quarterly office visit|Thank-you note|Confirm CE event date"><span class="dd-val">Drop off referral pads</span><span class="car">▾</span></div></div>
+            <div class="fld"><label>Doctor</label><div class="inp dd act" data-options="Dr. Anders|Dr. Partrick|Dr. Petritz|Dr. Rudey|Dr. Adrian|Dr. Laster"><span class="dd-val">Dr. Laster</span><span class="car">▾</span></div></div>
+            <div class="fld"><label>Practice</label><div class="inp dd" data-options="Sean Mooring (CLA/ZEB)|Raleigh Pediatric Dentistry|Britt Dental|Smiles Stories Dentistry"><span class="dd-val">Sean Mooring (CLA/ZEB)</span><span class="car">▾</span></div></div>
+            <div class="fld"><label>Task</label><div class="inp dd" data-options="Drop off referral pads|Schedule a Lunch &amp; Learn|Quarterly office visit|Thank-you note"><span class="dd-val">Drop off referral pads</span><span class="car">▾</span></div></div>
             <div class="fld"><label>Due date</label><div class="inp dd" data-options="Jul 18, 2026|Jul 21, 2026|Jul 25, 2026|Aug 1, 2026"><span class="dd-val">Jul 18, 2026</span><span class="car">▾</span></div></div>
-            <button class="btn navy" style="height:42px" data-toast="Task pushed — Dr. Cole gets it in-app with a reminder">Assign task</button>
+            <button class="btn navy" style="height:42px" data-toast="Task pushed — the doctor gets it in-app with a reminder">Assign task</button>
             <p class="hint">Pushed tasks appear on the doctor's Home + Tasks, and fire a 24h-before-due reminder.</p>
           </div>
         </div>
@@ -311,34 +316,35 @@
 
       <!-- REPORTS -->
       <section class="screen" id="reports">
-        <div class="greet"><h2>Reports</h2><p>Build a report from any slice of the data, then export.</p></div>
+        <div class="greet"><h2>Reports</h2><p>Slice the data any way, preview, then export to Excel or PDF.</p></div>
         <div class="row" style="margin-top:16px">
           <div class="card" style="flex:1.3;margin-top:0">
             <div class="card-h">
-              <h3>Outreach vs. referrals · by practice</h3>
+              <h3><span id="repTitle">Touchpoints by doctor</span></h3>
               <div class="filters">
-                <div class="chip dd act" data-options="GO · all locations|Cary / Apex|North Raleigh|Durham / Chapel Hill"><span class="dd-val">GO · all locations</span><span class="car">▾</span></div>
                 <button class="btn ghost" data-toast="Exporting Excel…">Export ⭳ Excel</button>
                 <button class="btn ghost" data-toast="Exporting PDF…">Export ⭳ PDF</button>
               </div>
             </div>
             <div class="tbl-wrap">
               <table>
-                <thead><tr><th>Practice</th><th class="num-col">Activities</th><th class="num-col">Spend</th><th class="num-col">Referrals</th><th>Trend</th></tr></thead>
+                <thead><tr><th>Doctor</th><th class="num-col">Practices</th><th class="num-col">Activities</th><th style="width:34%">Share of outreach</th></tr></thead>
                 <tbody>
-                  <tr><td class="p">Upton &amp; Baker Dental</td><td class="num-col">28</td><td class="num-col">$540</td><td class="num-col">7</td><td><span class="pill good">▲ up</span></td></tr>
-                  <tr><td class="p">Raleigh Pediatric</td><td class="num-col">24</td><td class="num-col">$180</td><td class="num-col">5</td><td><span class="pill good">▲ up</span></td></tr>
-                  <tr><td class="p">Bull City Dental</td><td class="num-col">19</td><td class="num-col">$300</td><td class="num-col">2</td><td><span class="pill warn">→ flat</span></td></tr>
-                  <tr><td class="p">Midtown Smile Studio</td><td class="num-col">15</td><td class="num-col">$95</td><td class="num-col">1</td><td><span class="pill bad">▼ down</span></td></tr>
+                  <tr><td class="p">Dr. Laster</td><td class="num-col">33</td><td class="num-col">336</td><td><div class="barbg"><div class="bar" style="width:100%"></div></div></td></tr>
+                  <tr><td class="p">Dr. Petritz</td><td class="num-col">12</td><td class="num-col">197</td><td><div class="barbg"><div class="bar" style="width:59%"></div></div></td></tr>
+                  <tr><td class="p">Dr. Anders</td><td class="num-col">10</td><td class="num-col">171</td><td><div class="barbg"><div class="bar" style="width:51%"></div></div></td></tr>
+                  <tr><td class="p">Dr. Partrick</td><td class="num-col">12</td><td class="num-col">162</td><td><div class="barbg"><div class="bar" style="width:48%"></div></div></td></tr>
+                  <tr><td class="p">Dr. Adrian</td><td class="num-col">10</td><td class="num-col">70</td><td><div class="barbg"><div class="bar" style="width:21%"></div></div></td></tr>
+                  <tr><td class="p">Dr. Rudey</td><td class="num-col">12</td><td class="num-col">50</td><td><div class="barbg"><div class="bar" style="width:15%"></div></div></td></tr>
                 </tbody>
               </table>
             </div>
           </div>
           <div class="panel" style="flex:1">
             <h4 class="sec">Report options</h4>
-            <div class="fld"><label>Date range</label><div class="inp dd" data-options="Jun 1 – Jul 14, 2026|This month|Last month|This quarter|Year to date"><span class="dd-val">Jun 1 – Jul 14, 2026</span><span class="car">▾</span></div></div>
-            <div class="fld"><label>Group by</label><div class="inp dd act" data-options="Practice|Doctor|Market|Activity type"><span class="dd-val">Practice</span><span class="car">▾</span></div></div>
-            <div class="fld"><label>Include</label><div class="inp dd" data-options="Activities, spend, referrals|Activities only|Spend only|Everything"><span class="dd-val">Activities, spend, referrals</span><span class="car">▾</span></div></div>
+            <div class="fld"><label>View</label><div class="inp dd act" data-report="1" data-options="Touchpoints by doctor|Outreach by practice|Monthly trend|Activity-type mix|Referral vs outreach"><span class="dd-val">Touchpoints by doctor</span><span class="car">▾</span></div></div>
+            <div class="fld"><label>Date range</label><div class="inp dd" data-options="Oct 2025 – Jun 2026|This month|Last month|This quarter|Year to date"><span class="dd-val">Oct 2025 – Jun 2026</span><span class="car">▾</span></div></div>
+            <div class="fld"><label>Format</label><div class="inp dd" data-options="Excel (.xlsx)|PDF|Both"><span class="dd-val">Excel (.xlsx)</span><span class="car">▾</span></div></div>
             <div class="note"><b>AI summary (optional).</b> Add a written narrative — trends, standouts, what needs attention — generated from the numbers.</div>
             <label style="display:flex;align-items:center;gap:9px;font-size:13px;font-weight:700;color:var(--ink);cursor:pointer"><input type="checkbox" checked style="width:17px;height:17px;accent-color:var(--coral)"> Include AI narrative</label>
           </div>
@@ -359,33 +365,43 @@
           <div class="panel">
             <div style="display:flex;align-items:center;justify-content:space-between"><h4 class="sec" style="margin:0">Admins</h4><button class="btn" data-invite="admin">+ Add admin</button></div>
             <div>
-              <div class="adminrow"><div class="av">KR</div><div style="flex:1"><div class="p">Kelly Reavis</div><div class="m" style="font-size:12px">kelly@gladwellorthodontics.com</div></div><span class="pill good">Owner</span></div>
+              <div class="adminrow"><div class="av">MP</div><div style="flex:1"><div class="p">Michael Dankwah Agyeman-Prempeh</div><div class="m" style="font-size:12px">michaelap@gomedianc.com</div></div><span class="pill good">Owner</span></div>
+              <div class="adminrow"><div class="av">KR</div><div style="flex:1"><div class="p">Kelly Reavis</div><div class="m" style="font-size:12px">kelly@gladwellorthodontics.com</div></div><span class="pill warn">Admin</span></div>
             </div>
-            <div class="note">Add another admin by email — they get a secure invite link to set their own password. Each admin sees the whole organization; doctors only ever see their own data.</div>
+            <div class="note">Add an admin by email — they get a secure invite link to set their own password. Admins see the whole organization; doctors only ever see their own data.</div>
           </div>
         </div>
       </section>
 
-      <!-- DOCTOR DETAIL (drill-in, not a nav tab) -->
+      <!-- KPI DETAIL (dashboard card drill-in) -->
+      <section class="screen" id="kpiDetail">
+        <div class="crumb"><button id="kpiBack">‹ Dashboard</button></div>
+        <div class="greet"><h2 id="kpiTitle">Detail</h2><p id="kpiSub"></p></div>
+        <div class="card">
+          <div class="tbl-wrap"><table><thead><tr><th id="kpiColA">Item</th><th class="num-col">Value</th><th style="width:42%">Share</th></tr></thead><tbody id="kpiBars"></tbody></table></div>
+        </div>
+      </section>
+
+      <!-- DOCTOR DETAIL (drill-in) -->
       <section class="screen" id="docDetail">
         <div class="crumb"><button id="docBack">‹ Doctors</button></div>
         <div class="dhead">
           <div class="av" id="dAv">–</div>
           <div style="flex:1;min-width:180px">
             <h2 id="dName">Doctor</h2>
-            <div class="dm"><span id="dPractice">Practice</span> · <span id="dEmail">email</span></div>
+            <div class="dm"><span id="dEmail">email</span></div>
           </div>
           <span class="pill good" id="dStatus">Active</span>
           <button class="btn" data-tab="tasks">Assign task</button>
         </div>
         <div class="grid4" style="grid-template-columns:repeat(3,1fr)">
-          <div class="kpi"><div class="lab">Touches · July</div><div class="num" id="dTouches">0</div><div class="sub">logged activities</div></div>
-          <div class="kpi"><div class="lab">Referrals · Q2</div><div class="num" id="dRefs">0</div><div class="sub">attributed</div></div>
+          <div class="kpi"><div class="lab">Activities · all-time</div><div class="num" id="dTouches">0</div><div class="sub">logged</div></div>
+          <div class="kpi"><div class="lab">Practices</div><div class="num" id="dPractices">0</div><div class="sub">assigned</div></div>
           <div class="kpi"><div class="lab">Last active</div><div class="num" id="dLast" style="font-size:20px">—</div><div class="sub">from the app</div></div>
         </div>
         <div class="card">
           <div class="card-h"><h3>Recent activity</h3></div>
-          <div class="tbl-wrap"><table><thead><tr><th>Date</th><th>Practice</th><th>Type</th><th>Outcome</th></tr></thead><tbody id="dActs"></tbody></table></div>
+          <div class="tbl-wrap"><table><thead><tr><th>Date</th><th>Practice</th><th>Type</th><th>Note</th></tr></thead><tbody id="dActs"></tbody></table></div>
         </div>
       </section>
     </main>
@@ -393,14 +409,13 @@
   </div>
 </div>
 
-<!-- INVITE MODAL -->
 <div class="modal-bg" id="mbg">
   <div class="modal">
     <h3 id="mtitle">Invite doctor</h3>
     <p class="hint" id="mhint">Send a secure link. They'll set their own password and land in the app.</p>
     <div class="fld"><label>Full name</label><input id="mname" placeholder="e.g. Dr. Jane Smith"></div>
-    <div class="fld"><label>Email</label><input id="memail" placeholder="name@practice.com"></div>
-    <div class="fld" id="mpracticewrap"><label>Practice</label><div class="inp dd" data-options="Upton &amp; Baker Dental|Raleigh Pediatric Dentistry|Bull City Dental|Wells Family Dental|Midtown Smile Studio"><span class="dd-val">Select practice</span><span class="car">▾</span></div></div>
+    <div class="fld"><label>Email</label><input id="memail" placeholder="name@gladwellorthodontics.com"></div>
+    <div class="fld" id="mpracticewrap"><label>Practice</label><div class="inp dd" data-options="Raleigh Pediatric Dentistry|Upton &amp; Baker|Britt Dental|Sean Mooring (CLA/ZEB)"><span class="dd-val">Select practice</span><span class="car">▾</span></div></div>
     <div style="display:flex;gap:9px;justify-content:flex-end;margin-top:4px">
       <button class="btn ghost" id="mcancel">Cancel</button>
       <button class="btn" id="msend">Send invite ✉</button>
@@ -412,7 +427,6 @@
 
 <script>
 (function(){
-  var main = document.querySelector('main');
   function show(id){
     document.querySelectorAll('.screen').forEach(function(s){ s.classList.toggle('on', s.id===id); });
     document.querySelectorAll('nav .tab').forEach(function(t){ t.classList.toggle('on', t.dataset.tab===id); });
@@ -423,125 +437,107 @@
   var tt; function toast(msg){ var el=document.getElementById('toast'); el.textContent=msg; el.classList.add('on'); clearTimeout(tt); tt=setTimeout(function(){ el.classList.remove('on'); },2600); }
   document.querySelectorAll('[data-toast]').forEach(function(b){ b.addEventListener('click', function(){ toast(b.dataset.toast); }); });
 
-  /* ---- dropdowns ---- */
   function closeDD(){ document.querySelectorAll('.dd-menu').forEach(function(m){ m.remove(); }); }
   document.addEventListener('click', function(e){
-    var dd = e.target.closest('.dd');
-    if(!dd){ closeDD(); return; }
-    if(e.target.closest('.dd-opt')) return; // handled below
-    var already = dd.querySelector('.dd-menu');
-    closeDD();
-    if(already) return;
-    var opts = (dd.getAttribute('data-options')||'').split('|');
-    var cur = (dd.querySelector('.dd-val')||{}).textContent;
-    var menu = document.createElement('div'); menu.className='dd-menu';
-    opts.forEach(function(o){
-      var it=document.createElement('div'); it.className='dd-opt'+(o===cur?' sel':''); it.innerHTML=o;
-      it.addEventListener('click', function(ev){ ev.stopPropagation(); pick(dd,o); closeDD(); });
-      menu.appendChild(it);
-    });
+    var dd=e.target.closest('.dd'); if(!dd){ closeDD(); return; }
+    if(e.target.closest('.dd-opt')) return;
+    var already=dd.querySelector('.dd-menu'); closeDD(); if(already) return;
+    var opts=(dd.getAttribute('data-options')||'').split('|'); var cur=(dd.querySelector('.dd-val')||{}).textContent;
+    var menu=document.createElement('div'); menu.className='dd-menu';
+    opts.forEach(function(o){ var it=document.createElement('div'); it.className='dd-opt'+(o===cur?' sel':''); it.innerHTML=o;
+      it.addEventListener('click', function(ev){ ev.stopPropagation(); pick(dd,o); closeDD(); }); menu.appendChild(it); });
     dd.appendChild(menu);
   });
+  var REPORTS={ "Touchpoints by doctor":"Touchpoints by doctor", "Outreach by practice":"Outreach by practice",
+    "Monthly trend":"Monthly trend · network", "Activity-type mix":"Activity-type mix", "Referral vs outreach":"Referral vs outreach" };
   function pick(dd,val){
     var lab=dd.querySelector('.dd-val'); if(lab) lab.innerHTML=val;
-    var plain = val.replace('&amp;','&');
-    if(dd.dataset.filter){
-      var isAll = /^All /.test(plain);
-      dd.classList.toggle('act', !isAll);
-      applyFilter(dd.dataset.table, dd.dataset.filter, isAll?null:plain);
-    }
+    var plain=val.replace('&amp;','&');
+    if(dd.dataset.filter){ var isAll=/^All /.test(plain); dd.classList.toggle('act',!isAll); applyFilter(dd.dataset.table,dd.dataset.filter,isAll?null:plain); }
+    if(dd.dataset.report){ var t=document.getElementById('repTitle'); if(t) t.textContent=REPORTS[plain]||plain; toast('Report view: '+plain); }
   }
-
-  /* ---- table filtering ---- */
   var state={};
   function applyFilter(table,col,val){
     state[table]=state[table]||{}; state[table][col]=val;
-    var rows=document.querySelectorAll('table[data-table="'+table+'"] tbody tr');
-    rows.forEach(function(r){
-      var show=true;
-      Object.keys(state[table]).forEach(function(c){
-        var f=state[table][c]; if(!f) return;
-        var v=(r.getAttribute('data-'+c)||'').replace('&amp;','&');
-        if(v!==f) show=false;
-      });
-      r.style.display = show?'':'none';
+    document.querySelectorAll('table[data-table="'+table+'"] tbody tr').forEach(function(r){
+      var show=true; Object.keys(state[table]).forEach(function(c){ var f=state[table][c]; if(!f) return;
+        if((r.getAttribute('data-'+c)||'').replace('&amp;','&')!==f) show=false; });
+      r.style.display=show?'':'none';
     });
   }
-
-  /* ---- task segmented filter ---- */
   document.querySelectorAll('.chip.seg').forEach(function(c){
     c.addEventListener('click', function(){
-      document.querySelectorAll('.chip.seg').forEach(function(x){ x.classList.toggle('act', x===c); });
+      document.querySelectorAll('.chip.seg').forEach(function(x){ x.classList.toggle('act',x===c); });
       var s=c.dataset.seg;
-      document.querySelectorAll('table[data-table="taskt"] tbody tr').forEach(function(r){
-        r.style.display = (s==='all'||r.dataset.status===s)?'':'none';
-      });
+      document.querySelectorAll('table[data-table="taskt"] tbody tr').forEach(function(r){ r.style.display=(s==='all'||r.dataset.status===s)?'':'none'; });
     });
   });
-
-  /* ---- practice row -> assign panel ---- */
   document.querySelectorAll('table[data-table="practices"] tbody tr.link').forEach(function(r){
     r.addEventListener('click', function(){
-      document.getElementById('asgName').textContent = r.getAttribute('data-name').replace('&amp;','&');
-      var rep = r.getAttribute('data-rep');
-      document.querySelector('#asgRep .dd-val').textContent = rep;
-      show('practices');
-      toast('Loaded '+r.getAttribute('data-name').replace('&amp;','&')+' into Assign');
+      document.getElementById('asgName').textContent=r.getAttribute('data-name').replace('&amp;','&');
+      document.querySelector('#asgRep .dd-val').textContent=r.getAttribute('data-rep');
+      show('practices'); toast('Loaded '+r.getAttribute('data-name').replace('&amp;','&')+' into Assign');
     });
   });
-
-  /* ---- doctor row -> drill-in detail ---- */
-  function initials(n){ return n.replace(/^Dr\.?\s*/,'').split(' ').map(function(w){ return w[0]||''; }).slice(0,2).join('').toUpperCase(); }
+  function initials(n){ return n.replace(/^Dr\.?\s*/,'').split(' ').map(function(w){return w[0]||'';}).slice(0,2).join('').toUpperCase(); }
   document.querySelectorAll('table[data-table="doctors"] tbody tr.link').forEach(function(r){
     r.addEventListener('click', function(){
-      var c=r.children;
-      var name=r.getAttribute('data-person');
-      var practice=c[1].textContent.trim(), email=c[2].textContent.trim();
-      var status=c[3].textContent.trim(), last=c[4].textContent.trim(), touches=c[5].textContent.trim();
-      document.getElementById('dName').textContent=name;
-      document.getElementById('dPractice').textContent=practice;
-      document.getElementById('dEmail').textContent=email;
-      document.getElementById('dAv').textContent=initials(name);
-      document.getElementById('dTouches').textContent=touches;
-      document.getElementById('dLast').textContent=last;
-      document.getElementById('dRefs').textContent=Math.max(0, Math.round((parseInt(touches,10)||0)/4));
-      var pill=document.getElementById('dStatus'); pill.textContent=status;
-      pill.className='pill '+(status==='Active'?'good':status==='Invited'?'warn':'bad');
-      var body=document.getElementById('dActs'); body.innerHTML=''; var count=0;
+      var c=r.children, name=r.getAttribute('data-person');
+      var email=c[1].textContent.trim(), status=c[2].textContent.trim(), pracs=c[3].textContent.trim(), acts=c[4].textContent.trim();
+      document.getElementById('dName').textContent=name; document.getElementById('dEmail').textContent=email;
+      document.getElementById('dAv').textContent=initials(name); document.getElementById('dTouches').textContent=acts;
+      document.getElementById('dPractices').textContent=pracs; document.getElementById('dLast').textContent=(status==='Active'?'recently':'—');
+      var pill=document.getElementById('dStatus'); pill.textContent=status; pill.className='pill '+(status==='Active'?'good':'bad');
+      var body=document.getElementById('dActs'); body.innerHTML=''; var cnt=0;
       document.querySelectorAll('table[data-table="acts"] tbody tr').forEach(function(a){
-        if((a.getAttribute('data-doctor')||'')===name){
-          var ac=a.children, tr=document.createElement('tr');
+        if((a.getAttribute('data-doctor')||'')===name){ var ac=a.children, tr=document.createElement('tr');
           tr.innerHTML='<td class="m">'+ac[0].textContent+'</td><td class="m">'+ac[2].innerHTML+'</td><td>'+ac[3].innerHTML+'</td><td class="m">'+ac[4].textContent+'</td>';
-          body.appendChild(tr); count++;
-        }
+          body.appendChild(tr); cnt++; }
       });
-      if(!count) body.innerHTML='<tr><td colspan="4" class="empty">No activity logged yet.</td></tr>';
+      if(!cnt) body.innerHTML='<tr><td colspan="4" class="empty">No recent activity in this view.</td></tr>';
       show('docDetail');
     });
   });
   document.getElementById('docBack').addEventListener('click', function(){ show('doctors'); });
 
-  /* ---- frequency stepper ---- */
-  var fv=2; document.querySelectorAll('[data-freq]').forEach(function(b){
-    b.addEventListener('click', function(){ fv=Math.max(1,Math.min(7, fv+parseInt(b.dataset.freq,10))); document.getElementById('fv').textContent=fv; });
-  });
-
-  /* ---- invite modal ---- */
+  // KPI card drill-in → chart/table
+  var KPI={
+    activities:{title:"Activities · all-time",sub:"995 logged touches — by activity type",col:"Activity type",
+      rows:[["Text Message",472],["Email",235],["Dinner / Event / Hospitality",138],["Phone Call",79],["Lunch",71]]},
+    practices:{title:"Practices",sub:"94 practices — by connected doctor",col:"Doctor",
+      rows:[["Dr. Laster",33],["Dr. Petritz",12],["Dr. Partrick",12],["Dr. Rudey",12],["Dr. Anders",10],["Dr. Adrian",10],["Dr. Wiese",5]]},
+    doctors:{title:"Active doctors",sub:"activities logged per doctor",col:"Doctor",
+      rows:[["Dr. Laster",336],["Dr. Petritz",197],["Dr. Anders",171],["Dr. Partrick",162],["Dr. Adrian",70],["Dr. Rudey",50],["Dr. Wiese",9]]},
+    referrals:{title:"Referrals · YTD",sub:"676 referrals — by month (illustrative until Edge import)",col:"Month",
+      rows:[["Oct '25",60],["Nov '25",58],["Dec '25",55],["Jan '26",74],["Feb '26",70],["Mar '26",92],["Apr '26",84],["May '26",82],["Jun '26",101]]},
+  };
+  document.querySelectorAll('.kpi.clk').forEach(function(k){ k.addEventListener('click', function(){ renderKpi(k.dataset.kpi); }); });
+  function renderKpi(key){
+    var d=KPI[key]; if(!d) return;
+    document.getElementById('kpiTitle').textContent=d.title;
+    document.getElementById('kpiSub').textContent=d.sub;
+    document.getElementById('kpiColA').textContent=d.col;
+    var max=Math.max.apply(null, d.rows.map(function(r){ return r[1]; }));
+    var body=document.getElementById('kpiBars'); body.innerHTML='';
+    d.rows.forEach(function(r){
+      var tr=document.createElement('tr');
+      tr.innerHTML='<td class="p">'+r[0]+'</td><td class="num-col">'+r[1]+'</td><td><div class="barbg"><div class="bar" style="width:'+Math.round(r[1]/max*100)+'%"></div></div></td>';
+      body.appendChild(tr);
+    });
+    show('kpiDetail');
+  }
+  document.getElementById('kpiBack').addEventListener('click', function(){ show('dash'); });
+  var fv=2; document.querySelectorAll('[data-freq]').forEach(function(b){ b.addEventListener('click', function(){ fv=Math.max(1,Math.min(7,fv+parseInt(b.dataset.freq,10))); document.getElementById('fv').textContent=fv; }); });
   function openM(kind){
-    document.getElementById('mtitle').textContent = kind==='admin'?'Add admin':'Invite doctor';
-    document.getElementById('mhint').textContent = kind==='admin'
-      ? 'Send a secure link. They set their own password and get full organization access.'
-      : "Send a secure link. They'll set their own password and land in the app.";
-    document.getElementById('mpracticewrap').style.display = kind==='admin'?'none':'block';
+    document.getElementById('mtitle').textContent=kind==='admin'?'Add admin':'Invite doctor';
+    document.getElementById('mhint').textContent=kind==='admin'?'Send a secure link. They set their own password and get full organization access.':"Send a secure link. They'll set their own password and land in the app.";
+    document.getElementById('mpracticewrap').style.display=kind==='admin'?'none':'block';
     document.getElementById('mbg').classList.add('on');
   }
   function closeM(){ document.getElementById('mbg').classList.remove('on'); }
   document.querySelectorAll('[data-invite]').forEach(function(b){ b.addEventListener('click', function(){ openM(b.dataset.invite); }); });
   document.getElementById('mcancel').addEventListener('click', closeM);
-  document.getElementById('msend').addEventListener('click', function(){
-    var email=document.getElementById('memail').value||'them'; closeM(); toast('Invite sent to '+email);
-    document.getElementById('mname').value=''; document.getElementById('memail').value='';
-  });
+  document.getElementById('msend').addEventListener('click', function(){ var em=document.getElementById('memail').value||'them'; closeM(); toast('Invite sent to '+em); document.getElementById('mname').value=''; document.getElementById('memail').value=''; });
   document.getElementById('mbg').addEventListener('click', function(e){ if(e.target.id==='mbg') closeM(); });
 })();
 </script>
