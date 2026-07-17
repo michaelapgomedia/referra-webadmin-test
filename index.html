@@ -499,9 +499,9 @@ nav .me{ background-position:center; background-size:cover;}
           <div class="panel">
             <h4 class="sec">Organization</h4>
             <div class="fld"><label>Name</label><div class="inp">Gladwell Orthodontics <span style="color:var(--faint)">GO</span></div></div>
-            <div class="fld"><label>App name (white-label)</label><div class="inp">Referra</div></div>
+            <div class="fld"><label>App name</label><div class="inp">Referra</div></div>
             <div class="fld"><label>Accent</label><div class="inp"><span style="display:flex;align-items:center;gap:9px"><span class="swatch" style="background:#C0603C"></span> #C0603C — Coral</span></div></div>
-            <p class="hint">White-label is built in — BRO and RVO get their own name + accent when they onboard.</p>
+            <p class="hint">BRO and RVO get their own name + accent when they onboard.</p>
           </div>
           <div class="panel">
             <div style="display:flex;align-items:center;justify-content:space-between"><h4 class="sec" style="margin:0">Admins</h4><button class="btn" data-invite="admin">+ Add admin</button></div>
@@ -597,7 +597,7 @@ nav .me{ background-position:center; background-size:cover;}
       </section>
       <!-- REFERRALS (monthly analysis + two-way entry) -->
       <section class="screen" id="referrals">
-        <div class="greet"><h2>Referrals</h2><p>Monthly referral analysis. Enter by practice or by rep at month-end &mdash; a quick form, or upload the monthly PDF to auto-fill, preview, and accept.</p></div>
+        <div class="greet"><h2>Referrals</h2><p>Monthly referral analysis. The <b>676 YTD is a locked historical baseline</b> &mdash; each new month accumulates on top, entered by practice or by rep via a quick form or the monthly PDF upload (preview, then accept).</p></div>
         <div class="row" style="margin-top:16px">
           <div class="card" style="flex:1.4;margin-top:0">
             <div class="card-h"><h3>Monthly referrals &middot; Oct 2025 &ndash; Jun 2026</h3><div class="filters"><button class="btn ghost" id="refExport">Export &#8623; Excel</button></div></div>
@@ -977,7 +977,9 @@ nav .me{ background-position:center; background-size:cover;}
     var pi=-1; for(var i=0;i<PRACS.length;i++){ if(PRACS[i].name===name){ pi=i; break; } }
     if(pi<0) return; var p=PRACS[pi]; curPrac=p;
     var cur=document.querySelector('.screen.on'); pracReturn=cur?cur.id:'practices';
-    $('pdName').textContent=p.name; $('pdType').textContent=p.type; $('pdRep').textContent=p.doctor; $('pdAv').textContent=initials(p.name);
+    var repRole=(DOCS.filter(function(x){return x.name===p.doctor;})[0]||{}).role||'Doctor';
+    $('pdName').textContent=p.name; $('pdType').textContent=p.type; $('pdAv').textContent=initials(p.name);
+    $('pdRep').innerHTML=esc(p.doctor)+' <span class="rolepill '+(repRole==='Doctor'?'rd':'rm')+'">'+esc(repRole)+'</span>';
     var mine=ACTS_SORTED.filter(function(a){ return a[2]===pi; });
     var totalActs=DOCS.reduce(function(s,x){return s+x.acts;},0)||1;
     var refs=Math.round(676*(p.acts/totalActs)), roi=p.acts?Math.round(refs/p.acts*100):0;
