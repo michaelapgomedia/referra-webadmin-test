@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title> 💻 Referra Admin - Prototype</title>
+<title>Referra Admin — Mockup</title>
 </head>
 <body>
 <style>
@@ -221,6 +221,38 @@
   .pr td{ padding:6px 8px; border-bottom:1px solid #E4DED0;}
   .pr .prf{ margin-top:16px; color:#9AAAB8; font-size:10px;}
 }
+/* --- phase 1: roles · timeframe · pagination · date range --- */
+.dashctrls{ justify-content:space-between; align-items:center;}
+.tfseg{ display:flex; gap:7px; flex-wrap:wrap;}
+.chip.cv.tfb.act{ background:var(--coral); color:#fff; border-color:var(--coral);}
+.chip.cv.disabled{ opacity:.4; pointer-events:none;}
+.rolepill{ display:inline-block; font-size:10.5px; font-weight:800; padding:2px 9px; border-radius:999px;}
+.rolepill.rd{ background:var(--coral-soft); color:var(--coral);}
+.rolepill.rm{ background:#E7EEF5; color:var(--navy);}
+.xr .yb{ color:var(--coral); font-weight:900;}
+.pager{ display:flex; align-items:center; justify-content:space-between; gap:12px; padding:11px 2px 2px; flex-wrap:wrap;}
+.pager .pgcount{ font-size:12px; color:var(--muted); font-weight:700;}
+.pager .pgctrl{ display:flex; align-items:center; gap:8px;}
+.pager label{ font-size:11px; color:var(--faint); font-weight:800; text-transform:uppercase; letter-spacing:.04em;}
+.pager select{ height:32px; border:1px solid var(--line); border-radius:8px; background:#fff; font-family:var(--font); font-size:13px; padding:0 6px; color:var(--ink);}
+.pager button{ height:32px; padding:0 12px; border:1px solid var(--line); border-radius:8px; background:#fff; font-weight:700; font-size:12.5px; color:var(--navy); cursor:pointer;}
+.pager button:disabled{ opacity:.4; cursor:default;}
+.daterange{ display:flex; align-items:center; gap:6px; flex-wrap:wrap;}
+.daterange label{ font-size:11px; color:var(--faint); font-weight:800;}
+.daterange input[type=date]{ height:34px; border:1px solid var(--line); border-radius:9px; background:#fff; font-family:var(--font); font-size:12.5px; padding:0 8px; color:var(--ink);}
+nav .me{ background-position:center; background-size:cover;}
+/* --- phase 2: dual axis + rep report card --- */
+.axl{ position:absolute; top:1px; font-size:9.5px; font-weight:800; pointer-events:none; z-index:2;}
+.axl-l{ left:1px; color:var(--coral);}
+.axl-r{ right:1px; color:var(--navy);}
+.chip.cv.tfb2.act{ background:var(--navy); color:#fff; border-color:var(--navy);}
+.rcgrid{ display:grid; grid-template-columns:repeat(4,1fr); gap:10px;}
+.rck{ background:var(--ground); border-radius:12px; padding:11px 12px;}
+.rck .lab{ font-size:10.5px; font-weight:800; letter-spacing:.04em; text-transform:uppercase; color:var(--faint);}
+.rck .num{ font-size:24px; font-weight:900; color:var(--navy); margin-top:3px; font-variant-numeric:tabular-nums;}
+.rck .sub{ font-size:11px; font-weight:700; color:var(--muted); margin-top:2px;}
+@media (max-width:720px){ .rcgrid{ grid-template-columns:repeat(2,1fr);} }
+.chip.cv.tfb3.act{ background:var(--navy); color:#fff; border-color:var(--navy);}
 </style>
 
 <div class="rf">
@@ -247,6 +279,7 @@
         <button class="tab" data-tab="practices">Practices</button>
         <button class="tab" data-tab="activities">Activities</button>
         <button class="tab" data-tab="tasks">Tasks</button>
+        <button class="tab" data-tab="referrals">Referrals</button>
         <button class="tab" data-tab="reports">Reports</button>
         <button class="tab" data-tab="settings">Settings</button>
       </div>
@@ -508,6 +541,19 @@
           <div class="kpi"><div class="lab">Practices</div><div class="num" id="dPractices">0</div><div class="sub">assigned</div></div>
           <div class="kpi"><div class="lab">Last active</div><div class="num" id="dLast" style="font-size:20px">—</div><div class="sub">from the app</div></div>
         </div>
+        <div class="card"><div class="card-h"><h3>Report card</h3><div class="tfseg"><div class="chip cv tfb2 act" data-reptf="all">All time</div><div class="chip cv tfb2" data-reptf="ytd">YTD</div></div></div>
+          <div class="rcgrid">
+            <div class="rck"><div class="lab">Activities</div><div class="num" id="rcActs">0</div><div class="sub" id="rcTrend">&mdash;</div></div>
+            <div class="rck"><div class="lab">Top activity</div><div class="num" id="rcTop" style="font-size:15px">&mdash;</div><div class="sub" id="rcTopSub"></div></div>
+            <div class="rck"><div class="lab">Effectiveness</div><div class="num" id="rcEff">0</div><div class="sub">referrals / 100 acts</div></div>
+            <div class="rck"><div class="lab">Avg / month</div><div class="num" id="rcAvg">0</div><div class="sub">activities</div></div>
+          </div>
+        </div>
+        <div class="row" style="margin-top:14px">
+          <div class="card" style="flex:1;margin-top:0"><div class="card-h"><h3>Activity trend</h3></div><div id="dRepActChart"></div></div>
+          <div class="card" style="flex:1;margin-top:0"><div class="card-h"><h3>Referral trend &middot; assigned practices</h3></div><div id="dRepRefChart"></div></div>
+        </div>
+        <div class="card"><div class="card-h"><h3>Assigned practices &middot; <span id="dRepPracN">0</span></h3></div><div class="tbl-wrap"><table data-table="dreppracs"><thead><tr><th>Practice</th><th>Type</th><th class="num-col">Activities</th></tr></thead><tbody id="dRepPracs"></tbody></table></div></div>
         <div class="card">
           <div class="card-h"><h3>Recent activity</h3></div>
           <div class="tbl-wrap"><table><thead><tr><th>Date</th><th>Practice</th><th>Type</th><th>Note</th></tr></thead><tbody id="dActs"></tbody></table></div>
@@ -528,6 +574,56 @@
           <div class="card" style="flex:1;margin-top:0"><div class="card-h"><h3>By doctor</h3></div><div class="tbl-wrap"><table><thead><tr><th>Doctor</th><th class="num-col">Count</th><th style="width:46%">Share</th></tr></thead><tbody id="mdDocBars"></tbody></table></div></div>
         </div>
         <div class="card"><div class="card-h"><h3 id="mdRecsTitle">Records</h3><input class="tsearch" data-tsearch="mdrecs" placeholder="Search this month&hellip;"></div><div class="tbl-wrap"><table data-table="mdrecs"><thead><tr><th>Date</th><th>Doctor</th><th>Practice</th><th>Type</th><th>Note</th></tr></thead><tbody id="mdRecs"></tbody></table></div></div>
+      </section>
+      <!-- PRACTICE DETAIL (tap a practice) -->
+      <section class="screen" id="pracDetail">
+        <div class="crumb"><button id="pdBack">‹ Back</button></div>
+        <div class="dhead">
+          <div class="av" id="pdAv" style="border-radius:14px">PR</div>
+          <div style="flex:1;min-width:180px"><h2 id="pdName">Practice</h2><div class="dm"><span id="pdType">&mdash;</span> &middot; connected to <a id="pdRep" style="color:var(--coral);font-weight:800;cursor:pointer;text-decoration:underline">&mdash;</a></div></div>
+          <button class="btn" id="pdReassign">Reassign rep</button>
+        </div>
+        <div class="grid4">
+          <div class="kpi"><div class="lab">Activities</div><div class="num" id="pdActs">0</div><div class="sub">all-time</div></div>
+          <div class="kpi"><div class="lab">Referrals</div><div class="num" id="pdRefs">0</div><div class="sub">illustrative</div></div>
+          <div class="kpi"><div class="lab">ROI</div><div class="num" id="pdRoi">0</div><div class="sub">refs / 100 acts</div></div>
+          <div class="kpi"><div class="lab">Last activity</div><div class="num" id="pdLast" style="font-size:15px">&mdash;</div><div class="sub">most recent</div></div>
+        </div>
+        <div class="row" style="margin-top:16px">
+          <div class="card" style="flex:1.3;margin-top:0"><div class="card-h"><h3>Monthly activity</h3></div><div id="pdChart"></div></div>
+          <div class="card" style="flex:1;margin-top:0"><div class="card-h"><h3>Activity-type mix</h3></div><div class="tbl-wrap"><table><thead><tr><th>Type</th><th class="num-col">Count</th><th style="width:44%">Share</th></tr></thead><tbody id="pdTypeBars"></tbody></table></div></div>
+        </div>
+        <div class="card"><div class="card-h"><h3>Recent activity</h3></div><div class="tbl-wrap"><table><thead><tr><th>Date</th><th>Rep</th><th>Type</th><th>Note</th></tr></thead><tbody id="pdRecs"></tbody></table></div></div>
+      </section>
+      <!-- REFERRALS (monthly analysis + two-way entry) -->
+      <section class="screen" id="referrals">
+        <div class="greet"><h2>Referrals</h2><p>Monthly referral analysis. Enter by practice or by rep at month-end &mdash; a quick form, or upload the monthly PDF to auto-fill, preview, and accept.</p></div>
+        <div class="row" style="margin-top:16px">
+          <div class="card" style="flex:1.4;margin-top:0">
+            <div class="card-h"><h3>Monthly referrals &middot; Oct 2025 &ndash; Jun 2026</h3><div class="filters"><button class="btn ghost" id="refExport">Export &#8623; Excel</button></div></div>
+            <div class="tbl-wrap"><table data-table="reftable"><thead><tr><th>Month</th><th class="num-col">Referrals</th><th class="num-col">Outreach</th><th style="width:34%">Trend</th></tr></thead><tbody id="refBody"></tbody></table></div>
+          </div>
+          <div class="panel" style="flex:1">
+            <div class="tfseg" style="margin-bottom:12px"><div class="chip cv tfb3 act" data-refm="form">Form entry</div><div class="chip cv tfb3" data-refm="pdf">PDF upload</div></div>
+            <div id="refForm">
+              <div class="fld"><label>Month</label><div class="inp dd" id="refMonth" data-options=""><span class="dd-val">Jun &#39;26</span><span class="car">&#9662;</span></div></div>
+              <div class="fld"><label>Attribute by</label><div class="inp dd" id="refBy" data-options="Practice|Rep"><span class="dd-val">Practice</span><span class="car">&#9662;</span></div></div>
+              <div class="fld"><label id="refTargetLab">Practice</label><div class="inp dd" id="refTarget" data-options=""><span class="dd-val">Select&hellip;</span><span class="car">&#9662;</span></div></div>
+              <div class="fld"><label>Referrals this month</label><input id="refCount" inputmode="numeric" placeholder="e.g. 8" style="width:100%;height:44px;border:1.5px solid var(--line);border-radius:11px;padding:0 12px;font-family:var(--font);font-size:14px;color:var(--ink);box-sizing:border-box"></div>
+              <button class="btn navy" id="refAdd" style="height:42px;width:100%">Add to batch</button>
+            </div>
+            <div id="refPdf" style="display:none">
+              <div class="note">Upload the practice&#39;s monthly referral PDF (e.g. the Edge export). We read it, you preview each line, then accept.</div>
+              <label class="btn ghost" style="display:flex;justify-content:center;cursor:pointer;margin-top:10px">Choose PDF&hellip;<input type="file" id="refFile" accept="application/pdf,image/*" style="display:none"></label>
+              <div id="refPdfStatus" class="hint" style="margin-top:10px"></div>
+            </div>
+            <div id="refPreviewWrap" style="display:none;margin-top:14px">
+              <h4 class="sec">Preview &middot; <span id="refPrevN">0</span> rows to import</h4>
+              <div class="tbl-wrap" style="max-height:210px;overflow:auto"><table><thead><tr><th>Month</th><th>Target</th><th class="num-col">Refs</th></tr></thead><tbody id="refPreview"></tbody></table></div>
+              <div style="display:flex;gap:9px;margin-top:10px"><button class="btn navy" id="refAccept" style="flex:1;height:42px">Accept &amp; import</button><button class="btn ghost" id="refClear">Clear</button></div>
+            </div>
+          </div>
+        </div>
       </section>
     </main>
 <div id="printArea"></div>
@@ -551,22 +647,28 @@
 
 <div class="toast" id="toast"></div>
 
-<script>window.DATA={"types":["Text Message","Email","Dinner / Event / Hospitality","Phone Call","Lunch"],"tags":{"Text Message":"TXT","Email":"EML","Dinner / Event / Hospitality":"DEH","Phone Call":"CALL","Lunch":"LUN"},"doctors":[{"name":"Dr. Anders","email":"Drb@gladwellorthodontics.com","active":true,"practices":10,"acts":171},{"name":"Dr. Partrick","email":"drm@gladwellorthodontics.com","active":true,"practices":12,"acts":162},{"name":"Dr. Petritz","email":"drp@gladwellorthodontics.com","active":true,"practices":12,"acts":197},{"name":"Dr. Rudey","email":"drfr@gladwellorthodontics.com","active":true,"practices":12,"acts":50},{"name":"Dr. Wiese","email":"wiese@gladwellorthodontics.com","active":false,"practices":5,"acts":9},{"name":"Dr. Adrian","email":"drah@gladwellorthodontics.com","active":true,"practices":10,"acts":70},{"name":"Dr. Laster","email":"drsl@gladwellorthodontics.com","active":true,"practices":33,"acts":336}],"practices":[{"name":"Raleigh Pediatric Dentistry","long":"Raleigh Pediatric Dentistry","type":"Pediatric Dentistry","doctor":"Dr. Anders","acts":41},{"name":"Upton & Baker","long":"Upton & Baker","type":"General Dentistry","doctor":"Dr. Anders","acts":51},{"name":"CPD-Wakefield","long":"CPD-Wakefield","type":"—","doctor":"Dr. Anders","acts":18},{"name":"TFD-Wake Forest","long":"TFD-Wake Forest","type":"Family Dentistry","doctor":"Dr. Anders","acts":16},{"name":"Wells Family- Wake Forest","long":"Wells Family-Wake Forest","type":"Family Dentistry","doctor":"Dr. Anders","acts":14},{"name":"Hayes Barton Dentistry","long":"Hayes Barton Dentistry","type":"General Dentistry","doctor":"Dr. Anders","acts":5},{"name":"Wildberry Pediatric Dentistry","long":"Wildberry Pediatric Dentistry","type":"Pediatric Dentistry","doctor":"Dr. Anders","acts":7},{"name":"Village Dental Wake Forest","long":"Village Dental Wake Forest","type":"General Dentistry","doctor":"Dr. Anders","acts":3},{"name":"Handcrafted Dentistry","long":"Handcrafted Dentistry","type":"General Dentistry","doctor":"Dr. Anders","acts":5},{"name":"Youngsville Smiles","long":"Youngsville Smiles","type":"General Dentistry","doctor":"Dr. Anders","acts":11},{"name":"Southpoint Pediatric","long":"Southpoint Pediatric","type":"Pediatric Dentistry","doctor":"Dr. Partrick","acts":7},{"name":"Wells-North Raleigh","long":"Wells-North Raleigh","type":"Family Dentistry","doctor":"Dr. Partrick","acts":22},{"name":"Midtown Dental Seth Rumley","long":"Midtown Dental - Seth Rumley","type":"General Dentistry","doctor":"Dr. Partrick","acts":12},{"name":"St Mary's - Dr. Linda Shafik","long":"St Mary's - Dr. Linda Shafik","type":"—","doctor":"Dr. Partrick","acts":19},{"name":"CD-Chapel Hill","long":"CD-Chapel Hill","type":"General Dentistry","doctor":"Dr. Partrick","acts":15},{"name":"CD-Garner (Woolf and Gallick)","long":"CD-Garner","type":"General Dentistry","doctor":"Dr. Partrick","acts":13},{"name":"Smiles Stories Dentistry - Dr. Janice Ko","long":"Smiles Stories Dentistry - Dr. Janice Ko","type":"—","doctor":"Dr. Partrick","acts":23},{"name":"North Durham Pediatric Dentistry  - Dr. Mark Cummings","long":"North Durham Pediatric Dentistry  - Dr. Mark Cummings","type":"—","doctor":"Dr. Partrick","acts":16},{"name":"CD Durham - Dr. Isaiah Cole","long":"CD Durham - Dr. Isaiah Cole","type":"General Dentistry","doctor":"Dr. Partrick","acts":15},{"name":"Capital City Pediatric - Dr. Love Moore","long":"Capital City Pediatric - Dr. Love Moore","type":"—","doctor":"Dr. Partrick","acts":8},{"name":"Smile Design Modern Dentistry - Total Dental Care-Durham - Dr. Imeni","long":"Smile Design Modern Dentistry - Total Dental Care-Durham - Dr. Imeni","type":"—","doctor":"Dr. Partrick","acts":5},{"name":"Contemporary Dental - Dr. Ashley Loenser","long":"Contemporary Dental - Dr. Ashley Loenser","type":"—","doctor":"Dr. Partrick","acts":7},{"name":"Britt Dental","long":"Britt Dental","type":"General Dentistry","doctor":"Dr. Petritz","acts":14},{"name":"Thompson & Thompson","long":"Thompson & Thompson","type":"General Dentistry","doctor":"Dr. Petritz","acts":13},{"name":"Loren","long":"Loren","type":"General Dentistry","doctor":"Dr. Petritz","acts":19},{"name":"TPD","long":"TPD","type":"General Dentistry","doctor":"Dr. Petritz","acts":24},{"name":"Wells-Brier Creek","long":"Wells-Brier Creek","type":"Family Dentistry","doctor":"Dr. Petritz","acts":7},{"name":"CD-Cary","long":"CD-Cary","type":"General Dentistry","doctor":"Dr. Petritz","acts":16},{"name":"Sunrise Dental","long":"Sunrise Dental","type":"General Dentistry","doctor":"Dr. Petritz","acts":10},{"name":"Daurity Family","long":"Daurity Family","type":"Family Dentistry","doctor":"Dr. Petritz","acts":9},{"name":"Smiles at Glenwood;Dr. Candice Arrick","long":"Smiles at Glenwood;Dr. Candice Arrick","type":"—","doctor":"Dr. Petritz","acts":23},{"name":"Wainright & Wassel","long":"Wainright & Wassel","type":"General Dentistry","doctor":"Dr. Petritz","acts":28},{"name":"Moore Family Dentistry (Adam Moore)","long":"Moore Family Dentistry (Adam Moore)","type":"—","doctor":"Dr. Petritz","acts":23},{"name":"New Leaf Pediatric Dentistry","long":"New Leaf Pediatric Dentistry","type":"Pediatric Dentistry","doctor":"Dr. Petritz","acts":11},{"name":"CPD-Downtown","long":"CPD-Downtown","type":"Pediatric Dentistry","doctor":"Dr. Rudey","acts":3},{"name":"Capital  Dental Care","long":"Capital Dental Care","type":"General Dentistry","doctor":"Dr. Rudey","acts":4},{"name":"Wells Family - Buffaloe Bend","long":"Wells Family-Buffaloe Bend","type":"Family Dentistry","doctor":"Dr. Rudey","acts":3},{"name":"Midtown Pediatric","long":"Midtown Pediatric","type":"Pediatric Dentistry","doctor":"Dr. Rudey","acts":5},{"name":"Peace Street Dental","long":"Peace Street Dental","type":"General Dentistry","doctor":"Dr. Rudey","acts":4},{"name":"CD- Go Media Office North RAL","long":"CD- Go Media Office North RAL","type":"—","doctor":"Dr. Rudey","acts":7},{"name":"Village Dental -North Raleigh","long":"Village Dental - North Raleigh","type":"General Dentistry","doctor":"Dr. Rudey","acts":7},{"name":"Leesville Dental Studio","long":"Leesville Dental Studio","type":"General Dentistry","doctor":"Dr. Rudey","acts":4},{"name":"Creedmoor Road Dentistry","long":"Creedmoor Road Dentistry","type":"General Dentistry","doctor":"Dr. Rudey","acts":3},{"name":"Dr. Stan Hardesty","long":"Dr. Stan Hardesty","type":"General Dentistry","doctor":"Dr. Rudey","acts":3},{"name":"Raleigh Comprehensive & Cosmetic Dentistry (DT Ral)","long":"Raleigh Comprehensive & Cosmetic Dentistry (DT Ral)","type":"—","doctor":"Dr. Rudey","acts":4},{"name":"Lake Boone Dentistry","long":"Lake Boone Dentistry","type":"General Dentistry","doctor":"Dr. Rudey","acts":3},{"name":"Riccobene, Don DeMichele","long":"Riccobene - Don DeMichele","type":"General Dentistry","doctor":"Dr. Wiese","acts":2},{"name":"Dental Works-Durham","long":"Dental Works - Durham","type":"General Dentistry","doctor":"Dr. Wiese","acts":2},{"name":"Pleasant Pines Dentistry","long":"Pleasant Pines Dentistry","type":"General Dentistry","doctor":"Dr. Wiese","acts":2},{"name":"Sunrise Dental Durham","long":"Sunrise Dental Durham","type":"General Dentistry","doctor":"Dr. Wiese","acts":2},{"name":"Friendly Dental Group Durham","long":"Friendly Dental Group Durham","type":"General Dentistry","doctor":"Dr. Wiese","acts":1},{"name":"COCD-Rolesville","long":"COCD-Rolesville","type":"General Dentistry","doctor":"Dr. Adrian","acts":15},{"name":"TFD-Rolesville","long":"TFD-Rolesville","type":"Family Dentistry","doctor":"Dr. Adrian","acts":8},{"name":"Emerald Family","long":"Emerald Family","type":"Family Dentistry","doctor":"Dr. Adrian","acts":8},{"name":"Horizon (Covered by DrSL??)","long":"Horizon","type":"General Dentistry","doctor":"Dr. Adrian","acts":4},{"name":"TFD-Heritage Branch","long":"TFD-Heritage Branch","type":"Family Dentistry","doctor":"Dr. Adrian","acts":6},{"name":"Carolina Dental Arts- Glenwood","long":"Carolina Dental Arts - Glenwood","type":"General Dentistry","doctor":"Dr. Adrian","acts":5},{"name":"Fusion Dental Care","long":"Fusion Dental Care","type":"General Dentistry","doctor":"Dr. Adrian","acts":6},{"name":"Lifetime Family Dentistry","long":"Lifetime Family Dentistry","type":"Family Dentistry","doctor":"Dr. Adrian","acts":6},{"name":"Spectrum Family & Cosmetic Dentistry","long":"Spectrum Family & Cosmetic Dentistry","type":"Cosmetic Dentistry","doctor":"Dr. Adrian","acts":6},{"name":"Dental Smiles of NC","long":"Dental Smiles of NC","type":"General Dentistry","doctor":"Dr. Adrian","acts":6},{"name":"Andrew Perry DDS (RAL)","long":"Andrew Perry DDS","type":"General Dentistry","doctor":"Dr. Laster","acts":26},{"name":"Axiom Zebulon  Dr. Dao (ZEB) Dr. Cherina Belton (Zeb)","long":"Axiom Zebulon  Dr. Dao (ZEB) Dr. Cherina Belton (Zeb)","type":"—","doctor":"Dr. Laster","acts":32},{"name":"Barker, Rohner, and Hunt (RAL)","long":"Barker, Rohner, and Hunt (RAL)","type":"—","doctor":"Dr. Laster","acts":11},{"name":"Robert Hoyle, RFD (RAL)","long":"Robert Hoyle RFD","type":"General Dentistry","doctor":"Dr. Laster","acts":19},{"name":"Dr. Harris RDCCn(ROL)","long":"Dr. Harris RDCCn(ROL)","type":"—","doctor":"Dr. Laster","acts":22},{"name":"Horizon Family(ROL)","long":"Horizon Family(ROL)","type":"—","doctor":"Dr. Laster","acts":12},{"name":"Erin Tilton, CoCD","long":"Erin Tilton / CoCD","type":"General Dentistry","doctor":"Dr. Laster","acts":15},{"name":"Amy H. See DDS, PA  (ROL)","long":"Amy H. See DDS, PA  (ROL)","type":"—","doctor":"Dr. Laster","acts":7},{"name":"Raleigh Pediatric Dentistry (RAL)","long":"Raleigh Pediatric Dentistry","type":"Pediatric Dentistry","doctor":"Dr. Laster","acts":10},{"name":"Amy Sexton Dental Care Center Zebulom","long":"Amy Sexton Dental Care Center Zebulom","type":"—","doctor":"Dr. Laster","acts":12},{"name":"Dr .Collins& Young, Zebulon Family Dentistry","long":"Dr .Collins& Young, Zebulon Family Dentistry","type":"—","doctor":"Dr. Laster","acts":17},{"name":"Davis and Longo","long":"Davis and Longo","type":"—","doctor":"Dr. Laster","acts":2},{"name":"First Avenue, Fasil Shaik","long":"First Avenue, Fasil Shaik","type":"—","doctor":"Dr. Laster","acts":19},{"name":"Elan Dental (ROL/Ral)","long":"Elan Dental (ROL/Ral)","type":"—","doctor":"Dr. Laster","acts":7},{"name":"Smiles of Carolina (KNI/ZEB)","long":"Smiles of Carolina (KNI/ZEB)","type":"—","doctor":"Dr. Laster","acts":8},{"name":"North Ridge Dental, Philip Wright","long":"North Ridge Dental, Philip Wright","type":"—","doctor":"Dr. Laster","acts":1},{"name":"Sean Mooring (CLA/ZEB) Zombek","long":"Sean Mooring / Zombek","type":"General Dentistry","doctor":"Dr. Laster","acts":28},{"name":"Vraj Gajjar","long":"Vraj Gajjar","type":"—","doctor":"Dr. Laster","acts":17},{"name":"Kate Putney","long":"Kate Putney","type":"—","doctor":"Dr. Laster","acts":7},{"name":"winkleman","long":"winkleman","type":"—","doctor":"Dr. Laster","acts":1},{"name":"Smiling turtle pediatric","long":"Smiling turtle pediatric","type":"—","doctor":"Dr. Laster","acts":0},{"name":"akeadra bell (KEE) melody butler tfdr","long":"akeadra bell (KEE) melody butler tfdr","type":"—","doctor":"Dr. Laster","acts":24},{"name":"wells family BB - Lamura, Patel, Woll","long":"wells family BB - Lamura, Patel, Woll","type":"—","doctor":"Dr. Laster","acts":12},{"name":"dc of wendell falls","long":"dc of wendell falls","type":"—","doctor":"Dr. Laster","acts":3},{"name":"WF gateway","long":"WF gateway","type":"—","doctor":"Dr. Laster","acts":1},{"name":"tim creech","long":"tim creech","type":"—","doctor":"Dr. Laster","acts":2},{"name":"Allen Lee, Creedmoor Road General Dentistry","long":"Allen Lee, Creedmoor Road General Dentistry","type":"—","doctor":"Dr. Laster","acts":1},{"name":"Reflections, Briar Creek - Suthar","long":"Reflections, Briar Creek - Suthar","type":"—","doctor":"Dr. Laster","acts":3},{"name":"Dino Kids Dental, Dr. Mustafa (M-Th 8-3)","long":"Dino Kids Dental, Dr. Mustafa (M-Th 8-3)","type":"—","doctor":"Dr. Laster","acts":1},{"name":"Caroline Jennings Shahi, Clayton Smiles","long":"Caroline Jennings Shahi, Clayton Smiles","type":"—","doctor":"Dr. Laster","acts":5},{"name":"ideal dental rolesville","long":"ideal dental rolesville","type":"—","doctor":"Dr. Laster","acts":4},{"name":"Down home dental, Andrew Burnette","long":"Down home dental, Andrew Burnette","type":"—","doctor":"Dr. Laster","acts":6},{"name":"Lane and Assoc Middlesex","long":"Lane and Assoc Middlesex","type":"—","doctor":"Dr. Laster","acts":1}],"acts":[["2025-11-20",0,0,0,""],["2025-11-23",0,0,0,""],["2025-12-14",0,0,0,""],["2025-12-16",0,0,0,""],["2025-12-28",0,0,0,""],["2026-01-13",0,0,0,""],["2026-01-20",0,0,0,""],["2026-01-21",0,0,0,""],["2026-01-31",0,0,0,""],["2026-02-18",0,0,0,""],["2026-02-26",0,0,0,""],["2026-02-27",0,0,0,""],["2026-03-17",0,0,0,""],["2026-03-26",0,0,0,""],["2026-04-09",0,0,0,""],["2026-04-12",0,0,0,""],["2026-05-05",0,0,0,""],["2026-05-20",0,0,0,""],["2026-05-29",0,0,0,""],["2026-05-30",0,0,0,""],["2026-06-01",0,0,0,""],["2026-06-24",0,0,0,""],["2026-04-29",0,0,1,""],["2026-04-30",0,0,1,""],["2026-05-21",0,0,1,""],["2026-06-15",0,0,1,""],["2026-03-21",0,0,4,"Benchwarmer's"],["2025-11-19",0,0,2,"Dinner (Brewery Bhavana)"],["2025-11-23",0,0,2,"Dinner"],["2025-12-14",0,0,2,"Dinner"],["2026-01-29",0,0,2,"Dinner (Gussie's)"],["2026-02-26",0,0,2,"(Heirloom)"],["2026-03-19",0,0,2,"Dinner (RPD)"],["2026-03-26",0,0,2,"Dinner (Kanki)"],["2026-04-12",0,0,2,"Dinner"],["2026-04-15",0,0,2,"Dinner (Gringo)"],["2026-04-30",0,0,2,"Dinner (Fiction Kitchen)"],["2026-05-23",0,0,2,"Dinner (Birdie's)"],["2026-05-24",0,0,2,"Lunch"],["2026-05-30",0,0,2,"Dinner Masala House"],["2026-06-24",0,0,2,"Dinner Standard"],["2025-11-21",0,1,0,""],["2025-11-23",0,1,0,""],["2025-12-14",0,1,0,""],["2025-12-23",0,1,0,""],["2025-12-28",0,1,0,""],["2026-01-31",0,1,0,""],["2026-02-18",0,1,0,""],["2026-02-26",0,1,0,""],["2026-02-27",0,1,0,""],["2026-03-17",0,1,0,""],["2026-03-23",0,1,0,""],["2026-03-26",0,1,0,""],["2026-04-01",0,1,0,""],["2026-04-09",0,1,0,""],["2026-04-12",0,1,0,""],["2026-04-15",0,1,0,""],["2026-04-22",0,1,0,""],["2026-04-29",0,1,0,""],["2026-05-05",0,1,0,""],["2026-05-12",0,1,0,""],["2026-05-20",0,1,0,""],["2026-05-29",0,1,0,""],["2026-05-30",0,1,0,""],["2026-06-01",0,1,0,""],["2026-06-20",0,1,0,""],["2026-06-23",0,1,0,""],["2026-06-24",0,1,0,""],["2026-02-19",0,1,1,""],["2026-02-24",0,1,1,""],["2026-03-16",0,1,1,""],["2026-03-18",0,1,1,""],["2026-03-25",0,1,1,""],["2026-04-10",0,1,1,""],["2026-05-13",0,1,1,""],["2026-05-14",0,1,1,""],["2026-03-21",0,1,4,"Benchwarmer's"],["2025-11-19",0,1,2,"Dinner"],["2025-12-23",0,1,2,"Dinner"],["2025-12-10",0,1,2,"NCSU Basketball game (DrG's tickets)"],["2025-12-14",0,1,2,"Dinner"],["2026-01-29",0,1,2,"Dinner (Gussie's)"],["2026-02-26",0,1,2,"(Heirloom)"],["2026-03-19",0,1,2,"Dinner (RPD)"],["2026-03-26",0,1,2,"Dinner (Kanki)"],["2026-04-12",0,1,2,"Dinner"],["2026-04-15",0,1,2,"Dinner (Gringo)"],["2026-04-30",0,1,2,"Dinner (Fiction Kitchen)"],["2026-05-23",0,1,2,"Dinner (Birdie's)"],["2026-05-24",0,1,2,"Lunch"],["2026-05-30",0,1,2,"Dinner Masala House"],["2026-06-24",0,1,2,"Dinner Standard"],["2025-12-31",0,2,0,""],["2026-01-15",0,2,0,""],["2026-02-12",0,2,0,""],["2026-02-17",0,2,0,""],["2026-03-17",0,2,0,""],["2026-03-28",0,2,0,""],["2026-05-26",0,2,0,""],["2026-05-28",0,2,0,""],["2026-06-01",0,2,0,""],["2026-06-02",0,2,0,""],["2026-03-03",0,2,1,""],["2026-02-02",0,2,3,""],["2026-05-22",0,2,3,""],["2026-06-02",0,2,3,""],["2025-08-26",0,2,2,"Cookie delivery"],["2026-03-17",0,2,2,"DRB delivered cookies, discussion with Dr. Johnson"],["2026-04-13",0,2,2,"GO + CPD meeting"],["2026-05-28",0,2,2,"DRB treat drop off + brackets for LaRee"],["2025-11-11",0,3,0,""],["2025-12-16",0,3,0,""],["2025-12-31",0,3,0,""],["2026-02-24",0,3,0,""],["2026-03-06",0,3,0,""],["2026-03-10",0,3,0,""],["2026-03-31",0,3,0,""],["2026-04-22",0,3,0,""],["2026-05-12",0,3,0,""],["2026-05-15",0,3,0,""],["2026-06-05",0,3,0,""],["2026-06-16",0,3,0,""],["2026-06-23",0,3,0,""],["2025-08-26",0,3,2,"Cookie delivery DRB, DRAH, OC"],["2026-02-20",0,3,2,"Monopoly"],["2026-04-16",0,3,2,"DRB delivered cookies, spoke with Dr. Lee"],["2025-11-10",0,4,0,""],["2025-12-31",0,4,0,""],["2026-02-16",0,4,0,""],["2026-03-06",0,4,0,""],["2026-03-30",0,4,0,""],["2026-04-15",0,4,0,""],["2026-04-17",0,4,0,""],["2026-05-05",0,4,0,""],["2025-10-22",0,4,1,""],["2026-06-18",0,4,1,""],["2026-06-18",0,4,3,""],["2025-11-11",0,4,4,"DRP, DRB, and Dr Pirooz (Sunrise Superfood Cafe)"],["2026-02-20",0,4,2,"Monopoly"],["2026-03-07",0,4,2,"DRB delivered baby gifts to Dr. Pirooz"],["2026-03-15",0,5,0,""],["2025-12-31",0,5,1,""],["2026-01-03",0,5,1,""],["2026-02-03",0,5,1,""],["2025-08-28",0,5,2,"Cookie delivery HB"],["2025-12-30",0,6,0,""],["2026-05-21",0,6,0,""],["2026-06-25",0,6,4,"Team Lunch and Learn DRB and KR"],["None",0,6,4,"review pt triage and iTero, SPP"],["2025-12-29",0,6,2,"SF Delivered Christmas basket"],["2026-04-16",0,6,2,"DRB delivered baby gifts for Dr. Gamble and cookies for office"],["2026-05-07",0,6,2,"Study club discussion with Dr. Gamble"],["2026-01-02",0,7,3,"HB"],["2025-12-19",0,7,2,"SF Delivered Christmas basket"],["2026-03-17",0,7,2,"DRB delivered cookies"],["2026-02-26",0,8,0,"DRM"],["2026-03-03",0,8,0,""],["2026-01-05",0,8,3,"DRM"],["2026-02-25",0,8,3,"DRM"],["2026-01-08",0,8,2,"HB cookie delivery and propose Dr meeting"],["2026-01-07",0,9,1,""],["2026-01-12",0,9,1,""],["2026-02-25",0,9,1,""],["2026-02-26",0,9,1,""],["2026-03-17",0,9,1,""],["2026-01-06",0,9,3,"HB"],["2026-02-11",0,9,4,"Lunch and Learn with DRB and HB"],["2026-03-20",0,9,4,"DRB, DRG, EA"],["2026-01-07",0,9,2,"Cookie delivery DRB and HB"],["2026-02-11",0,9,2,"Lunch + Learn DRB and HB"],["2026-03-20",0,9,2,"meeting DRB, DRG, EA"],["2025-10-16",1,10,0,""],["2026-01-30",1,10,0,""],["2026-04-23",1,10,0,""],["2026-05-29",1,10,0,""],["2025-11-20",1,10,1,""],["2025-12-01",1,10,3,""],["2025-10-23",1,10,2,"Delivery"],["2025-10-23",1,11,0,""],["2025-11-01",1,11,0,""],["2025-11-18",1,11,0,""],["2025-11-19",1,11,0,""],["2025-12-29",1,11,0,""],["2026-01-30",1,11,0,""],["2026-04-21",1,11,0,""],["2026-04-23",1,11,0,""],["2026-04-24",1,11,0,""],["2026-04-28",1,11,0,""],["2026-05-22",1,11,0,""],["2026-05-29",1,11,0,""],["2025-11-19",1,11,1,""],["2026-02-13",1,11,1,""],["2026-02-27",1,11,1,""],["2026-04-15",1,11,1,""],["2026-05-11",1,11,1,""],["2025-10-23",1,11,4,"Lunch"],["2026-05-04",1,11,4,""],["2025-10-23",1,11,2,"Delivery"],["2026-03-17",1,11,2,""],["2026-04-13",1,11,2,"in person"],["2025-10-17",1,12,0,""],["2025-11-20",1,12,0,""],["2026-01-30",1,12,0,""],["2026-02-24",1,12,0,""],["2026-04-22",1,12,0,""],["2026-04-23",1,12,0,""],["2026-05-22",1,12,0,""],["2026-05-29",1,12,0,""],["None",1,12,4,"Referred 3 patients"],["None",1,12,4,"they will not do lunch/meals"],["2025-10-23",1,12,2,"Delivery"],["2026-03-17",1,12,2,""],["2025-10-22",1,13,0,""],["2025-12-01",1,13,0,""],["2025-12-29",1,13,0,""],["2026-01-29",1,13,0,""],["2026-01-30",1,13,0,""],["2026-02-27",1,13,0,""],["2026-02-28",1,13,0,""],["2026-03-02",1,13,0,""],["2026-03-03",1,13,0,""],["2026-03-12",1,13,0,""],["2026-03-24",1,13,0,""],["2026-03-25",1,13,0,""],["2026-04-09",1,13,0,""],["2026-04-24",1,13,0,""],["2026-05-22",1,13,0,""],["2026-03-25",1,13,3,""],["None",1,13,4,"Lunch at North Ridge CC"],["2026-03-25",1,13,4,"Lunch delivered from Peace China"],["2025-11-12",1,13,2,"Delivery"],["2025-10-22",1,14,0,""],["2025-11-10",1,14,0,""],["2026-01-02",1,14,0,""],["2026-01-27",1,14,0,""],["2026-02-24",1,14,0,""],["2026-03-03",1,14,0,""],["2026-03-09",1,14,0,""],["2026-05-22",1,14,0,""],["2026-05-26",1,14,0,""],["2026-05-29",1,14,0,""],["2025-12-29",1,14,1,""],["2026-05-08",1,14,1,""],["2025-12-20",1,14,4,"26"],["2025-10-23",1,14,2,"Delivery"],["2026-03-11",1,14,2,"Donut delivery"],["2025-11-11",1,15,0,""],["2025-11-10",1,15,0,""],["2025-10-22",1,15,0,""],["2025-12-08",1,15,0,""],["2025-12-29",1,15,0,""],["2026-03-31",1,15,0,""],["2026-04-22",1,15,0,""],["2026-05-22",1,15,0,""],["2026-05-29",1,15,0,""],["2026-06-11",1,15,0,""],["2025-12-04",1,15,4,"Lunch"],["2025-10-23",1,15,2,"Delivery"],["2026-03-17",1,15,2,""],["2025-10-03",1,16,1,"/"],["2025-11-20",1,16,1,""],["2025-12-03",1,16,1,""],["2025-12-22",1,16,1,""],["2026-02-04",1,16,1,""],["2026-02-05",1,16,1,""],["2026-02-14",1,16,1,""],["2026-02-27",1,16,1,""],["2026-04-08",1,16,1,""],["2026-04-09",1,16,1,""],["2026-04-22",1,16,1,""],["2026-04-27",1,16,1,""],["2026-05-22",1,16,1,""],["2026-05-29",1,16,1,""],["2025-12-01",1,16,3,""],["2026-01-29",1,16,3,""],["2026-03-18",1,16,3,""],["2026-02-13",1,16,4,"Lunch"],["None",1,16,4,"referred pt"],["None",1,16,4,"Dinner at Nordstrom Cafe"],["None",1,16,4,"Referred pt"],["2025-10-23",1,16,2,"Delivery"],["None",1,16,2,"Dinner at Nordstrom Cafe"],["2026-03-19",1,17,0,"Discussed lunch plans"],["2026-04-23",1,17,0,""],["2026-04-24",1,17,0,""],["2026-04-29",1,17,0,""],["2026-05-07",1,17,0,""],["2026-05-08",1,17,0,""],["2026-05-22",1,17,0,""],["2026-05-29",1,17,0,""],["2026-04-02",1,17,1,""],["2026-05-08",1,17,4,""],["2026-04-07",1,17,2,"Coffee delivery"],["2026-04-14",1,17,2,"in person"],["2026-04-24",1,17,2,"in person"],["2026-05-12",1,17,2,"in person"],["2026-06-09",1,17,2,""],["2026-06-12",1,17,2,""],["2026-04-07",1,18,0,""],["2026-04-08",1,18,0,""],["2026-04-24",1,18,0,""],["2026-05-06",1,18,0,""],["2026-05-08",1,18,0,""],["2026-05-20",1,18,0,""],["2026-05-22",1,18,0,""],["2026-05-26",1,18,0,""],["2026-05-28",1,18,0,""],["2026-05-29",1,18,0,""],["2026-06-04",1,18,0,""],["2026-06-05",1,18,0,""],["2026-05-14",1,18,4,"sched"],["2026-04-14",1,18,2,"in person"],["2026-05-12",1,18,2,"in person"],["2026-05-01",1,19,0,""],["2026-05-16",1,19,0,""],["2026-05-22",1,19,0,""],["2026-05-27",1,19,0,""],["2026-05-28",1,19,0,""],["2026-05-29",1,19,0,""],["2025-10-23",1,19,4,"and"],["2025-12-05",1,19,4,"lunch with Dr. Love Moore and DrL and DrM"],["2026-05-27",1,20,0,""],["2026-05-29",1,20,0,""],["2026-06-12",1,20,0,""],["2026-04-24",1,20,1,""],["2025-10-31",1,20,2,"office visit/delivery"],["2025-10-10",1,21,1,""],["2025-10-20",1,21,1,""],["2026-05-08",1,21,1,""],["2026-05-28",1,21,1,""],["2026-05-29",1,21,1,""],["2026-06-12",1,21,1,""],["2026-05-28",1,21,3,""],["2025-11-03",2,22,0,""],["2025-12-19",2,22,0,""],["2026-02-20",2,22,0,"monopoly"],["2026-03-10",2,22,0,""],["2026-03-14",2,22,0,""],["2026-03-25",2,22,0,""],["2026-04-01",2,22,0,""],["2026-04-02",2,22,0,""],["2026-04-14",2,22,0,""],["2026-05-29",2,22,0,""],["2025-11-17",2,22,1,""],["2026-04-14",2,22,1,""],["None",2,22,2,"Christmas basket"],["2026-03-25",2,22,2,"La Farm delivery"],["2025-12-19",2,23,0,""],["2026-02-20",2,23,0,"monopoly"],["2026-03-10",2,23,0,""],["2026-03-25",2,23,0,""],["2026-04-23",2,23,0,""],["2026-05-28",2,23,0,""],["2026-06-09",2,23,0,""],["2026-06-10",2,23,0,""],["2025-11-25",2,23,3,""],["None",2,23,2,"Christmas basket"],["2026-03-25",2,23,2,"La Farm delivery"],["2026-05-12",2,23,2,"offie visit"],["2026-06-09",2,23,2,"office visit"],["2025-12-19",2,24,0,""],["2025-12-30",2,24,0,""],["2026-02-09",2,24,0,""],["2026-02-20",2,24,0,"monopoly"],["2026-03-10",2,24,0,""],["2026-03-24",2,24,0,""],["2026-04-01",2,24,0,""],["2026-05-12",2,24,0,""],["2026-06-09",2,24,0,""],["2026-06-10",2,24,0,""],["2025-11-19",2,24,1,""],["2025-12-18",2,24,1,""],["2026-01-20",2,24,1,""],["2026-02-02",2,24,1,""],["2026-01-21",2,24,3,""],["2026-03-24",2,24,3,""],["2026-06-25",2,24,4,"Lunch"],["None",2,24,2,"Christmas basket"],["2026-05-20",2,24,2,"treat drop-off"],["2025-12-19",2,25,0,""],["2026-02-02",2,25,0,""],["2026-02-17",2,25,0,""],["2026-02-20",2,25,0,"monopoly"],["2026-03-10",2,25,0,""],["2026-04-02",2,25,0,""],["2026-04-06",2,25,0,""],["2026-04-14",2,25,0,""],["2026-04-22",2,25,0,""],["2025-10-23",2,25,1,""],["2025-11-03",2,25,1,""],["2026-03-10",2,25,1,""],["2026-03-11",2,25,1,""],["2026-03-27",2,25,1,""],["2026-03-30",2,25,1,""],["2026-04-13",2,25,1,""],["2026-04-14",2,25,1,""],["2026-05-19",2,25,1,""],["2026-05-20",2,25,1,""],["2026-06-08",2,25,1,""],["2026-02-18",2,25,4,"lunch"],["2026-04-22",2,25,4,"lunch"],["None",2,25,2,"Christmas basket"],["2026-05-12",2,25,2,"office visit"],["2025-12-19",2,26,0,""],["2026-02-20",2,26,0,"monopoly"],["2026-03-10",2,26,0,""],["2026-03-24",2,26,0,""],["2026-03-24",2,26,3,""],["None",2,26,2,"Christmas basket"],["2026-03-25",2,26,2,"La Farm delivery"],["2025-12-19",2,27,0,""],["2026-02-17",2,27,0,""],["2026-02-21",2,27,0,""],["2026-03-04",2,27,0,""],["2026-03-25",2,27,0,""],["2026-04-08",2,27,0,""],["2026-04-13",2,27,0,""],["2026-12-06",2,27,1,""],["2026-01-22",2,27,1,""],["2026-04-01",2,27,1,""],["2026-04-02",2,27,1,""],["2026-05-19",2,27,1,""],["2025-11-11",2,27,3,""],["2025-12-04",2,27,3,""],["None",2,27,2,"Christmas basket"],["2026-03-25",2,27,2,"La Farm delivery"],["2025-11-10",2,28,0,""],["2025-12-19",2,28,0,""],["2026-01-27",2,28,0,""],["2026-02-20",2,28,0,"monopoly"],["2026-03-10",2,28,0,""],["2026-06-15",2,28,0,""],["2026-01-12",2,28,3,""],["None",2,28,2,"Christmas basket"],["2026-04-20",2,28,2,"office visit"],["2026-06-15",2,28,2,""],["2025-12-19",2,29,0,""],["2026-02-09",2,29,0,""],["2026-04-07",2,29,0,""],["2026-06-22",2,29,0,""],["2026-06-04",2,29,1,""],["2026-06-10",2,29,1,""],["2026-06-15",2,29,1,""],["None",2,29,2,"HB Delivered Christmas basket"],["2026-05-12",2,29,2,""],["2026-03-03",2,30,0,""],["2026-03-09",2,30,0,""],["2026-03-10",2,30,0,""],["2026-03-12",2,30,0,""],["2026-03-17",2,30,0,""],["2026-03-19",2,30,0,""],["2026-03-20",2,30,0,""],["2026-03-24",2,30,0,""],["2026-03-26",2,30,0,""],["2026-04-02",2,30,0,""],["2026-04-06",2,30,0,""],["2026-04-15",2,30,0,""],["2026-04-21",2,30,0,""],["2026-04-22",2,30,0,""],["2026-05-13",2,30,0,""],["2026-05-14",2,30,0,""],["2026-05-18",2,30,0,""],["2026-06-08",2,30,0,""],["2026-06-09",2,30,0,""],["2026-06-10",2,30,0,""],["2026-06-22",2,30,1,""],["2026-06-23",2,30,1,""],["2026-06-25",2,30,2,"office visit"],["2025-12-19",2,31,0,""],["2026-01-13",2,31,0,""],["2026-01-15",2,31,0,""],["2026-01-28",2,31,0,""],["2026-02-20",2,31,0,"monopoly"],["2026-02-23",2,31,0,""],["2026-03-10",2,31,0,""],["2026-03-24",2,31,0,""],["2026-04-02",2,31,0,""],["2026-04-08",2,31,0,""],["2026-04-13",2,31,0,""],["2026-04-14",2,31,0,""],["2026-04-30",2,31,0,""],["2026-05-11",2,31,0,""],["2026-05-20",2,31,0,""],["2026-06-09",2,31,0,""],["2026-06-10",2,31,0,""],["2026-06-15",2,31,0,""],["2026-06-24",2,31,0,""],["2026-06-25",2,31,0,""],["2025-11-23",2,31,1,""],["2026-04-02",2,31,1,""],["2026-04-06",2,31,1,""],["2025-12-01",2,31,3,""],["2026-01-15",2,31,3,""],["None",2,31,2,"Christmas basket"],["None",2,31,2,"Intro to Dr. Berridge (periodontist)"],["2026-06-15",2,31,2,""],["2026-06-02",2,32,0,""],["2026-06-04",2,32,0,""],["2026-06-05",2,32,0,""],["2026-06-08",2,32,0,""],["2026-06-09",2,32,0,""],["2025-10-02",2,32,1,""],["2025-11-13",2,32,1,""],["2025-12-16",2,32,1,""],["2025-12-19",2,32,1,""],["2026-01-21",2,32,1,""],["2026-02-04",2,32,1,""],["2026-04-03",2,32,1,""],["2026-04-23",2,32,1,""],["2026-05-04",2,32,1,""],["2026-05-19",2,32,1,""],["2026-06-03",2,32,1,""],["2026-06-04",2,32,1,""],["2026-06-05",2,32,1,""],["2026-06-15",2,32,1,""],["2026-06-18",2,32,1,""],["2026-06-23",2,32,1,""],["2026-06-24",2,32,1,""],["2026-06-08",2,32,3,""],["2025-12-18",2,33,0,""],["2026-02-09",2,33,0,""],["2026-03-10",2,33,0,""],["2026-03-11",2,33,0,""],["2026-03-25",2,33,0,""],["2026-06-22",2,33,4,""],["2026-02-09",2,33,4,""],["2026-04-06",2,33,4,"lunch"],["None",2,33,2,"Christmas basket"],["2026-02-09",2,33,2,"Birthday gift drop-off"],["2026-03-25",2,33,2,"La Farm delivery"],["2026-06-10",3,34,0,""],["2026-02-16",3,34,3,"HB"],["2026-03-03",3,34,2,"La Farm Bakery delivery and office visit w HB & DrFR, Dinner with Dr LeRee andall of their doctors"],["2026-02-16",3,35,3,"HB"],["2026-04-14",3,35,3,"FR"],["2026-06-10",3,35,3,"FR"],["2026-03-03",3,35,2,"La Farm Bakery delivery and office visit w HB & DrFR"],["2026-04-14",3,36,3,"FR"],["2026-06-10",3,36,3,"FR"],["2026-02-16",3,36,2,"Cookie Delivery"],["2025-12-05",3,37,1,"HB"],["2026-02-16",3,37,3,"HB"],["2026-04-14",3,37,3,"FR"],["2026-06-10",3,37,3,"FR"],["2026-02-25",3,37,2,"Dunkin Donuts delivery and office visit Dr.Slawinski w HB & DrFR"],["2025-12-05",3,38,1,"HB"],["2026-04-16",3,38,3,"FR"],["2026-06-10",3,38,3,"FR"],["2026-03-03",3,38,2,"La Farm Bakery delivery and office visit w HB & DrFR"],["2026-02-25",3,39,0,""],["2026-03-04",3,39,0,"FR"],["2026-03-12",3,39,1,"FR"],["2025-12-05",3,39,3,"HB"],["2026-04-16",3,39,3,"FR"],["2026-06-10",3,39,3,"FR"],["2026-02-25",3,39,2,"Dunkin Donuts delivery and office visit Dr. Vamsi w HB & DrFR"],["2026-06-11",3,40,0,""],["2025-12-05",3,40,1,"HB"],["2026-02-19",3,40,1,"HB"],["2026-02-19",3,40,3,"HB"],["2026-02-19",3,40,3,"HB"],["2026-04-16",3,40,3,"26 FR"],["2026-02-25",3,40,2,"Dunkin Donuts delivery and office visit Dr. Megaha Puranam w HB & DrFR"],["2025-02-19",3,41,3,"HB"],["2026-04-16",3,41,3,"FR"],["2026-06-10",3,41,3,"FR"],["2026-02-25",3,41,2,"Dunkin Donuts delivery and office visit Dr. Ravindran w HB & DrFR"],["2026-04-16",3,42,3,"FR"],["2026-06-10",3,42,3,"FR"],["2026-02-25",3,42,2,"Dunkin Donuts delivery and office visit Dr.Allen w HB & DrFR"],["2026-04-25",3,43,0,"FR"],["2026-04-27",3,43,0,"FR"],["2026-06-10",3,43,3,"FR"],["2026-03-12",3,44,1,"FR"],["2026-04-16",3,44,3,"FR"],["2026-06-10",3,44,3,"FR"],["2026-03-03",3,44,2,"La Farm Bakery delivery and office visit w HB & DrFR"],["2026-04-16",3,45,3,"FR"],["2026-06-10",3,45,3,"FR"],["2026-03-03",3,45,2,"La Farm Bakery delivery and office visit w HB & DrFR"],["2025-10-22",4,46,1,""],["2025-10-31",4,46,2,"office visit/delivery"],["2025-10-22",4,47,1,""],["2025-10-31",4,47,2,"office visit/delivery"],["2025-10-22",4,48,1,""],["2025-10-31",4,48,2,"office visit/delivery"],["2025-10-22",4,49,1,""],["2025-10-31",4,49,2,"office visit/delivery"],["2025-10-22",4,50,1,""],["2026-02-14",5,51,0,""],["2026-02-19",5,51,0,""],["2026-03-05",5,51,0,""],["2026-03-19",5,51,0,""],["2026-03-20",5,51,0,""],["2026-03-24",5,51,0,""],["2026-04-22",5,51,0,""],["2026-05-21",5,51,0,""],["2026-01-19",5,51,1,""],["2026-05-26",5,51,1,""],["2026-06-16",5,51,1,""],["2026-06-26",5,51,1,""],["2026-03-06",5,51,3,""],["2026-02-12",5,51,4,"w Dr. Erin Tilton"],["2026-02-25",5,51,4,"w/ Dr. Tilton"],["2026-01-19",5,52,1,""],["2026-02-11",5,52,1,""],["2026-04-14",5,52,1,""],["2026-05-26",5,52,1,""],["2026-06-16",5,52,1,""],["2026-06-26",5,52,1,""],["2026-03-06",5,52,3,""],["None",5,52,4,"w Dr. McManama"],["2026-01-29",5,53,1,""],["2026-04-14",5,53,1,""],["2026-05-26",5,53,1,""],["2026-06-16",5,53,1,""],["2026-06-26",5,53,1,""],["2026-01-29",5,53,3,""],["2026-03-06",5,53,3,""],["2026-05-26",5,53,4,"w/ Olivia"],["2026-01-19",5,54,1,""],["2026-06-16",5,54,1,""],["2026-03-06",5,54,3,""],["2026-03-17",5,54,2,"office visit with DrSL"],["2026-01-19",5,55,1,""],["2026-04-14",5,55,1,""],["2026-05-22",5,55,1,""],["2026-06-16",5,55,1,""],["2026-06-26",5,55,1,""],["2026-03-06",5,55,3,""],["2026-05-21",5,56,1,""],["2026-06-16",5,56,1,""],["2026-06-26",5,56,1,""],["2026-03-06",5,56,3,""],["2026-03-12",5,56,2,"office visit / delivery"],["2026-01-29",5,57,1,""],["2026-05-21",5,57,1,""],["2026-06-16",5,57,1,""],["2026-06-26",5,57,1,""],["2026-03-06",5,57,3,""],["2026-03-12",5,57,2,"office visit / delivery"],["2026-01-29",5,58,1,""],["2026-05-21",5,58,1,""],["2026-06-16",5,58,1,""],["2026-06-26",5,58,1,""],["2026-03-06",5,58,3,""],["2026-03-12",5,58,2,"office visit / delivery"],["2026-01-29",5,59,1,""],["2026-05-21",5,59,1,""],["2026-06-16",5,59,1,""],["2026-06-26",5,59,1,""],["2026-03-06",5,59,3,""],["2026-03-12",5,59,2,"office visit / delivery"],["2026-01-29",5,60,1,""],["2026-05-21",5,60,1,""],["2026-06-16",5,60,1,""],["2026-06-26",5,60,1,""],["2026-03-06",5,60,3,""],["2026-03-12",5,60,2,"office visit / delivery"],["2026-01-26",6,61,0,""],["2006-02-09",6,61,0,""],["2026-02-10",6,61,0,""],["2026-02-19",6,61,0,""],["2026-02-26",6,61,0,""],["2026-03-05",6,61,0,""],["2026-03-16",6,61,0,""],["2026-03-30",6,61,0,""],["2026-04-06",6,61,0,""],["2026-04-15",6,61,0,""],["2026-04-20",6,61,0,""],["2026-04-22",6,61,0,""],["2026-05-01",6,61,0,""],["2026-05-06",6,61,0,""],["2026-05-08",6,61,0,""],["2026-05-20",6,61,0,""],["2026-05-31",6,61,0,""],["2026-06-08",6,61,0,""],["2026-06-19",6,61,0,""],["2026-04-22",6,61,1,""],["2026-05-06",6,61,1,""],["2026-06-12",6,61,1,""],["2026-06-21",6,61,1,""],["2026-06-08",6,61,3,""],["2026-01-12",6,61,4,"Cap Grille"],["2025-12-17",6,61,2,"basketball game"],["2026-01-16",6,62,0,""],["2026-02-09",6,62,0,""],["2026-03-11",6,62,0,""],["2026-04-06",6,62,0,""],["2026-04-09",6,62,0,""],["2026-04-22",6,62,0,""],["2026-06-12",6,62,0,""],["2026-06-29",6,62,0,""],["2025-12-23",6,62,1,""],["2026-02-02",6,62,1,""],["2026-02-11",6,62,1,""],["2026-02-12",6,62,1,""],["2026-02-18",6,62,1,""],["2026-03-11",6,62,1,""],["2026-03-16",6,62,1,""],["2026-03-18",6,62,1,""],["2026-03-23",6,62,1,""],["2026-03-25",6,62,1,""],["2026-04-22",6,62,1,""],["2026-04-27",6,62,1,""],["2026-04-30",6,62,1,""],["2026-05-18",6,62,1,""],["2026-06-14",6,62,1,""],["2026-06-19",6,62,1,""],["2026-06-22",6,62,1,""],["2026-06-23",6,62,1,""],["2026-03-25",6,62,3,""],["2026-01-14",6,62,4,"mccleans, planned lunch and learn"],["2026-04-22",6,62,4,""],["2026-02-02",6,62,2,"Lunch and Learn"],["2026-04-22",6,62,2,"dunkin"],["2026-03-23",6,62,2,""],["2026-01-26",6,63,0,""],["2026-01-28",6,63,0,""],["2026-02-01",6,63,0,""],["2026-02-07",6,63,0,""],["2026-02-11",6,63,0,""],["2026-04-08",6,63,0,""],["2026-05-01",6,63,0,""],["2026-06-12",6,63,0,""],["2026-03-25",6,63,1,""],["2026-05-06",6,63,1,""],["2026-02-04",6,63,2,"northside bistro"],["2026-01-25",6,64,0,""],["2026-02-18",6,64,0,""],["2026-04-08",6,64,0,""],["2026-04-15",6,64,0,""],["2026-04-17",6,64,0,""],["2026-04-19",6,64,0,""],["2026-04-21",6,64,0,""],["2026-05-03",6,64,0,""],["2026-05-26",6,64,0,""],["2026-05-30",6,64,0,""],["2026-06-04",6,64,0,""],["2026-06-11",6,64,0,""],["2026-06-12",6,64,0,""],["2026-02-11",6,64,1,""],["2026-02-19",6,64,1,""],["2026-03-11",6,64,1,""],["2026-06-14",6,64,1,""],["2026-04-14",6,64,4,"biscuits"],["2026-04-17",6,64,2,"lunch and learn"],["2026-01-20",6,65,0,""],["2026-01-22",6,65,0,""],["2026-01-24",6,65,0,""],["2026-02-16",6,65,0,""],["2026-02-23",6,65,0,""],["2026-02-26",6,65,0,""],["2026-03-09",6,65,0,""],["2026-03-16",6,65,0,""],["2026-03-17",6,65,0,""],["2026-03-29",6,65,0,""],["2026-04-07",6,65,0,""],["2026-05-04",6,65,0,""],["2026-05-05",6,65,0,""],["2026-05-14",6,65,0,""],["2026-06-12",6,65,0,""],["2026-06-15",6,65,0,""],["2026-06-14",6,65,1,""],["2026-02-23",6,65,3,""],["2026-01-19",6,65,4,"mezcal"],["2026-05-04",6,65,4,"bites on main"],["2026-06-03",6,65,4,"bagels"],["2026-02-23",6,65,2,"note going to Japan getting new tattoo gf is Alex"],["2026-02-16",6,66,0,""],["2026-06-12",6,66,0,""],["2026-02-11",6,66,1,""],["2026-02-18",6,66,1,""],["2026-02-23",6,66,1,""],["2026-03-17",6,66,1,""],["2026-05-26",6,66,1,""],["2026-06-14",6,66,1,""],["2026-06-25",6,66,1,""],["2026-02-23",6,66,3,""],["2026-03-17",6,66,4,"lunch and learn"],["None",6,66,2,"future mezcal lunch"],["2026-03-10",6,67,0,""],["2026-03-28",6,67,0,""],["2026-04-14",6,67,0,""],["2026-05-05",6,67,0,""],["2026-06-02",6,67,0,""],["2026-06-03",6,67,0,""],["2026-06-12",6,67,0,""],["2026-06-14",6,67,1,""],["2026-03-10",6,67,3,""],["2026-03-26",6,67,4,"lunch"],["2026-04-14",6,67,4,"biscuits"],["2026-04-29",6,67,4,"bagels"],["2026-05-14",6,67,4,""],["2026-06-03",6,67,4,"bagels"],["2026-06-10",6,67,4,"lunch"],["2026-06-12",6,68,0,""],["2025-12-09",6,68,1,""],["2026-03-11",6,68,1,""],["2026-05-21",6,68,1,""],["2026-05-26",6,68,1,""],["2025-12-11",6,68,4,"Sbux"],["2026-04-29",6,68,4,"bagels"],["2026-01-20",6,69,0,""],["2026-01-21",6,69,0,""],["2026-02-08",6,69,0,""],["2026-04-06",6,69,0,""],["2026-04-08",6,69,0,""],["2026-05-26",6,69,0,""],["2026-05-31",6,69,0,""],["2026-06-12",6,69,0,""],["2025-03-11",6,69,1,""],["2025-12-04",6,69,4,"townhall"],["2026-01-25",6,70,0,""],["2026-01-26",6,70,0,""],["2026-02-11",6,70,0,""],["2026-06-11",6,70,0,""],["2026-06-12",6,70,0,""],["2026-06-29",6,70,0,""],["2026-03-18",6,70,1,""],["2026-03-30",6,70,1,""],["2026-04-23",6,70,1,""],["2026-06-11",6,70,1,""],["2026-06-18",6,70,1,""],["2026-01-28",6,70,4,"sassool"],["2026-01-13",6,71,0,""],["2026-01-23",6,71,0,"2,19,2026"],["2026-03-04",6,71,0,""],["2026-03-10",6,71,0,""],["2026-03-19",6,71,0,""],["2026-04-08",6,71,0,""],["2026-04-09",6,71,0,""],["2026-04-22",6,71,0,""],["2026-05-28",6,71,0,""],["2026-06-12",6,71,0,""],["2026-03-11",6,71,1,""],["2026-03-12",6,71,1,""],["2026-04-08",6,71,1,""],["2026-04-22",6,71,1,""],["2026-02-02",6,71,2,"dunkin"],["2026-03-23",6,71,2,"dunkin"],["2026-06-22",6,71,2,""],["2026-03-04",6,72,3,""],["2026-05-14",6,72,4,"study club"],["2026-04-14",6,73,0,""],["2026-04-15",6,73,0,""],["2026-04-16",6,73,0,""],["2026-05-06",6,73,0,""],["2026-05-30",6,73,0,""],["2026-06-03",6,73,0,""],["2026-06-11",6,73,0,""],["2026-06-12",6,73,0,""],["2026-06-22",6,73,0,""],["2026-04-08",6,73,1,""],["2026-04-16",6,73,1,""],["2026-06-01",6,73,1,""],["2026-06-14",6,73,1,""],["2026-06-15",6,73,1,""],["2026-02-18",6,73,3,""],["2026-04-13",6,73,4,""],["2026-06-01",6,73,4,"dunkin"],["2026-06-03",6,73,4,"lunch"],["2026-06-03",6,73,2,"set up lunch for"],["2026-02-16",6,74,1,""],["2026-03-01",6,74,1,""],["2026-03-10",6,74,3,""],["2026-04-29",6,74,4,"bagels"],["2026-06-03",6,74,4,"bagels"],["2026-04-29",6,74,2,"with OM Kim"],["2026-05-13",6,74,2,"cokies"],["2026-01-28",6,75,0,""],["2026-05-31",6,75,0,""],["2026-06-01",6,75,0,""],["2026-06-14",6,75,1,""],["2026-06-15",6,75,1,""],["2026-02-18",6,75,3,""],["2026-06-01",6,75,3,""],["2026-05-21",6,75,4,"L&L"],["2026-01-22",6,76,1,""],["2025-01-28",6,77,0,""],["2026-02-11",6,77,0,"/.2026"],["2026-02-12",6,77,0,""],["2026-02-16",6,77,0,""],["2026-02-23",6,77,0,""],["2026-02-24",6,77,0,""],["2026-02-27",6,77,0,""],["2026-03-05",6,77,0,""],["2026-03-14",6,77,0,""],["2026-04-06",6,77,0,""],["2026-04-08",6,77,0,""],["2025-04-15",6,77,0,""],["2026-04-20",6,77,0,""],["2026-04-21",6,77,0,""],["2026-04-30",6,77,0,""],["2026-05-06",6,77,0,""],["2026-05-08",6,77,0,""],["2026-05-18",6,77,0,""],["2026-05-31",6,77,0,""],["2026-06-02",6,77,0,""],["2026-06-03",6,77,0,""],["2026-06-12",6,77,0,""],["2026-06-15",6,77,0,""],["2026-06-19",6,77,0,""],["2025-01-28",6,77,1,""],["2025-04-14",6,77,1,""],["2025-04-15",6,77,1,""],["2026-03-05",6,77,4,"coffee and SPP meeting"],["2026-02-19",6,78,0,""],["2026-03-02",6,78,0,""],["2026-03-05",6,78,0,""],["2026-04-08",6,78,0,""],["2026-04-19",6,78,0,""],["2026-04-27",6,78,0,""],["2026-04-28",6,78,0,""],["2026-05-01",6,78,0,""],["2026-05-21",6,78,0,""],["2026-05-30",6,78,0,""],["2026-06-10",6,78,0,""],["2026-06-12",6,78,0,""],["2026-06-22",6,78,0,""],["2026-05-21",6,78,1,""],["2026-05-26",6,78,1,""],["2026-06-14",6,78,1,""],["2026-03-06",6,78,4,"spp interested"],["2026-02-26",6,79,0,""],["2026-03-05",6,79,0,""],["2026-03-11",6,79,0,""],["2026-04-06",6,79,0,""],["2026-05-29",6,79,0,""],["2026-06-12",6,79,0,""],["2026-03-01",6,79,1,""],["2026-03-06",6,80,2,"bagels"],["2026-03-09",6,82,0,""],["2026-03-12",6,82,0,""],["2026-03-28",6,82,0,""],["2026-03-31",6,82,0,""],["2026-04-07",6,82,0,""],["2026-04-08",6,82,0,""],["2026-04-16",6,82,0,""],["2026-05-12",6,82,0,""],["2026-06-02",6,82,0,""],["2026-06-12",6,82,0,""],["2026-03-17",6,82,1,""],["2026-03-19",6,82,1,""],["2026-04-21",6,82,1,""],["2026-05-12",6,82,1,""],["2026-05-19",6,82,1,""],["2026-06-14",6,82,1,""],["2026-06-23",6,82,1,""],["2026-06-25",6,82,1,""],["2026-05-12",6,82,3,""],["2026-03-12",6,82,4,""],["2026-04-14",6,82,4,"biscuits, bagels"],["2026-06-03",6,82,4,""],["2026-02-24",6,82,2,"Bagels"],["2026-04-29",6,82,2,""],["2025-03-10",6,83,0,""],["2025-04-07",6,83,0,""],["2025-04-21",6,83,0,""],["2026-06-12",6,83,0,""],["2026-06-29",6,83,0,""],["2025-03-10",6,83,1,""],["2026-04-07",6,83,1,""],["2026-05-07",6,83,1,""],["2026-05-12",6,83,1,""],["2026-04-07",6,83,3,""],["2026-05-07",6,83,4,"cookies, lunch with Patel"],["2026-05-14",6,83,4,""],["2026-03-16",6,84,3,""],["2026-03-17",6,84,3,""],["2026-04-22",6,84,3,""],["2026-03-19",6,85,1,""],["2026-06-01",6,86,1,""],["2026-03-23",6,86,2,"dunkin"],["2026-03-24",6,87,2,"SC"],["2026-05-27",6,88,0,""],["2026-05-28",6,88,0,""],["None",6,88,4,"lunch with office manager"],["2026-06-03",6,89,4,"bagels"],["2026-04-18",6,90,0,""],["2026-04-22",6,90,0,""],["2026-05-20",6,90,0,""],["2026-04-17",6,90,2,"coffee sch"],["2026-04-24",6,90,2,""],["2026-05-14",6,91,3,""],["2026-05-13",6,91,4,"cookies"],["2026-05-26",6,91,4,"ref pads, bagels"],["2026-06-03",6,91,4,""],["2026-05-14",6,92,0,""],["2026-05-31",6,92,0,""],["2026-06-12",6,92,0,""],["2026-06-15",6,92,0,""],["2026-06-14",6,92,1,""],["2026-05-18",6,92,4,""],["2026-05-28",6,93,3,""]]};</script>
+<script>window.DATA={"types":["Text Message","Email","Dinner / Event / Hospitality","Phone Call","Lunch"],"tags":{"Text Message":"TXT","Email":"EML","Dinner / Event / Hospitality":"DEH","Phone Call":"CALL","Lunch":"LUN"},"roles":["Doctor","Marketer/Staff"],"doctors":[{"name":"Dr. Anders","email":"Drb@gladwellorthodontics.com","role":"Doctor","active":true,"practices":10,"acts":171},{"name":"Dr. Partrick","email":"drm@gladwellorthodontics.com","role":"Doctor","active":true,"practices":12,"acts":162},{"name":"Dr. Petritz","email":"drp@gladwellorthodontics.com","role":"Doctor","active":true,"practices":12,"acts":197},{"name":"Dr. Rudey","email":"drfr@gladwellorthodontics.com","role":"Doctor","active":true,"practices":12,"acts":50},{"name":"Dr. Wiese","email":"wiese@gladwellorthodontics.com","role":"Doctor","active":false,"practices":5,"acts":9},{"name":"Dr. Adrian","email":"drah@gladwellorthodontics.com","role":"Doctor","active":true,"practices":10,"acts":70},{"name":"Dr. Laster","email":"drsl@gladwellorthodontics.com","role":"Doctor","active":true,"practices":33,"acts":336}],"practices":[{"name":"Raleigh Pediatric Dentistry","long":"Raleigh Pediatric Dentistry","type":"Pediatric Dentistry","doctor":"Dr. Anders","acts":41},{"name":"Upton & Baker","long":"Upton & Baker","type":"General Dentistry","doctor":"Dr. Anders","acts":51},{"name":"CPD-Wakefield","long":"CPD-Wakefield","type":"—","doctor":"Dr. Anders","acts":18},{"name":"TFD-Wake Forest","long":"TFD-Wake Forest","type":"Family Dentistry","doctor":"Dr. Anders","acts":16},{"name":"Wells Family- Wake Forest","long":"Wells Family-Wake Forest","type":"Family Dentistry","doctor":"Dr. Anders","acts":14},{"name":"Hayes Barton Dentistry","long":"Hayes Barton Dentistry","type":"General Dentistry","doctor":"Dr. Anders","acts":5},{"name":"Wildberry Pediatric Dentistry","long":"Wildberry Pediatric Dentistry","type":"Pediatric Dentistry","doctor":"Dr. Anders","acts":7},{"name":"Village Dental Wake Forest","long":"Village Dental Wake Forest","type":"General Dentistry","doctor":"Dr. Anders","acts":3},{"name":"Handcrafted Dentistry","long":"Handcrafted Dentistry","type":"General Dentistry","doctor":"Dr. Anders","acts":5},{"name":"Youngsville Smiles","long":"Youngsville Smiles","type":"General Dentistry","doctor":"Dr. Anders","acts":11},{"name":"Southpoint Pediatric","long":"Southpoint Pediatric","type":"Pediatric Dentistry","doctor":"Dr. Partrick","acts":7},{"name":"Wells-North Raleigh","long":"Wells-North Raleigh","type":"Family Dentistry","doctor":"Dr. Partrick","acts":22},{"name":"Midtown Dental Seth Rumley","long":"Midtown Dental - Seth Rumley","type":"General Dentistry","doctor":"Dr. Partrick","acts":12},{"name":"St Mary's - Dr. Linda Shafik","long":"St Mary's - Dr. Linda Shafik","type":"—","doctor":"Dr. Partrick","acts":19},{"name":"CD-Chapel Hill","long":"CD-Chapel Hill","type":"General Dentistry","doctor":"Dr. Partrick","acts":15},{"name":"CD-Garner (Woolf and Gallick)","long":"CD-Garner","type":"General Dentistry","doctor":"Dr. Partrick","acts":13},{"name":"Smiles Stories Dentistry - Dr. Janice Ko","long":"Smiles Stories Dentistry - Dr. Janice Ko","type":"—","doctor":"Dr. Partrick","acts":23},{"name":"North Durham Pediatric Dentistry  - Dr. Mark Cummings","long":"North Durham Pediatric Dentistry  - Dr. Mark Cummings","type":"—","doctor":"Dr. Partrick","acts":16},{"name":"CD Durham - Dr. Isaiah Cole","long":"CD Durham - Dr. Isaiah Cole","type":"General Dentistry","doctor":"Dr. Partrick","acts":15},{"name":"Capital City Pediatric - Dr. Love Moore","long":"Capital City Pediatric - Dr. Love Moore","type":"—","doctor":"Dr. Partrick","acts":8},{"name":"Smile Design Modern Dentistry - Total Dental Care-Durham - Dr. Imeni","long":"Smile Design Modern Dentistry - Total Dental Care-Durham - Dr. Imeni","type":"—","doctor":"Dr. Partrick","acts":5},{"name":"Contemporary Dental - Dr. Ashley Loenser","long":"Contemporary Dental - Dr. Ashley Loenser","type":"—","doctor":"Dr. Partrick","acts":7},{"name":"Britt Dental","long":"Britt Dental","type":"General Dentistry","doctor":"Dr. Petritz","acts":14},{"name":"Thompson & Thompson","long":"Thompson & Thompson","type":"General Dentistry","doctor":"Dr. Petritz","acts":13},{"name":"Loren","long":"Loren","type":"General Dentistry","doctor":"Dr. Petritz","acts":19},{"name":"TPD","long":"TPD","type":"General Dentistry","doctor":"Dr. Petritz","acts":24},{"name":"Wells-Brier Creek","long":"Wells-Brier Creek","type":"Family Dentistry","doctor":"Dr. Petritz","acts":7},{"name":"CD-Cary","long":"CD-Cary","type":"General Dentistry","doctor":"Dr. Petritz","acts":16},{"name":"Sunrise Dental","long":"Sunrise Dental","type":"General Dentistry","doctor":"Dr. Petritz","acts":10},{"name":"Daurity Family","long":"Daurity Family","type":"Family Dentistry","doctor":"Dr. Petritz","acts":9},{"name":"Smiles at Glenwood;Dr. Candice Arrick","long":"Smiles at Glenwood;Dr. Candice Arrick","type":"—","doctor":"Dr. Petritz","acts":23},{"name":"Wainright & Wassel","long":"Wainright & Wassel","type":"General Dentistry","doctor":"Dr. Petritz","acts":28},{"name":"Moore Family Dentistry (Adam Moore)","long":"Moore Family Dentistry (Adam Moore)","type":"—","doctor":"Dr. Petritz","acts":23},{"name":"New Leaf Pediatric Dentistry","long":"New Leaf Pediatric Dentistry","type":"Pediatric Dentistry","doctor":"Dr. Petritz","acts":11},{"name":"CPD-Downtown","long":"CPD-Downtown","type":"Pediatric Dentistry","doctor":"Dr. Rudey","acts":3},{"name":"Capital  Dental Care","long":"Capital Dental Care","type":"General Dentistry","doctor":"Dr. Rudey","acts":4},{"name":"Wells Family - Buffaloe Bend","long":"Wells Family-Buffaloe Bend","type":"Family Dentistry","doctor":"Dr. Rudey","acts":3},{"name":"Midtown Pediatric","long":"Midtown Pediatric","type":"Pediatric Dentistry","doctor":"Dr. Rudey","acts":5},{"name":"Peace Street Dental","long":"Peace Street Dental","type":"General Dentistry","doctor":"Dr. Rudey","acts":4},{"name":"CD- Go Media Office North RAL","long":"CD- Go Media Office North RAL","type":"—","doctor":"Dr. Rudey","acts":7},{"name":"Village Dental -North Raleigh","long":"Village Dental - North Raleigh","type":"General Dentistry","doctor":"Dr. Rudey","acts":7},{"name":"Leesville Dental Studio","long":"Leesville Dental Studio","type":"General Dentistry","doctor":"Dr. Rudey","acts":4},{"name":"Creedmoor Road Dentistry","long":"Creedmoor Road Dentistry","type":"General Dentistry","doctor":"Dr. Rudey","acts":3},{"name":"Dr. Stan Hardesty","long":"Dr. Stan Hardesty","type":"General Dentistry","doctor":"Dr. Rudey","acts":3},{"name":"Raleigh Comprehensive & Cosmetic Dentistry (DT Ral)","long":"Raleigh Comprehensive & Cosmetic Dentistry (DT Ral)","type":"—","doctor":"Dr. Rudey","acts":4},{"name":"Lake Boone Dentistry","long":"Lake Boone Dentistry","type":"General Dentistry","doctor":"Dr. Rudey","acts":3},{"name":"Riccobene, Don DeMichele","long":"Riccobene - Don DeMichele","type":"General Dentistry","doctor":"Dr. Wiese","acts":2},{"name":"Dental Works-Durham","long":"Dental Works - Durham","type":"General Dentistry","doctor":"Dr. Wiese","acts":2},{"name":"Pleasant Pines Dentistry","long":"Pleasant Pines Dentistry","type":"General Dentistry","doctor":"Dr. Wiese","acts":2},{"name":"Sunrise Dental Durham","long":"Sunrise Dental Durham","type":"General Dentistry","doctor":"Dr. Wiese","acts":2},{"name":"Friendly Dental Group Durham","long":"Friendly Dental Group Durham","type":"General Dentistry","doctor":"Dr. Wiese","acts":1},{"name":"COCD-Rolesville","long":"COCD-Rolesville","type":"General Dentistry","doctor":"Dr. Adrian","acts":15},{"name":"TFD-Rolesville","long":"TFD-Rolesville","type":"Family Dentistry","doctor":"Dr. Adrian","acts":8},{"name":"Emerald Family","long":"Emerald Family","type":"Family Dentistry","doctor":"Dr. Adrian","acts":8},{"name":"Horizon (Covered by DrSL??)","long":"Horizon","type":"General Dentistry","doctor":"Dr. Adrian","acts":4},{"name":"TFD-Heritage Branch","long":"TFD-Heritage Branch","type":"Family Dentistry","doctor":"Dr. Adrian","acts":6},{"name":"Carolina Dental Arts- Glenwood","long":"Carolina Dental Arts - Glenwood","type":"General Dentistry","doctor":"Dr. Adrian","acts":5},{"name":"Fusion Dental Care","long":"Fusion Dental Care","type":"General Dentistry","doctor":"Dr. Adrian","acts":6},{"name":"Lifetime Family Dentistry","long":"Lifetime Family Dentistry","type":"Family Dentistry","doctor":"Dr. Adrian","acts":6},{"name":"Spectrum Family & Cosmetic Dentistry","long":"Spectrum Family & Cosmetic Dentistry","type":"Cosmetic Dentistry","doctor":"Dr. Adrian","acts":6},{"name":"Dental Smiles of NC","long":"Dental Smiles of NC","type":"General Dentistry","doctor":"Dr. Adrian","acts":6},{"name":"Andrew Perry DDS (RAL)","long":"Andrew Perry DDS","type":"General Dentistry","doctor":"Dr. Laster","acts":26},{"name":"Axiom Zebulon  Dr. Dao (ZEB) Dr. Cherina Belton (Zeb)","long":"Axiom Zebulon  Dr. Dao (ZEB) Dr. Cherina Belton (Zeb)","type":"—","doctor":"Dr. Laster","acts":32},{"name":"Barker, Rohner, and Hunt (RAL)","long":"Barker, Rohner, and Hunt (RAL)","type":"—","doctor":"Dr. Laster","acts":11},{"name":"Robert Hoyle, RFD (RAL)","long":"Robert Hoyle RFD","type":"General Dentistry","doctor":"Dr. Laster","acts":19},{"name":"Dr. Harris RDCCn(ROL)","long":"Dr. Harris RDCCn(ROL)","type":"—","doctor":"Dr. Laster","acts":22},{"name":"Horizon Family(ROL)","long":"Horizon Family(ROL)","type":"—","doctor":"Dr. Laster","acts":12},{"name":"Erin Tilton, CoCD","long":"Erin Tilton / CoCD","type":"General Dentistry","doctor":"Dr. Laster","acts":15},{"name":"Amy H. See DDS, PA  (ROL)","long":"Amy H. See DDS, PA  (ROL)","type":"—","doctor":"Dr. Laster","acts":7},{"name":"Raleigh Pediatric Dentistry (RAL)","long":"Raleigh Pediatric Dentistry","type":"Pediatric Dentistry","doctor":"Dr. Laster","acts":10},{"name":"Amy Sexton Dental Care Center Zebulom","long":"Amy Sexton Dental Care Center Zebulom","type":"—","doctor":"Dr. Laster","acts":12},{"name":"Dr .Collins& Young, Zebulon Family Dentistry","long":"Dr .Collins& Young, Zebulon Family Dentistry","type":"—","doctor":"Dr. Laster","acts":17},{"name":"Davis and Longo","long":"Davis and Longo","type":"—","doctor":"Dr. Laster","acts":2},{"name":"First Avenue, Fasil Shaik","long":"First Avenue, Fasil Shaik","type":"—","doctor":"Dr. Laster","acts":19},{"name":"Elan Dental (ROL/Ral)","long":"Elan Dental (ROL/Ral)","type":"—","doctor":"Dr. Laster","acts":7},{"name":"Smiles of Carolina (KNI/ZEB)","long":"Smiles of Carolina (KNI/ZEB)","type":"—","doctor":"Dr. Laster","acts":8},{"name":"North Ridge Dental, Philip Wright","long":"North Ridge Dental, Philip Wright","type":"—","doctor":"Dr. Laster","acts":1},{"name":"Sean Mooring (CLA/ZEB) Zombek","long":"Sean Mooring / Zombek","type":"General Dentistry","doctor":"Dr. Laster","acts":28},{"name":"Vraj Gajjar","long":"Vraj Gajjar","type":"—","doctor":"Dr. Laster","acts":17},{"name":"Kate Putney","long":"Kate Putney","type":"—","doctor":"Dr. Laster","acts":7},{"name":"winkleman","long":"winkleman","type":"—","doctor":"Dr. Laster","acts":1},{"name":"Smiling turtle pediatric","long":"Smiling turtle pediatric","type":"—","doctor":"Dr. Laster","acts":0},{"name":"akeadra bell (KEE) melody butler tfdr","long":"akeadra bell (KEE) melody butler tfdr","type":"—","doctor":"Dr. Laster","acts":24},{"name":"wells family BB - Lamura, Patel, Woll","long":"wells family BB - Lamura, Patel, Woll","type":"—","doctor":"Dr. Laster","acts":12},{"name":"dc of wendell falls","long":"dc of wendell falls","type":"—","doctor":"Dr. Laster","acts":3},{"name":"WF gateway","long":"WF gateway","type":"—","doctor":"Dr. Laster","acts":1},{"name":"tim creech","long":"tim creech","type":"—","doctor":"Dr. Laster","acts":2},{"name":"Allen Lee, Creedmoor Road General Dentistry","long":"Allen Lee, Creedmoor Road General Dentistry","type":"—","doctor":"Dr. Laster","acts":1},{"name":"Reflections, Briar Creek - Suthar","long":"Reflections, Briar Creek - Suthar","type":"—","doctor":"Dr. Laster","acts":3},{"name":"Dino Kids Dental, Dr. Mustafa (M-Th 8-3)","long":"Dino Kids Dental, Dr. Mustafa (M-Th 8-3)","type":"—","doctor":"Dr. Laster","acts":1},{"name":"Caroline Jennings Shahi, Clayton Smiles","long":"Caroline Jennings Shahi, Clayton Smiles","type":"—","doctor":"Dr. Laster","acts":5},{"name":"ideal dental rolesville","long":"ideal dental rolesville","type":"—","doctor":"Dr. Laster","acts":4},{"name":"Down home dental, Andrew Burnette","long":"Down home dental, Andrew Burnette","type":"—","doctor":"Dr. Laster","acts":6},{"name":"Lane and Assoc Middlesex","long":"Lane and Assoc Middlesex","type":"—","doctor":"Dr. Laster","acts":1}],"acts":[["2025-11-20",0,0,0,""],["2025-11-23",0,0,0,""],["2025-12-14",0,0,0,""],["2025-12-16",0,0,0,""],["2025-12-28",0,0,0,""],["2026-01-13",0,0,0,""],["2026-01-20",0,0,0,""],["2026-01-21",0,0,0,""],["2026-01-31",0,0,0,""],["2026-02-18",0,0,0,""],["2026-02-26",0,0,0,""],["2026-02-27",0,0,0,""],["2026-03-17",0,0,0,""],["2026-03-26",0,0,0,""],["2026-04-09",0,0,0,""],["2026-04-12",0,0,0,""],["2026-05-05",0,0,0,""],["2026-05-20",0,0,0,""],["2026-05-29",0,0,0,""],["2026-05-30",0,0,0,""],["2026-06-01",0,0,0,""],["2026-06-24",0,0,0,""],["2026-04-29",0,0,1,""],["2026-04-30",0,0,1,""],["2026-05-21",0,0,1,""],["2026-06-15",0,0,1,""],["2026-03-21",0,0,4,"Benchwarmer's"],["2025-11-19",0,0,2,"Dinner (Brewery Bhavana)"],["2025-11-23",0,0,2,"Dinner"],["2025-12-14",0,0,2,"Dinner"],["2026-01-29",0,0,2,"Dinner (Gussie's)"],["2026-02-26",0,0,2,"(Heirloom)"],["2026-03-19",0,0,2,"Dinner (RPD)"],["2026-03-26",0,0,2,"Dinner (Kanki)"],["2026-04-12",0,0,2,"Dinner"],["2026-04-15",0,0,2,"Dinner (Gringo)"],["2026-04-30",0,0,2,"Dinner (Fiction Kitchen)"],["2026-05-23",0,0,2,"Dinner (Birdie's)"],["2026-05-24",0,0,2,"Lunch"],["2026-05-30",0,0,2,"Dinner Masala House"],["2026-06-24",0,0,2,"Dinner Standard"],["2025-11-21",0,1,0,""],["2025-11-23",0,1,0,""],["2025-12-14",0,1,0,""],["2025-12-23",0,1,0,""],["2025-12-28",0,1,0,""],["2026-01-31",0,1,0,""],["2026-02-18",0,1,0,""],["2026-02-26",0,1,0,""],["2026-02-27",0,1,0,""],["2026-03-17",0,1,0,""],["2026-03-23",0,1,0,""],["2026-03-26",0,1,0,""],["2026-04-01",0,1,0,""],["2026-04-09",0,1,0,""],["2026-04-12",0,1,0,""],["2026-04-15",0,1,0,""],["2026-04-22",0,1,0,""],["2026-04-29",0,1,0,""],["2026-05-05",0,1,0,""],["2026-05-12",0,1,0,""],["2026-05-20",0,1,0,""],["2026-05-29",0,1,0,""],["2026-05-30",0,1,0,""],["2026-06-01",0,1,0,""],["2026-06-20",0,1,0,""],["2026-06-23",0,1,0,""],["2026-06-24",0,1,0,""],["2026-02-19",0,1,1,""],["2026-02-24",0,1,1,""],["2026-03-16",0,1,1,""],["2026-03-18",0,1,1,""],["2026-03-25",0,1,1,""],["2026-04-10",0,1,1,""],["2026-05-13",0,1,1,""],["2026-05-14",0,1,1,""],["2026-03-21",0,1,4,"Benchwarmer's"],["2025-11-19",0,1,2,"Dinner"],["2025-12-23",0,1,2,"Dinner"],["2025-12-10",0,1,2,"NCSU Basketball game (DrG's tickets)"],["2025-12-14",0,1,2,"Dinner"],["2026-01-29",0,1,2,"Dinner (Gussie's)"],["2026-02-26",0,1,2,"(Heirloom)"],["2026-03-19",0,1,2,"Dinner (RPD)"],["2026-03-26",0,1,2,"Dinner (Kanki)"],["2026-04-12",0,1,2,"Dinner"],["2026-04-15",0,1,2,"Dinner (Gringo)"],["2026-04-30",0,1,2,"Dinner (Fiction Kitchen)"],["2026-05-23",0,1,2,"Dinner (Birdie's)"],["2026-05-24",0,1,2,"Lunch"],["2026-05-30",0,1,2,"Dinner Masala House"],["2026-06-24",0,1,2,"Dinner Standard"],["2025-12-31",0,2,0,""],["2026-01-15",0,2,0,""],["2026-02-12",0,2,0,""],["2026-02-17",0,2,0,""],["2026-03-17",0,2,0,""],["2026-03-28",0,2,0,""],["2026-05-26",0,2,0,""],["2026-05-28",0,2,0,""],["2026-06-01",0,2,0,""],["2026-06-02",0,2,0,""],["2026-03-03",0,2,1,""],["2026-02-02",0,2,3,""],["2026-05-22",0,2,3,""],["2026-06-02",0,2,3,""],["2025-08-26",0,2,2,"Cookie delivery"],["2026-03-17",0,2,2,"DRB delivered cookies, discussion with Dr. Johnson"],["2026-04-13",0,2,2,"GO + CPD meeting"],["2026-05-28",0,2,2,"DRB treat drop off + brackets for LaRee"],["2025-11-11",0,3,0,""],["2025-12-16",0,3,0,""],["2025-12-31",0,3,0,""],["2026-02-24",0,3,0,""],["2026-03-06",0,3,0,""],["2026-03-10",0,3,0,""],["2026-03-31",0,3,0,""],["2026-04-22",0,3,0,""],["2026-05-12",0,3,0,""],["2026-05-15",0,3,0,""],["2026-06-05",0,3,0,""],["2026-06-16",0,3,0,""],["2026-06-23",0,3,0,""],["2025-08-26",0,3,2,"Cookie delivery DRB, DRAH, OC"],["2026-02-20",0,3,2,"Monopoly"],["2026-04-16",0,3,2,"DRB delivered cookies, spoke with Dr. Lee"],["2025-11-10",0,4,0,""],["2025-12-31",0,4,0,""],["2026-02-16",0,4,0,""],["2026-03-06",0,4,0,""],["2026-03-30",0,4,0,""],["2026-04-15",0,4,0,""],["2026-04-17",0,4,0,""],["2026-05-05",0,4,0,""],["2025-10-22",0,4,1,""],["2026-06-18",0,4,1,""],["2026-06-18",0,4,3,""],["2025-11-11",0,4,4,"DRP, DRB, and Dr Pirooz (Sunrise Superfood Cafe)"],["2026-02-20",0,4,2,"Monopoly"],["2026-03-07",0,4,2,"DRB delivered baby gifts to Dr. Pirooz"],["2026-03-15",0,5,0,""],["2025-12-31",0,5,1,""],["2026-01-03",0,5,1,""],["2026-02-03",0,5,1,""],["2025-08-28",0,5,2,"Cookie delivery HB"],["2025-12-30",0,6,0,""],["2026-05-21",0,6,0,""],["2026-06-25",0,6,4,"Team Lunch and Learn DRB and KR"],["None",0,6,4,"review pt triage and iTero, SPP"],["2025-12-29",0,6,2,"SF Delivered Christmas basket"],["2026-04-16",0,6,2,"DRB delivered baby gifts for Dr. Gamble and cookies for office"],["2026-05-07",0,6,2,"Study club discussion with Dr. Gamble"],["2026-01-02",0,7,3,"HB"],["2025-12-19",0,7,2,"SF Delivered Christmas basket"],["2026-03-17",0,7,2,"DRB delivered cookies"],["2026-02-26",0,8,0,"DRM"],["2026-03-03",0,8,0,""],["2026-01-05",0,8,3,"DRM"],["2026-02-25",0,8,3,"DRM"],["2026-01-08",0,8,2,"HB cookie delivery and propose Dr meeting"],["2026-01-07",0,9,1,""],["2026-01-12",0,9,1,""],["2026-02-25",0,9,1,""],["2026-02-26",0,9,1,""],["2026-03-17",0,9,1,""],["2026-01-06",0,9,3,"HB"],["2026-02-11",0,9,4,"Lunch and Learn with DRB and HB"],["2026-03-20",0,9,4,"DRB, DRG, EA"],["2026-01-07",0,9,2,"Cookie delivery DRB and HB"],["2026-02-11",0,9,2,"Lunch + Learn DRB and HB"],["2026-03-20",0,9,2,"meeting DRB, DRG, EA"],["2025-10-16",1,10,0,""],["2026-01-30",1,10,0,""],["2026-04-23",1,10,0,""],["2026-05-29",1,10,0,""],["2025-11-20",1,10,1,""],["2025-12-01",1,10,3,""],["2025-10-23",1,10,2,"Delivery"],["2025-10-23",1,11,0,""],["2025-11-01",1,11,0,""],["2025-11-18",1,11,0,""],["2025-11-19",1,11,0,""],["2025-12-29",1,11,0,""],["2026-01-30",1,11,0,""],["2026-04-21",1,11,0,""],["2026-04-23",1,11,0,""],["2026-04-24",1,11,0,""],["2026-04-28",1,11,0,""],["2026-05-22",1,11,0,""],["2026-05-29",1,11,0,""],["2025-11-19",1,11,1,""],["2026-02-13",1,11,1,""],["2026-02-27",1,11,1,""],["2026-04-15",1,11,1,""],["2026-05-11",1,11,1,""],["2025-10-23",1,11,4,"Lunch"],["2026-05-04",1,11,4,""],["2025-10-23",1,11,2,"Delivery"],["2026-03-17",1,11,2,""],["2026-04-13",1,11,2,"in person"],["2025-10-17",1,12,0,""],["2025-11-20",1,12,0,""],["2026-01-30",1,12,0,""],["2026-02-24",1,12,0,""],["2026-04-22",1,12,0,""],["2026-04-23",1,12,0,""],["2026-05-22",1,12,0,""],["2026-05-29",1,12,0,""],["None",1,12,4,"Referred 3 patients"],["None",1,12,4,"they will not do lunch/meals"],["2025-10-23",1,12,2,"Delivery"],["2026-03-17",1,12,2,""],["2025-10-22",1,13,0,""],["2025-12-01",1,13,0,""],["2025-12-29",1,13,0,""],["2026-01-29",1,13,0,""],["2026-01-30",1,13,0,""],["2026-02-27",1,13,0,""],["2026-02-28",1,13,0,""],["2026-03-02",1,13,0,""],["2026-03-03",1,13,0,""],["2026-03-12",1,13,0,""],["2026-03-24",1,13,0,""],["2026-03-25",1,13,0,""],["2026-04-09",1,13,0,""],["2026-04-24",1,13,0,""],["2026-05-22",1,13,0,""],["2026-03-25",1,13,3,""],["None",1,13,4,"Lunch at North Ridge CC"],["2026-03-25",1,13,4,"Lunch delivered from Peace China"],["2025-11-12",1,13,2,"Delivery"],["2025-10-22",1,14,0,""],["2025-11-10",1,14,0,""],["2026-01-02",1,14,0,""],["2026-01-27",1,14,0,""],["2026-02-24",1,14,0,""],["2026-03-03",1,14,0,""],["2026-03-09",1,14,0,""],["2026-05-22",1,14,0,""],["2026-05-26",1,14,0,""],["2026-05-29",1,14,0,""],["2025-12-29",1,14,1,""],["2026-05-08",1,14,1,""],["2025-12-20",1,14,4,"26"],["2025-10-23",1,14,2,"Delivery"],["2026-03-11",1,14,2,"Donut delivery"],["2025-11-11",1,15,0,""],["2025-11-10",1,15,0,""],["2025-10-22",1,15,0,""],["2025-12-08",1,15,0,""],["2025-12-29",1,15,0,""],["2026-03-31",1,15,0,""],["2026-04-22",1,15,0,""],["2026-05-22",1,15,0,""],["2026-05-29",1,15,0,""],["2026-06-11",1,15,0,""],["2025-12-04",1,15,4,"Lunch"],["2025-10-23",1,15,2,"Delivery"],["2026-03-17",1,15,2,""],["2025-10-03",1,16,1,"/"],["2025-11-20",1,16,1,""],["2025-12-03",1,16,1,""],["2025-12-22",1,16,1,""],["2026-02-04",1,16,1,""],["2026-02-05",1,16,1,""],["2026-02-14",1,16,1,""],["2026-02-27",1,16,1,""],["2026-04-08",1,16,1,""],["2026-04-09",1,16,1,""],["2026-04-22",1,16,1,""],["2026-04-27",1,16,1,""],["2026-05-22",1,16,1,""],["2026-05-29",1,16,1,""],["2025-12-01",1,16,3,""],["2026-01-29",1,16,3,""],["2026-03-18",1,16,3,""],["2026-02-13",1,16,4,"Lunch"],["None",1,16,4,"referred pt"],["None",1,16,4,"Dinner at Nordstrom Cafe"],["None",1,16,4,"Referred pt"],["2025-10-23",1,16,2,"Delivery"],["None",1,16,2,"Dinner at Nordstrom Cafe"],["2026-03-19",1,17,0,"Discussed lunch plans"],["2026-04-23",1,17,0,""],["2026-04-24",1,17,0,""],["2026-04-29",1,17,0,""],["2026-05-07",1,17,0,""],["2026-05-08",1,17,0,""],["2026-05-22",1,17,0,""],["2026-05-29",1,17,0,""],["2026-04-02",1,17,1,""],["2026-05-08",1,17,4,""],["2026-04-07",1,17,2,"Coffee delivery"],["2026-04-14",1,17,2,"in person"],["2026-04-24",1,17,2,"in person"],["2026-05-12",1,17,2,"in person"],["2026-06-09",1,17,2,""],["2026-06-12",1,17,2,""],["2026-04-07",1,18,0,""],["2026-04-08",1,18,0,""],["2026-04-24",1,18,0,""],["2026-05-06",1,18,0,""],["2026-05-08",1,18,0,""],["2026-05-20",1,18,0,""],["2026-05-22",1,18,0,""],["2026-05-26",1,18,0,""],["2026-05-28",1,18,0,""],["2026-05-29",1,18,0,""],["2026-06-04",1,18,0,""],["2026-06-05",1,18,0,""],["2026-05-14",1,18,4,"sched"],["2026-04-14",1,18,2,"in person"],["2026-05-12",1,18,2,"in person"],["2026-05-01",1,19,0,""],["2026-05-16",1,19,0,""],["2026-05-22",1,19,0,""],["2026-05-27",1,19,0,""],["2026-05-28",1,19,0,""],["2026-05-29",1,19,0,""],["2025-10-23",1,19,4,"and"],["2025-12-05",1,19,4,"lunch with Dr. Love Moore and DrL and DrM"],["2026-05-27",1,20,0,""],["2026-05-29",1,20,0,""],["2026-06-12",1,20,0,""],["2026-04-24",1,20,1,""],["2025-10-31",1,20,2,"office visit/delivery"],["2025-10-10",1,21,1,""],["2025-10-20",1,21,1,""],["2026-05-08",1,21,1,""],["2026-05-28",1,21,1,""],["2026-05-29",1,21,1,""],["2026-06-12",1,21,1,""],["2026-05-28",1,21,3,""],["2025-11-03",2,22,0,""],["2025-12-19",2,22,0,""],["2026-02-20",2,22,0,"monopoly"],["2026-03-10",2,22,0,""],["2026-03-14",2,22,0,""],["2026-03-25",2,22,0,""],["2026-04-01",2,22,0,""],["2026-04-02",2,22,0,""],["2026-04-14",2,22,0,""],["2026-05-29",2,22,0,""],["2025-11-17",2,22,1,""],["2026-04-14",2,22,1,""],["None",2,22,2,"Christmas basket"],["2026-03-25",2,22,2,"La Farm delivery"],["2025-12-19",2,23,0,""],["2026-02-20",2,23,0,"monopoly"],["2026-03-10",2,23,0,""],["2026-03-25",2,23,0,""],["2026-04-23",2,23,0,""],["2026-05-28",2,23,0,""],["2026-06-09",2,23,0,""],["2026-06-10",2,23,0,""],["2025-11-25",2,23,3,""],["None",2,23,2,"Christmas basket"],["2026-03-25",2,23,2,"La Farm delivery"],["2026-05-12",2,23,2,"offie visit"],["2026-06-09",2,23,2,"office visit"],["2025-12-19",2,24,0,""],["2025-12-30",2,24,0,""],["2026-02-09",2,24,0,""],["2026-02-20",2,24,0,"monopoly"],["2026-03-10",2,24,0,""],["2026-03-24",2,24,0,""],["2026-04-01",2,24,0,""],["2026-05-12",2,24,0,""],["2026-06-09",2,24,0,""],["2026-06-10",2,24,0,""],["2025-11-19",2,24,1,""],["2025-12-18",2,24,1,""],["2026-01-20",2,24,1,""],["2026-02-02",2,24,1,""],["2026-01-21",2,24,3,""],["2026-03-24",2,24,3,""],["2026-06-25",2,24,4,"Lunch"],["None",2,24,2,"Christmas basket"],["2026-05-20",2,24,2,"treat drop-off"],["2025-12-19",2,25,0,""],["2026-02-02",2,25,0,""],["2026-02-17",2,25,0,""],["2026-02-20",2,25,0,"monopoly"],["2026-03-10",2,25,0,""],["2026-04-02",2,25,0,""],["2026-04-06",2,25,0,""],["2026-04-14",2,25,0,""],["2026-04-22",2,25,0,""],["2025-10-23",2,25,1,""],["2025-11-03",2,25,1,""],["2026-03-10",2,25,1,""],["2026-03-11",2,25,1,""],["2026-03-27",2,25,1,""],["2026-03-30",2,25,1,""],["2026-04-13",2,25,1,""],["2026-04-14",2,25,1,""],["2026-05-19",2,25,1,""],["2026-05-20",2,25,1,""],["2026-06-08",2,25,1,""],["2026-02-18",2,25,4,"lunch"],["2026-04-22",2,25,4,"lunch"],["None",2,25,2,"Christmas basket"],["2026-05-12",2,25,2,"office visit"],["2025-12-19",2,26,0,""],["2026-02-20",2,26,0,"monopoly"],["2026-03-10",2,26,0,""],["2026-03-24",2,26,0,""],["2026-03-24",2,26,3,""],["None",2,26,2,"Christmas basket"],["2026-03-25",2,26,2,"La Farm delivery"],["2025-12-19",2,27,0,""],["2026-02-17",2,27,0,""],["2026-02-21",2,27,0,""],["2026-03-04",2,27,0,""],["2026-03-25",2,27,0,""],["2026-04-08",2,27,0,""],["2026-04-13",2,27,0,""],["2026-12-06",2,27,1,""],["2026-01-22",2,27,1,""],["2026-04-01",2,27,1,""],["2026-04-02",2,27,1,""],["2026-05-19",2,27,1,""],["2025-11-11",2,27,3,""],["2025-12-04",2,27,3,""],["None",2,27,2,"Christmas basket"],["2026-03-25",2,27,2,"La Farm delivery"],["2025-11-10",2,28,0,""],["2025-12-19",2,28,0,""],["2026-01-27",2,28,0,""],["2026-02-20",2,28,0,"monopoly"],["2026-03-10",2,28,0,""],["2026-06-15",2,28,0,""],["2026-01-12",2,28,3,""],["None",2,28,2,"Christmas basket"],["2026-04-20",2,28,2,"office visit"],["2026-06-15",2,28,2,""],["2025-12-19",2,29,0,""],["2026-02-09",2,29,0,""],["2026-04-07",2,29,0,""],["2026-06-22",2,29,0,""],["2026-06-04",2,29,1,""],["2026-06-10",2,29,1,""],["2026-06-15",2,29,1,""],["None",2,29,2,"HB Delivered Christmas basket"],["2026-05-12",2,29,2,""],["2026-03-03",2,30,0,""],["2026-03-09",2,30,0,""],["2026-03-10",2,30,0,""],["2026-03-12",2,30,0,""],["2026-03-17",2,30,0,""],["2026-03-19",2,30,0,""],["2026-03-20",2,30,0,""],["2026-03-24",2,30,0,""],["2026-03-26",2,30,0,""],["2026-04-02",2,30,0,""],["2026-04-06",2,30,0,""],["2026-04-15",2,30,0,""],["2026-04-21",2,30,0,""],["2026-04-22",2,30,0,""],["2026-05-13",2,30,0,""],["2026-05-14",2,30,0,""],["2026-05-18",2,30,0,""],["2026-06-08",2,30,0,""],["2026-06-09",2,30,0,""],["2026-06-10",2,30,0,""],["2026-06-22",2,30,1,""],["2026-06-23",2,30,1,""],["2026-06-25",2,30,2,"office visit"],["2025-12-19",2,31,0,""],["2026-01-13",2,31,0,""],["2026-01-15",2,31,0,""],["2026-01-28",2,31,0,""],["2026-02-20",2,31,0,"monopoly"],["2026-02-23",2,31,0,""],["2026-03-10",2,31,0,""],["2026-03-24",2,31,0,""],["2026-04-02",2,31,0,""],["2026-04-08",2,31,0,""],["2026-04-13",2,31,0,""],["2026-04-14",2,31,0,""],["2026-04-30",2,31,0,""],["2026-05-11",2,31,0,""],["2026-05-20",2,31,0,""],["2026-06-09",2,31,0,""],["2026-06-10",2,31,0,""],["2026-06-15",2,31,0,""],["2026-06-24",2,31,0,""],["2026-06-25",2,31,0,""],["2025-11-23",2,31,1,""],["2026-04-02",2,31,1,""],["2026-04-06",2,31,1,""],["2025-12-01",2,31,3,""],["2026-01-15",2,31,3,""],["None",2,31,2,"Christmas basket"],["None",2,31,2,"Intro to Dr. Berridge (periodontist)"],["2026-06-15",2,31,2,""],["2026-06-02",2,32,0,""],["2026-06-04",2,32,0,""],["2026-06-05",2,32,0,""],["2026-06-08",2,32,0,""],["2026-06-09",2,32,0,""],["2025-10-02",2,32,1,""],["2025-11-13",2,32,1,""],["2025-12-16",2,32,1,""],["2025-12-19",2,32,1,""],["2026-01-21",2,32,1,""],["2026-02-04",2,32,1,""],["2026-04-03",2,32,1,""],["2026-04-23",2,32,1,""],["2026-05-04",2,32,1,""],["2026-05-19",2,32,1,""],["2026-06-03",2,32,1,""],["2026-06-04",2,32,1,""],["2026-06-05",2,32,1,""],["2026-06-15",2,32,1,""],["2026-06-18",2,32,1,""],["2026-06-23",2,32,1,""],["2026-06-24",2,32,1,""],["2026-06-08",2,32,3,""],["2025-12-18",2,33,0,""],["2026-02-09",2,33,0,""],["2026-03-10",2,33,0,""],["2026-03-11",2,33,0,""],["2026-03-25",2,33,0,""],["2026-06-22",2,33,4,""],["2026-02-09",2,33,4,""],["2026-04-06",2,33,4,"lunch"],["None",2,33,2,"Christmas basket"],["2026-02-09",2,33,2,"Birthday gift drop-off"],["2026-03-25",2,33,2,"La Farm delivery"],["2026-06-10",3,34,0,""],["2026-02-16",3,34,3,"HB"],["2026-03-03",3,34,2,"La Farm Bakery delivery and office visit w HB & DrFR, Dinner with Dr LeRee andall of their doctors"],["2026-02-16",3,35,3,"HB"],["2026-04-14",3,35,3,"FR"],["2026-06-10",3,35,3,"FR"],["2026-03-03",3,35,2,"La Farm Bakery delivery and office visit w HB & DrFR"],["2026-04-14",3,36,3,"FR"],["2026-06-10",3,36,3,"FR"],["2026-02-16",3,36,2,"Cookie Delivery"],["2025-12-05",3,37,1,"HB"],["2026-02-16",3,37,3,"HB"],["2026-04-14",3,37,3,"FR"],["2026-06-10",3,37,3,"FR"],["2026-02-25",3,37,2,"Dunkin Donuts delivery and office visit Dr.Slawinski w HB & DrFR"],["2025-12-05",3,38,1,"HB"],["2026-04-16",3,38,3,"FR"],["2026-06-10",3,38,3,"FR"],["2026-03-03",3,38,2,"La Farm Bakery delivery and office visit w HB & DrFR"],["2026-02-25",3,39,0,""],["2026-03-04",3,39,0,"FR"],["2026-03-12",3,39,1,"FR"],["2025-12-05",3,39,3,"HB"],["2026-04-16",3,39,3,"FR"],["2026-06-10",3,39,3,"FR"],["2026-02-25",3,39,2,"Dunkin Donuts delivery and office visit Dr. Vamsi w HB & DrFR"],["2026-06-11",3,40,0,""],["2025-12-05",3,40,1,"HB"],["2026-02-19",3,40,1,"HB"],["2026-02-19",3,40,3,"HB"],["2026-02-19",3,40,3,"HB"],["2026-04-16",3,40,3,"26 FR"],["2026-02-25",3,40,2,"Dunkin Donuts delivery and office visit Dr. Megaha Puranam w HB & DrFR"],["2025-02-19",3,41,3,"HB"],["2026-04-16",3,41,3,"FR"],["2026-06-10",3,41,3,"FR"],["2026-02-25",3,41,2,"Dunkin Donuts delivery and office visit Dr. Ravindran w HB & DrFR"],["2026-04-16",3,42,3,"FR"],["2026-06-10",3,42,3,"FR"],["2026-02-25",3,42,2,"Dunkin Donuts delivery and office visit Dr.Allen w HB & DrFR"],["2026-04-25",3,43,0,"FR"],["2026-04-27",3,43,0,"FR"],["2026-06-10",3,43,3,"FR"],["2026-03-12",3,44,1,"FR"],["2026-04-16",3,44,3,"FR"],["2026-06-10",3,44,3,"FR"],["2026-03-03",3,44,2,"La Farm Bakery delivery and office visit w HB & DrFR"],["2026-04-16",3,45,3,"FR"],["2026-06-10",3,45,3,"FR"],["2026-03-03",3,45,2,"La Farm Bakery delivery and office visit w HB & DrFR"],["2025-10-22",4,46,1,""],["2025-10-31",4,46,2,"office visit/delivery"],["2025-10-22",4,47,1,""],["2025-10-31",4,47,2,"office visit/delivery"],["2025-10-22",4,48,1,""],["2025-10-31",4,48,2,"office visit/delivery"],["2025-10-22",4,49,1,""],["2025-10-31",4,49,2,"office visit/delivery"],["2025-10-22",4,50,1,""],["2026-02-14",5,51,0,""],["2026-02-19",5,51,0,""],["2026-03-05",5,51,0,""],["2026-03-19",5,51,0,""],["2026-03-20",5,51,0,""],["2026-03-24",5,51,0,""],["2026-04-22",5,51,0,""],["2026-05-21",5,51,0,""],["2026-01-19",5,51,1,""],["2026-05-26",5,51,1,""],["2026-06-16",5,51,1,""],["2026-06-26",5,51,1,""],["2026-03-06",5,51,3,""],["2026-02-12",5,51,4,"w Dr. Erin Tilton"],["2026-02-25",5,51,4,"w/ Dr. Tilton"],["2026-01-19",5,52,1,""],["2026-02-11",5,52,1,""],["2026-04-14",5,52,1,""],["2026-05-26",5,52,1,""],["2026-06-16",5,52,1,""],["2026-06-26",5,52,1,""],["2026-03-06",5,52,3,""],["None",5,52,4,"w Dr. McManama"],["2026-01-29",5,53,1,""],["2026-04-14",5,53,1,""],["2026-05-26",5,53,1,""],["2026-06-16",5,53,1,""],["2026-06-26",5,53,1,""],["2026-01-29",5,53,3,""],["2026-03-06",5,53,3,""],["2026-05-26",5,53,4,"w/ Olivia"],["2026-01-19",5,54,1,""],["2026-06-16",5,54,1,""],["2026-03-06",5,54,3,""],["2026-03-17",5,54,2,"office visit with DrSL"],["2026-01-19",5,55,1,""],["2026-04-14",5,55,1,""],["2026-05-22",5,55,1,""],["2026-06-16",5,55,1,""],["2026-06-26",5,55,1,""],["2026-03-06",5,55,3,""],["2026-05-21",5,56,1,""],["2026-06-16",5,56,1,""],["2026-06-26",5,56,1,""],["2026-03-06",5,56,3,""],["2026-03-12",5,56,2,"office visit / delivery"],["2026-01-29",5,57,1,""],["2026-05-21",5,57,1,""],["2026-06-16",5,57,1,""],["2026-06-26",5,57,1,""],["2026-03-06",5,57,3,""],["2026-03-12",5,57,2,"office visit / delivery"],["2026-01-29",5,58,1,""],["2026-05-21",5,58,1,""],["2026-06-16",5,58,1,""],["2026-06-26",5,58,1,""],["2026-03-06",5,58,3,""],["2026-03-12",5,58,2,"office visit / delivery"],["2026-01-29",5,59,1,""],["2026-05-21",5,59,1,""],["2026-06-16",5,59,1,""],["2026-06-26",5,59,1,""],["2026-03-06",5,59,3,""],["2026-03-12",5,59,2,"office visit / delivery"],["2026-01-29",5,60,1,""],["2026-05-21",5,60,1,""],["2026-06-16",5,60,1,""],["2026-06-26",5,60,1,""],["2026-03-06",5,60,3,""],["2026-03-12",5,60,2,"office visit / delivery"],["2026-01-26",6,61,0,""],["2006-02-09",6,61,0,""],["2026-02-10",6,61,0,""],["2026-02-19",6,61,0,""],["2026-02-26",6,61,0,""],["2026-03-05",6,61,0,""],["2026-03-16",6,61,0,""],["2026-03-30",6,61,0,""],["2026-04-06",6,61,0,""],["2026-04-15",6,61,0,""],["2026-04-20",6,61,0,""],["2026-04-22",6,61,0,""],["2026-05-01",6,61,0,""],["2026-05-06",6,61,0,""],["2026-05-08",6,61,0,""],["2026-05-20",6,61,0,""],["2026-05-31",6,61,0,""],["2026-06-08",6,61,0,""],["2026-06-19",6,61,0,""],["2026-04-22",6,61,1,""],["2026-05-06",6,61,1,""],["2026-06-12",6,61,1,""],["2026-06-21",6,61,1,""],["2026-06-08",6,61,3,""],["2026-01-12",6,61,4,"Cap Grille"],["2025-12-17",6,61,2,"basketball game"],["2026-01-16",6,62,0,""],["2026-02-09",6,62,0,""],["2026-03-11",6,62,0,""],["2026-04-06",6,62,0,""],["2026-04-09",6,62,0,""],["2026-04-22",6,62,0,""],["2026-06-12",6,62,0,""],["2026-06-29",6,62,0,""],["2025-12-23",6,62,1,""],["2026-02-02",6,62,1,""],["2026-02-11",6,62,1,""],["2026-02-12",6,62,1,""],["2026-02-18",6,62,1,""],["2026-03-11",6,62,1,""],["2026-03-16",6,62,1,""],["2026-03-18",6,62,1,""],["2026-03-23",6,62,1,""],["2026-03-25",6,62,1,""],["2026-04-22",6,62,1,""],["2026-04-27",6,62,1,""],["2026-04-30",6,62,1,""],["2026-05-18",6,62,1,""],["2026-06-14",6,62,1,""],["2026-06-19",6,62,1,""],["2026-06-22",6,62,1,""],["2026-06-23",6,62,1,""],["2026-03-25",6,62,3,""],["2026-01-14",6,62,4,"mccleans, planned lunch and learn"],["2026-04-22",6,62,4,""],["2026-02-02",6,62,2,"Lunch and Learn"],["2026-04-22",6,62,2,"dunkin"],["2026-03-23",6,62,2,""],["2026-01-26",6,63,0,""],["2026-01-28",6,63,0,""],["2026-02-01",6,63,0,""],["2026-02-07",6,63,0,""],["2026-02-11",6,63,0,""],["2026-04-08",6,63,0,""],["2026-05-01",6,63,0,""],["2026-06-12",6,63,0,""],["2026-03-25",6,63,1,""],["2026-05-06",6,63,1,""],["2026-02-04",6,63,2,"northside bistro"],["2026-01-25",6,64,0,""],["2026-02-18",6,64,0,""],["2026-04-08",6,64,0,""],["2026-04-15",6,64,0,""],["2026-04-17",6,64,0,""],["2026-04-19",6,64,0,""],["2026-04-21",6,64,0,""],["2026-05-03",6,64,0,""],["2026-05-26",6,64,0,""],["2026-05-30",6,64,0,""],["2026-06-04",6,64,0,""],["2026-06-11",6,64,0,""],["2026-06-12",6,64,0,""],["2026-02-11",6,64,1,""],["2026-02-19",6,64,1,""],["2026-03-11",6,64,1,""],["2026-06-14",6,64,1,""],["2026-04-14",6,64,4,"biscuits"],["2026-04-17",6,64,2,"lunch and learn"],["2026-01-20",6,65,0,""],["2026-01-22",6,65,0,""],["2026-01-24",6,65,0,""],["2026-02-16",6,65,0,""],["2026-02-23",6,65,0,""],["2026-02-26",6,65,0,""],["2026-03-09",6,65,0,""],["2026-03-16",6,65,0,""],["2026-03-17",6,65,0,""],["2026-03-29",6,65,0,""],["2026-04-07",6,65,0,""],["2026-05-04",6,65,0,""],["2026-05-05",6,65,0,""],["2026-05-14",6,65,0,""],["2026-06-12",6,65,0,""],["2026-06-15",6,65,0,""],["2026-06-14",6,65,1,""],["2026-02-23",6,65,3,""],["2026-01-19",6,65,4,"mezcal"],["2026-05-04",6,65,4,"bites on main"],["2026-06-03",6,65,4,"bagels"],["2026-02-23",6,65,2,"note going to Japan getting new tattoo gf is Alex"],["2026-02-16",6,66,0,""],["2026-06-12",6,66,0,""],["2026-02-11",6,66,1,""],["2026-02-18",6,66,1,""],["2026-02-23",6,66,1,""],["2026-03-17",6,66,1,""],["2026-05-26",6,66,1,""],["2026-06-14",6,66,1,""],["2026-06-25",6,66,1,""],["2026-02-23",6,66,3,""],["2026-03-17",6,66,4,"lunch and learn"],["None",6,66,2,"future mezcal lunch"],["2026-03-10",6,67,0,""],["2026-03-28",6,67,0,""],["2026-04-14",6,67,0,""],["2026-05-05",6,67,0,""],["2026-06-02",6,67,0,""],["2026-06-03",6,67,0,""],["2026-06-12",6,67,0,""],["2026-06-14",6,67,1,""],["2026-03-10",6,67,3,""],["2026-03-26",6,67,4,"lunch"],["2026-04-14",6,67,4,"biscuits"],["2026-04-29",6,67,4,"bagels"],["2026-05-14",6,67,4,""],["2026-06-03",6,67,4,"bagels"],["2026-06-10",6,67,4,"lunch"],["2026-06-12",6,68,0,""],["2025-12-09",6,68,1,""],["2026-03-11",6,68,1,""],["2026-05-21",6,68,1,""],["2026-05-26",6,68,1,""],["2025-12-11",6,68,4,"Sbux"],["2026-04-29",6,68,4,"bagels"],["2026-01-20",6,69,0,""],["2026-01-21",6,69,0,""],["2026-02-08",6,69,0,""],["2026-04-06",6,69,0,""],["2026-04-08",6,69,0,""],["2026-05-26",6,69,0,""],["2026-05-31",6,69,0,""],["2026-06-12",6,69,0,""],["2025-03-11",6,69,1,""],["2025-12-04",6,69,4,"townhall"],["2026-01-25",6,70,0,""],["2026-01-26",6,70,0,""],["2026-02-11",6,70,0,""],["2026-06-11",6,70,0,""],["2026-06-12",6,70,0,""],["2026-06-29",6,70,0,""],["2026-03-18",6,70,1,""],["2026-03-30",6,70,1,""],["2026-04-23",6,70,1,""],["2026-06-11",6,70,1,""],["2026-06-18",6,70,1,""],["2026-01-28",6,70,4,"sassool"],["2026-01-13",6,71,0,""],["2026-01-23",6,71,0,"2,19,2026"],["2026-03-04",6,71,0,""],["2026-03-10",6,71,0,""],["2026-03-19",6,71,0,""],["2026-04-08",6,71,0,""],["2026-04-09",6,71,0,""],["2026-04-22",6,71,0,""],["2026-05-28",6,71,0,""],["2026-06-12",6,71,0,""],["2026-03-11",6,71,1,""],["2026-03-12",6,71,1,""],["2026-04-08",6,71,1,""],["2026-04-22",6,71,1,""],["2026-02-02",6,71,2,"dunkin"],["2026-03-23",6,71,2,"dunkin"],["2026-06-22",6,71,2,""],["2026-03-04",6,72,3,""],["2026-05-14",6,72,4,"study club"],["2026-04-14",6,73,0,""],["2026-04-15",6,73,0,""],["2026-04-16",6,73,0,""],["2026-05-06",6,73,0,""],["2026-05-30",6,73,0,""],["2026-06-03",6,73,0,""],["2026-06-11",6,73,0,""],["2026-06-12",6,73,0,""],["2026-06-22",6,73,0,""],["2026-04-08",6,73,1,""],["2026-04-16",6,73,1,""],["2026-06-01",6,73,1,""],["2026-06-14",6,73,1,""],["2026-06-15",6,73,1,""],["2026-02-18",6,73,3,""],["2026-04-13",6,73,4,""],["2026-06-01",6,73,4,"dunkin"],["2026-06-03",6,73,4,"lunch"],["2026-06-03",6,73,2,"set up lunch for"],["2026-02-16",6,74,1,""],["2026-03-01",6,74,1,""],["2026-03-10",6,74,3,""],["2026-04-29",6,74,4,"bagels"],["2026-06-03",6,74,4,"bagels"],["2026-04-29",6,74,2,"with OM Kim"],["2026-05-13",6,74,2,"cokies"],["2026-01-28",6,75,0,""],["2026-05-31",6,75,0,""],["2026-06-01",6,75,0,""],["2026-06-14",6,75,1,""],["2026-06-15",6,75,1,""],["2026-02-18",6,75,3,""],["2026-06-01",6,75,3,""],["2026-05-21",6,75,4,"L&L"],["2026-01-22",6,76,1,""],["2025-01-28",6,77,0,""],["2026-02-11",6,77,0,"/.2026"],["2026-02-12",6,77,0,""],["2026-02-16",6,77,0,""],["2026-02-23",6,77,0,""],["2026-02-24",6,77,0,""],["2026-02-27",6,77,0,""],["2026-03-05",6,77,0,""],["2026-03-14",6,77,0,""],["2026-04-06",6,77,0,""],["2026-04-08",6,77,0,""],["2025-04-15",6,77,0,""],["2026-04-20",6,77,0,""],["2026-04-21",6,77,0,""],["2026-04-30",6,77,0,""],["2026-05-06",6,77,0,""],["2026-05-08",6,77,0,""],["2026-05-18",6,77,0,""],["2026-05-31",6,77,0,""],["2026-06-02",6,77,0,""],["2026-06-03",6,77,0,""],["2026-06-12",6,77,0,""],["2026-06-15",6,77,0,""],["2026-06-19",6,77,0,""],["2025-01-28",6,77,1,""],["2025-04-14",6,77,1,""],["2025-04-15",6,77,1,""],["2026-03-05",6,77,4,"coffee and SPP meeting"],["2026-02-19",6,78,0,""],["2026-03-02",6,78,0,""],["2026-03-05",6,78,0,""],["2026-04-08",6,78,0,""],["2026-04-19",6,78,0,""],["2026-04-27",6,78,0,""],["2026-04-28",6,78,0,""],["2026-05-01",6,78,0,""],["2026-05-21",6,78,0,""],["2026-05-30",6,78,0,""],["2026-06-10",6,78,0,""],["2026-06-12",6,78,0,""],["2026-06-22",6,78,0,""],["2026-05-21",6,78,1,""],["2026-05-26",6,78,1,""],["2026-06-14",6,78,1,""],["2026-03-06",6,78,4,"spp interested"],["2026-02-26",6,79,0,""],["2026-03-05",6,79,0,""],["2026-03-11",6,79,0,""],["2026-04-06",6,79,0,""],["2026-05-29",6,79,0,""],["2026-06-12",6,79,0,""],["2026-03-01",6,79,1,""],["2026-03-06",6,80,2,"bagels"],["2026-03-09",6,82,0,""],["2026-03-12",6,82,0,""],["2026-03-28",6,82,0,""],["2026-03-31",6,82,0,""],["2026-04-07",6,82,0,""],["2026-04-08",6,82,0,""],["2026-04-16",6,82,0,""],["2026-05-12",6,82,0,""],["2026-06-02",6,82,0,""],["2026-06-12",6,82,0,""],["2026-03-17",6,82,1,""],["2026-03-19",6,82,1,""],["2026-04-21",6,82,1,""],["2026-05-12",6,82,1,""],["2026-05-19",6,82,1,""],["2026-06-14",6,82,1,""],["2026-06-23",6,82,1,""],["2026-06-25",6,82,1,""],["2026-05-12",6,82,3,""],["2026-03-12",6,82,4,""],["2026-04-14",6,82,4,"biscuits, bagels"],["2026-06-03",6,82,4,""],["2026-02-24",6,82,2,"Bagels"],["2026-04-29",6,82,2,""],["2025-03-10",6,83,0,""],["2025-04-07",6,83,0,""],["2025-04-21",6,83,0,""],["2026-06-12",6,83,0,""],["2026-06-29",6,83,0,""],["2025-03-10",6,83,1,""],["2026-04-07",6,83,1,""],["2026-05-07",6,83,1,""],["2026-05-12",6,83,1,""],["2026-04-07",6,83,3,""],["2026-05-07",6,83,4,"cookies, lunch with Patel"],["2026-05-14",6,83,4,""],["2026-03-16",6,84,3,""],["2026-03-17",6,84,3,""],["2026-04-22",6,84,3,""],["2026-03-19",6,85,1,""],["2026-06-01",6,86,1,""],["2026-03-23",6,86,2,"dunkin"],["2026-03-24",6,87,2,"SC"],["2026-05-27",6,88,0,""],["2026-05-28",6,88,0,""],["None",6,88,4,"lunch with office manager"],["2026-06-03",6,89,4,"bagels"],["2026-04-18",6,90,0,""],["2026-04-22",6,90,0,""],["2026-05-20",6,90,0,""],["2026-04-17",6,90,2,"coffee sch"],["2026-04-24",6,90,2,""],["2026-05-14",6,91,3,""],["2026-05-13",6,91,4,"cookies"],["2026-05-26",6,91,4,"ref pads, bagels"],["2026-06-03",6,91,4,""],["2026-05-14",6,92,0,""],["2026-05-31",6,92,0,""],["2026-06-12",6,92,0,""],["2026-06-15",6,92,0,""],["2026-06-14",6,92,1,""],["2026-05-18",6,92,4,""],["2026-05-28",6,93,3,""]]};</script>
 <script>
 (function(){
   var D=window.DATA;
-  var TYPES=D.types, TAG=D.tags, DOCS=D.doctors, PRACS=D.practices, ACTS=D.acts;
+  var TYPES=D.types, TAG=D.tags, ROLES=D.roles||['Doctor','Marketer/Staff'], DOCS=D.doctors, PRACS=D.practices, ACTS=D.acts;
   function $(id){ return document.getElementById(id); }
   function esc(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+  DOCS.forEach(function(d){ if(!d.role) d.role='Doctor'; });
 
   // ---------- date helpers ----------
   var MON=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
   var MONL=['January','February','March','April','May','June','July','August','September','October','November','December'];
   function ym(d){ return d?d.slice(0,7):''; }
   function fmtDate(d){ if(!d) return '—'; var p=d.split('-'); return MON[+p[1]-1]+' '+(+p[2])+', '+p[0]; }
-  function monLabel(k){ var p=k.split('-'); return MON[+p[1]-1]+" '"+p[0].slice(2); }   // Oct '25
-  function monFull(k){ var p=k.split('-'); return MONL[+p[1]-1]+' '+p[0]; }               // October 2025
+  function monLabel(k){ var p=k.split('-'); return MON[+p[1]-1]+" '"+p[0].slice(2); }
+  function monFull(k){ var p=k.split('-'); return MONL[+p[1]-1]+' '+p[0]; }
+  function daysInMonth(k){ var p=k.split('-'); return new Date(+p[0], +p[1], 0).getDate(); }
   var CORE=['2025-10','2025-11','2025-12','2026-01','2026-02','2026-03','2026-04','2026-05','2026-06'];
+  var LATEST='2026-06';
+  var NOW=new Date();
+  var CUR_Y=NOW.getFullYear();
+  var CUR_KEY=CUR_Y+'-'+('0'+(NOW.getMonth()+1)).slice(-2);
 
   var TYPECOLORS=['#C0603C','#16314F','#2E7D52','#B7791F','#7A8A9A'];
   var DOCCOLORS=['#C0603C','#16314F','#2E7D52','#B7791F','#8E44AD','#2E86AB','#A8333A'];
@@ -574,51 +676,68 @@
   function initials(n){ return shortDoc(n).split(' ').map(function(w){return w[0]||'';}).slice(0,2).join('').toUpperCase(); }
   function tagFor(ti){ return ti>=0 ? (TAG[TYPES[ti]]||TYPES[ti].slice(0,3).toUpperCase()) : '—'; }
   function hexA(hex,a){ var h=hex.replace('#',''); return 'rgba('+parseInt(h.slice(0,2),16)+','+parseInt(h.slice(2,4),16)+','+parseInt(h.slice(4,6),16)+','+a+')'; }
+  function roleOf(a){ var d=DOCS[a[1]]; return d?d.role:''; }
 
-  // ---------- precompute monthly aggregates (core range) ----------
-  var MTOT={}, MT={}, MD={};
-  CORE.forEach(function(k){ MTOT[k]=0; MT[k]=TYPES.map(function(){return 0;}); MD[k]=DOCS.map(function(){return 0;}); });
-  var actsByMonth={}; CORE.forEach(function(k){ actsByMonth[k]=[]; });
+  // ---------- monthly aggregates (core range) ----------
+  var MTOT={}, MT={}, MD={}, actsByMonth={};
+  CORE.forEach(function(k){ MTOT[k]=0; MT[k]=TYPES.map(function(){return 0;}); MD[k]=DOCS.map(function(){return 0;}); actsByMonth[k]=[]; });
   ACTS.forEach(function(a){ var k=ym(a[0]); if(MTOT[k]!==undefined){ MTOT[k]++; if(a[3]>=0)MT[k][a[3]]++; if(a[1]>=0)MD[k][a[1]]++; actsByMonth[k].push(a); } });
   var CORE_SUM=CORE.reduce(function(s,k){return s+MTOT[k];},0);
-
-  // sorted-by-date-desc copy for tables (blanks last)
   var ACTS_SORTED=ACTS.slice().sort(function(a,b){ if(!a[0]&&!b[0])return 0; if(!a[0])return 1; if(!b[0])return -1; return a[0]<b[0]?1:(a[0]>b[0]?-1:0); });
+  var REFERRALS=[60,58,55,74,70,92,84,82,101]; // illustrative until Edge import (676 YTD)
+  function refFor(k){ var i=CORE.indexOf(k); return i>=0?REFERRALS[i]:0; }
 
   // ================= interactive trend chart =================
-  function drawTrend(host, months, series, opts){
-    opts=opts||{}; var n=months.length;
+  // points: [{key,label,full}] ; series: [{name,color,values[]}]
+  function drawTrend(host, points, series, opts){
+    opts=opts||{}; var n=points.length;
     var W=1000,H=300,padL=10,padR=10,padT=16,padB=6, base=H-padB, top=padT;
     var allv=[]; series.forEach(function(s){ allv=allv.concat(s.values); });
     var max=Math.max.apply(null,allv)*1.15||1;
-    function X(i){ return padL+i*((W-padL-padR)/(n-1)); }
+    function X(i){ return padL+i*((W-padL-padR)/Math.max(1,(n-1))); }
     function Y(v){ return base-(v/max)*(base-top); }
-    var fx=months.map(function(_,i){ return +(X(i)/W*100).toFixed(3); });
+    var fx=points.map(function(_,i){ return +(X(i)/W*100).toFixed(3); });
     var ys=series.map(function(s){ return s.values.map(function(v){ return +(Y(v)/H*100).toFixed(3); }); });
     var svg='<svg viewBox="0 0 '+W+' '+H+'" preserveAspectRatio="none">';
-    series.forEach(function(s){
+    series.forEach(function(s,si){
       var pts=s.values.map(function(v,i){ return X(i).toFixed(1)+','+Y(v).toFixed(1); }).join(' ');
-      if(opts.area){ svg+='<polygon points="'+X(0).toFixed(1)+','+base+' '+pts+' '+X(n-1).toFixed(1)+','+base+'" fill="'+hexA(s.color,0.14)+'"/>'; }
-      svg+='<polyline points="'+pts+'" fill="none" stroke="'+s.color+'" stroke-width="2.4" vector-effect="non-scaling-stroke" stroke-linejoin="round" stroke-linecap="round"/>';
+      if(opts.area){ svg+='<polygon data-area="'+si+'" points="'+X(0).toFixed(1)+','+base+' '+pts+' '+X(n-1).toFixed(1)+','+base+'" fill="'+hexA(s.color,0.14)+'"/>'; }
+      svg+='<polyline data-si="'+si+'" points="'+pts+'" fill="none" stroke="'+s.color+'" stroke-width="2.4" vector-effect="non-scaling-stroke" stroke-linejoin="round" stroke-linecap="round"/>';
     });
     svg+='</svg>';
-    // year-boundary dividers
+    // year-boundary divider line (label goes on the x-axis, not floating)
     var yd='';
-    for(var i=1;i<n;i++){ if(months[i].slice(0,4)!==months[i-1].slice(0,4)){ var mid=((fx[i-1]+fx[i])/2).toFixed(3);
-      yd+='<div class="cyr" style="left:'+mid+'%"></div><div class="cyrlab" style="left:'+mid+'%">'+months[i].slice(0,4)+'</div>'; } }
+    for(var i=1;i<n;i++){ if(points[i].key.slice(0,4)!==points[i-1].key.slice(0,4)){ var mid=((fx[i-1]+fx[i])/2).toFixed(3); yd+='<div class="cyr" style="left:'+mid+'%"></div>'; } }
+    // legend (multi-series)
+    var multi=series.length>1;
     var legend='';
-    if(series.length>1){ legend='<div class="clegend">'+series.map(function(s){ return '<span><i style="background:'+s.color+'"></i>'+esc(s.name)+'</span>'; }).join('')+'</div>'; }
-    var xr='<div class="xr">'+months.map(function(k){ return '<span>'+monLabel(k)+'</span>'; }).join('')+'</div>';
+    if(multi){ legend='<div class="clegend">'+series.map(function(s,si){ return '<span data-lg="'+si+'"><i style="background:'+s.color+'"></i>'+esc(s.name)+'</span>'; }).join('')+'</div>'; }
+    // x labels — thin out when many (daily); mark year boundary
+    var step=n>14?Math.ceil(n/10):1;
+    var xr='<div class="xr">'+points.map(function(p,i){
+      var boundary=i>0&&points[i].key.slice(0,4)!==points[i-1].key.slice(0,4);
+      var showTxt=(i%step===0)||boundary||i===n-1;
+      return '<span'+(boundary?' class="yb"':'')+'>'+(showTxt?esc(p.label):'')+'</span>';
+    }).join('')+'</div>';
     host.innerHTML=legend+'<div class="cwrap'+(opts.click?' clk':'')+'">'+svg+yd+'<div class="cguide"></div><div class="ctip"></div></div>'+xr;
-    // wire hover
     var wrap=host.querySelector('.cwrap'), guide=wrap.querySelector('.cguide'), tip=wrap.querySelector('.ctip');
     var dots=series.map(function(s){ var d=document.createElement('div'); d.className='cdot'; d.style.background=s.color; wrap.appendChild(d); return d; });
+    var focus={}, focusN=0;
+    var polys=host.querySelectorAll('svg [data-si]'), areas=host.querySelectorAll('svg [data-area]'), legs=host.querySelectorAll('.clegend [data-lg]');
+    function isOn(si){ return focusN===0 || focus[si]; }
+    function applyFocus(){
+      polys.forEach(function(pl){ var si=+pl.getAttribute('data-si'); pl.style.opacity=isOn(si)?1:0.1; });
+      areas.forEach(function(ar){ var si=+ar.getAttribute('data-area'); ar.style.opacity=isOn(si)?1:0.05; });
+      legs.forEach(function(lg){ var si=+lg.getAttribute('data-lg'); lg.style.opacity=isOn(si)?1:0.35; lg.style.fontWeight=focus[si]?900:700; });
+    }
+    if(multi){ legs.forEach(function(lg){ lg.style.cursor='pointer'; lg.addEventListener('click', function(){ var si=+lg.getAttribute('data-lg'); if(focus[si]){ delete focus[si]; focusN--; } else { focus[si]=1; focusN++; } applyFocus(); }); });
+      var hn=document.createElement('div'); hn.className='chint'; hn.style.marginTop='6px'; hn.textContent='Click a name to focus · click more to compare · click again to reset.'; host.appendChild(hn); }
     function nearest(clientX){ var r=wrap.getBoundingClientRect(); var f=(clientX-r.left)/r.width*100; var best=0,bd=1e9; for(var i=0;i<n;i++){ var dd=Math.abs(f-fx[i]); if(dd<bd){bd=dd;best=i;} } return best; }
     function moveTo(i){
-      guide.style.left=fx[i]+'%'; guide.style.opacity=1;
-      var topPct=100; series.forEach(function(s,si){ dots[si].style.left=fx[i]+'%'; dots[si].style.top=ys[si][i]+'%'; dots[si].style.opacity=1; if(ys[si][i]<topPct)topPct=ys[si][i]; });
-      var h='<div class="h">'+esc(monFull(months[i]))+'</div>';
-      series.forEach(function(s,si){ h+='<div class="r"><span class="sw" style="background:'+s.color+'"></span>'+(series.length>1?esc(s.name)+' ':'')+'<span class="v">'+s.values[i]+'</span>'+(series.length===1?' '+(opts.unit||'touchpoints'):'')+'</div>'; });
+      guide.style.left=fx[i]+'%'; guide.style.opacity=1; var topPct=100;
+      series.forEach(function(s,si){ var on=isOn(si); dots[si].style.left=fx[i]+'%'; dots[si].style.top=ys[si][i]+'%'; dots[si].style.opacity=on?1:0; if(on&&ys[si][i]<topPct)topPct=ys[si][i]; });
+      var h='<div class="h">'+esc(points[i].full)+'</div>';
+      series.forEach(function(s,si){ if(!isOn(si))return; h+='<div class="r"><span class="sw" style="background:'+s.color+'"></span>'+(multi?esc(s.name)+' ':'')+'<span class="v">'+s.values[i]+'</span>'+(!multi?' '+(opts.unit||'touchpoints'):'')+'</div>'; });
       tip.innerHTML=h; tip.style.left=fx[i]+'%'; tip.style.top=topPct+'%';
       tip.style.transform = fx[i]>84?'translate(-90%,calc(-100% - 14px))':(fx[i]<16?'translate(-10%,calc(-100% - 14px))':'translate(-50%,calc(-100% - 14px))');
       tip.style.opacity=1;
@@ -626,16 +745,45 @@
     function hide(){ guide.style.opacity=0; tip.style.opacity=0; dots.forEach(function(d){ d.style.opacity=0; }); }
     wrap.addEventListener('mousemove', function(e){ moveTo(nearest(e.clientX)); });
     wrap.addEventListener('mouseleave', hide);
-    if(opts.click) wrap.addEventListener('click', function(e){ opts.click(months[nearest(e.clientX)]); });
+    if(opts.click) wrap.addEventListener('click', function(e){ opts.click(points[nearest(e.clientX)].key); });
   }
-
-  // shared bar-row renderer
+  // dual-axis: activity volume (left) vs referrals (right)
+  function drawDualAxis(host, points, left, right){
+    var n=points.length, W=1000,H=300,padL=10,padR=10,padT=16,padB=6, base=H-padB, top=padT;
+    var lmax=Math.max.apply(null,left.values)*1.2||1, rmax=Math.max.apply(null,right.values)*1.2||1;
+    function X(i){ return padL+i*((W-padL-padR)/Math.max(1,(n-1))); }
+    function YL(v){ return base-(v/lmax)*(base-top); }
+    function YR(v){ return base-(v/rmax)*(base-top); }
+    var fx=points.map(function(_,i){ return +(X(i)/W*100).toFixed(3); });
+    var lys=left.values.map(function(v){ return +(YL(v)/H*100).toFixed(3); });
+    var rys=right.values.map(function(v){ return +(YR(v)/H*100).toFixed(3); });
+    var lp=left.values.map(function(v,i){ return X(i).toFixed(1)+','+YL(v).toFixed(1); }).join(' ');
+    var rp=right.values.map(function(v,i){ return X(i).toFixed(1)+','+YR(v).toFixed(1); }).join(' ');
+    var svg='<svg viewBox="0 0 '+W+' '+H+'" preserveAspectRatio="none">'
+      +'<polygon points="'+X(0).toFixed(1)+','+base+' '+lp+' '+X(n-1).toFixed(1)+','+base+'" fill="'+hexA(left.color,0.12)+'"/>'
+      +'<polyline points="'+lp+'" fill="none" stroke="'+left.color+'" stroke-width="2.4" vector-effect="non-scaling-stroke" stroke-linejoin="round"/>'
+      +'<polyline points="'+rp+'" fill="none" stroke="'+right.color+'" stroke-width="2.4" stroke-dasharray="5 4" vector-effect="non-scaling-stroke" stroke-linejoin="round"/>'
+      +'</svg>';
+    var yd='';
+    for(var i=1;i<n;i++){ if(points[i].key.slice(0,4)!==points[i-1].key.slice(0,4)){ var mid=((fx[i-1]+fx[i])/2).toFixed(3); yd+='<div class="cyr" style="left:'+mid+'%"></div>'; } }
+    var legend='<div class="clegend"><span><i style="background:'+left.color+'"></i>'+esc(left.name)+' <b style="color:var(--faint);font-weight:700">(left)</b></span><span><i style="background:'+right.color+';height:3px;width:15px;border-radius:1px"></i>'+esc(right.name)+' <b style="color:var(--faint);font-weight:700">(right)</b></span></div>';
+    var xr='<div class="xr">'+points.map(function(p,i){ var b=i>0&&points[i].key.slice(0,4)!==points[i-1].key.slice(0,4); return '<span'+(b?' class="yb"':'')+'>'+esc(p.label)+'</span>'; }).join('')+'</div>';
+    host.innerHTML=legend+'<div class="cwrap"><div class="axl axl-l">'+Math.round(lmax)+'</div><div class="axl axl-r">'+Math.round(rmax)+'</div>'+svg+yd+'<div class="cguide"></div><div class="ctip"></div><div class="cdot" data-d="l" style="background:'+left.color+'"></div><div class="cdot" data-d="r" style="background:'+right.color+'"></div></div>'+xr;
+    var wrap=host.querySelector('.cwrap'), guide=wrap.querySelector('.cguide'), tip=wrap.querySelector('.ctip'), dl=wrap.querySelector('[data-d=l]'), dr=wrap.querySelector('[data-d=r]');
+    function nearest(cx){ var r=wrap.getBoundingClientRect(); var f=(cx-r.left)/r.width*100,best=0,bd=1e9; for(var i=0;i<n;i++){ var d=Math.abs(f-fx[i]); if(d<bd){bd=d;best=i;} } return best; }
+    function moveTo(i){ guide.style.left=fx[i]+'%'; guide.style.opacity=1; dl.style.left=fx[i]+'%'; dl.style.top=lys[i]+'%'; dl.style.opacity=1; dr.style.left=fx[i]+'%'; dr.style.top=rys[i]+'%'; dr.style.opacity=1;
+      tip.innerHTML='<div class="h">'+esc(points[i].full)+'</div><div class="r"><span class="sw" style="background:'+left.color+'"></span>'+esc(left.name)+' <span class="v">'+left.values[i]+'</span></div><div class="r"><span class="sw" style="background:'+right.color+'"></span>'+esc(right.name)+' <span class="v">'+right.values[i]+'</span></div>';
+      tip.style.left=fx[i]+'%'; tip.style.top=Math.min(lys[i],rys[i])+'%'; tip.style.transform=fx[i]>84?'translate(-90%,calc(-100% - 14px))':(fx[i]<16?'translate(-10%,calc(-100% - 14px))':'translate(-50%,calc(-100% - 14px))'); tip.style.opacity=1; }
+    function hide(){ guide.style.opacity=0; tip.style.opacity=0; dl.style.opacity=0; dr.style.opacity=0; }
+    wrap.addEventListener('mousemove', function(e){ moveTo(nearest(e.clientX)); });
+    wrap.addEventListener('mouseleave', hide);
+  }
   function barRows(tbody, rows){
     var max=Math.max.apply(null, rows.map(function(r){return r[1];}))||1;
     tbody.innerHTML=rows.map(function(r){ return '<tr><td class="p">'+esc(r[0])+'</td><td class="num-col">'+r[1]+'</td><td><div class="barbg"><div class="bar" style="width:'+Math.round(r[1]/max*100)+'%"></div></div></td></tr>'; }).join('');
   }
 
-  // ================= navigation / chrome =================
+  // ================= chrome =================
   function show(id){
     document.querySelectorAll('.screen').forEach(function(s){ s.classList.toggle('on', s.id===id); });
     document.querySelectorAll('nav .tab').forEach(function(t){ t.classList.toggle('on', t.dataset.tab===id); });
@@ -657,14 +805,20 @@
       it.addEventListener('click', function(ev){ ev.stopPropagation(); pick(dd,o); closeDD(); }); menu.appendChild(it); });
     dd.appendChild(menu);
   });
-  var REPORTS={ "Touchpoints by doctor":"Touchpoints by doctor","Outreach by practice":"Outreach by practice","Monthly trend":"Monthly trend · network","Activity-type mix":"Activity-type mix","Referral vs outreach":"Referral vs outreach" };
   function pick(dd,val){
     var lab=dd.querySelector('.dd-val'); if(lab) lab.innerHTML=val;
     var plain=val.replace(/&amp;/g,'&');
-    if(dd.dataset.filter){ var isAll=/^All /.test(plain); dd.classList.toggle('act',!isAll); applyFilter(dd.dataset.table,dd.dataset.filter,isAll?null:plain); }
+    if(dd.dataset.filter){
+      var isAll=/^All /.test(plain); dd.classList.toggle('act',!isAll);
+      if(dd.dataset.table==='acts'){ actFilter[dd.dataset.filter]=isAll?null:plain; renderActs(); }
+      else applyFilter(dd.dataset.table,dd.dataset.filter,isAll?null:plain);
+    }
+    if(dd.dataset.rolef){ dash.role=/^All/.test(plain)?null:plain; drawDash(); }
     if(dd.dataset.report){ renderReport(plain); }
     if(dd.id==='asgRep'){ renderAsgList(plain); }
     if(dd.id==='taskDoctor'){ syncTaskPractices(plain); }
+    if(dd.id==='mRole'){ mInviteRole=plain; }
+    if(dd.id==='refBy'){ var rl=$('refTargetLab'); if(rl)rl.textContent=plain; var rt=$('refTarget'); if(rt){ rt.setAttribute('data-options', refTargets(plain).join('|')); rt.querySelector('.dd-val').textContent='Select…'; } }
   }
   var fstate={};
   function applyFilter(table,col,val){
@@ -674,7 +828,6 @@
       r.style.display=ok?'':'none';
     });
   }
-  // task segmented filter
   document.querySelectorAll('.chip.seg').forEach(function(c){
     c.addEventListener('click', function(){
       document.querySelectorAll('.chip.seg').forEach(function(x){ x.classList.toggle('act',x===c); });
@@ -683,73 +836,239 @@
     });
   });
 
+  // ================= pagination =================
+  var pg={ acts:{size:25,page:0}, practices:{size:25,page:0} };
+  function injectPager(tableId){
+    var tbl=document.querySelector('table[data-table="'+tableId+'"]'); if(!tbl) return;
+    var wrap=tbl.closest('.tbl-wrap');
+    var bar=document.createElement('div'); bar.className='pager'; bar.id=tableId+'Pager';
+    bar.innerHTML='<div class="pgcount"></div><div class="pgctrl"><label>Rows</label>'
+      +'<select class="pgsize">'+[25,50,100].map(function(s){return '<option value="'+s+'"'+(s===pg[tableId].size?' selected':'')+'>'+s+'</option>';}).join('')
+      +'</select><button class="pgprev">‹ Prev</button><button class="pgnext">Next ›</button></div>';
+    wrap.parentNode.insertBefore(bar, wrap.nextSibling);
+    bar.querySelector('.pgsize').addEventListener('change', function(){ pg[tableId].size=parseInt(this.value,10); pg[tableId].page=0; rerender(tableId); });
+    bar.querySelector('.pgprev').addEventListener('click', function(){ if(pg[tableId].page>0){ pg[tableId].page--; rerender(tableId); } });
+    bar.querySelector('.pgnext').addEventListener('click', function(){ pg[tableId].page++; rerender(tableId); });
+  }
+  function rerender(id){ if(id==='acts')renderActs(); else if(id==='practices')renderPractices(); }
+  function renderPaged(tableId, rows, rowHtml, colspan){
+    var st=pg[tableId]; var n=rows.length; var pages=Math.max(1,Math.ceil(n/st.size)); if(st.page>=pages)st.page=pages-1; if(st.page<0)st.page=0;
+    var start=st.page*st.size, end=Math.min(n,start+st.size);
+    var tb=document.querySelector('table[data-table="'+tableId+'"] tbody');
+    tb.innerHTML = n ? rows.slice(start,end).map(rowHtml).join('') : '<tr><td colspan="'+(colspan||6)+'" class="empty">No matching records.</td></tr>';
+    var bar=$(tableId+'Pager');
+    if(bar){ bar.querySelector('.pgcount').textContent = n?('Showing '+(start+1)+'–'+end+' of '+n):'0 records';
+      bar.querySelector('.pgprev').disabled=st.page<=0; bar.querySelector('.pgnext').disabled=st.page>=pages-1; }
+    return {start:start,end:end,n:n};
+  }
+
   // ================= tables (data-driven) =================
-  function renderDoctors(){
+  function renderReps(){
+    var tab=document.querySelector('nav .tab[data-tab="doctors"]'); if(tab) tab.textContent='Reps';
+    var g=document.querySelector('#doctors .greet'); if(g){ g.querySelector('h2').textContent='Reps'; g.querySelector('p').textContent='Users who log activity for their practices — each carries a role (Doctor or Marketer/Staff).'; }
+    var ch=document.querySelector('#doctors .card-h h3'); if(ch) ch.textContent='Users · '+DOCS.length;
+    var thead=document.querySelector('table[data-table="doctors"] thead');
+    if(thead) thead.innerHTML='<tr><th>Rep</th><th>Role</th><th>Email</th><th>Status</th><th class="num-col">Practices</th><th class="num-col">Activities</th></tr>';
     var tb=document.querySelector('table[data-table="doctors"] tbody');
     tb.innerHTML=DOCS.map(function(d){
       var pill=d.active?'<span class="pill good">Active</span>':'<span class="pill bad">Inactive</span>';
+      var rolep='<span class="rolepill '+(d.role==='Doctor'?'rd':'rm')+'">'+esc(d.role)+'</span>';
       var email=d.active?esc(d.email):'— (no longer with GO)';
-      return '<tr class="link" data-person="'+esc(d.name)+'"><td class="p">'+esc(d.name)+'</td><td class="m">'+email+'</td><td>'+pill+'</td><td class="num-col">'+d.practices+'</td><td class="num-col">'+d.acts+'</td></tr>';
+      return '<tr class="link" data-person="'+esc(d.name)+'" data-role="'+esc(d.role)+'"><td class="p">'+esc(d.name)+'</td><td>'+rolep+'</td><td class="m">'+email+'</td><td>'+pill+'</td><td class="num-col">'+d.practices+'</td><td class="num-col">'+d.acts+'</td></tr>';
     }).join('');
     tb.querySelectorAll('tr.link').forEach(function(r){ r.addEventListener('click', function(){ openDoctor(r.getAttribute('data-person')); }); });
   }
+
+  var pracFilter={ q:'', role:null, doctor:null };
   function renderPractices(){
-    var tb=document.querySelector('table[data-table="practices"] tbody');
-    var rows=PRACS.slice().sort(function(a,b){ return b.acts-a.acts; });
-    tb.innerHTML=rows.map(function(p){
-      var sub=p.long&&p.long!==p.name?' <span class="m" style="font-weight:400">— '+esc(p.long.replace(p.name,'').replace(/^[\s—-]+/,''))+'</span>':'';
+    var rows=PRACS.slice().sort(function(a,b){ return b.acts-a.acts; }).filter(function(p){
+      if(pracFilter.role){ var d=DOCS.filter(function(x){return x.name===p.doctor;})[0]; if(!(d&&d.role===pracFilter.role)) return false; }
+      if(pracFilter.doctor && p.doctor!==pracFilter.doctor) return false;
+      if(pracFilter.q && (p.name+' '+p.doctor+' '+p.type).toLowerCase().indexOf(pracFilter.q)<0) return false;
+      return true;
+    });
+    renderPaged('practices', rows, function(p){
       return '<tr class="link" data-name="'+esc(p.name)+'" data-rep="'+esc(p.doctor)+'"><td class="p">'+esc(p.name)+'</td><td>'+esc(p.doctor)+'</td><td class="num-col">'+p.acts+'</td></tr>';
-    }).join('');
-    tb.querySelectorAll('tr.link').forEach(function(r){ r.addEventListener('click', function(){ loadAssign(r.getAttribute('data-name'), r.getAttribute('data-rep')); }); });
+    }, 3);
+    document.querySelectorAll('table[data-table="practices"] tbody tr.link').forEach(function(r){ r.addEventListener('click', function(){ openPractice(r.getAttribute('data-name')); }); });
   }
+
   function actRow(a, withDoctor){
     var doc=a[1]>=0?DOCS[a[1]].name:'—', prac=a[2]>=0?PRACS[a[2]].name:'—', ty=a[3]>=0?TYPES[a[3]]:'—';
-    var note=a[4]?esc(a[4]):'—';
     var cells='<td class="m">'+fmtDate(a[0])+'</td>';
     if(withDoctor) cells+='<td class="p">'+esc(doc)+'</td>';
-    cells+='<td class="m">'+esc(prac)+'</td><td><span class="tag">'+tagFor(a[3])+'</span></td><td class="m">'+note+'</td>';
+    cells+='<td class="m">'+esc(prac)+'</td><td><span class="tag">'+tagFor(a[3])+'</span></td><td class="m">'+(a[4]?esc(a[4]):'—')+'</td>';
     return '<tr data-doctor="'+esc(doc)+'" data-type="'+esc(ty)+'">'+cells+'</tr>';
   }
+  var actFilter={ q:'', doctor:null, type:null, role:null, from:'', to:'' };
+  function computeActs(){
+    var f=actFilter;
+    return ACTS_SORTED.filter(function(a){
+      if(f.role && roleOf(a)!==f.role) return false;
+      if(f.doctor && !(DOCS[a[1]]&&DOCS[a[1]].name===f.doctor)) return false;
+      if(f.type && TYPES[a[3]]!==f.type) return false;
+      if(f.from && (!a[0]||a[0]<f.from)) return false;
+      if(f.to && (!a[0]||a[0]>f.to)) return false;
+      if(f.q){ var s=(fmtDate(a[0])+' '+(DOCS[a[1]]?DOCS[a[1]].name:'')+' '+(PRACS[a[2]]?PRACS[a[2]].name:'')+' '+(TYPES[a[3]]||'')+' '+(a[4]||'')).toLowerCase(); if(s.indexOf(f.q)<0) return false; }
+      return true;
+    });
+  }
   function renderActs(){
-    var tb=document.querySelector('table[data-table="acts"] tbody');
-    tb.innerHTML=ACTS_SORTED.map(function(a){ return actRow(a,true); }).join('');
+    var rows=computeActs();
+    renderPaged('acts', rows, function(a){ return actRow(a,true); }, 5);
+    var h=document.querySelector('#activities .card-h h3'); if(h) h.textContent='Activity log · '+rows.length+(rows.length!==ACTS.length?' of '+ACTS.length:'');
   }
   function renderFeed(){
     var tb=document.querySelector('table[data-table="feed"] tbody');
-    var recent=ACTS_SORTED.slice(0,6);
-    tb.innerHTML=recent.map(function(a,idx){
+    tb.innerHTML=ACTS_SORTED.slice(0,6).map(function(a,idx){
       var doc=a[1]>=0?DOCS[a[1]].name:'—', prac=a[2]>=0?PRACS[a[2]].name:'—', ty=a[3]>=0?TYPES[a[3]]:'—';
       var when=idx===0?'<span class="livechip">LIVE</span>latest':fmtDate(a[0]);
       return '<tr data-doctor="'+esc(doc)+'" data-type="'+esc(ty)+'"><td class="p">'+esc(doc)+'</td><td class="m">'+esc(prac)+'</td><td><span class="tag">'+tagFor(a[3])+'</span></td><td class="m">'+when+'</td></tr>';
     }).join('');
   }
 
-  // ================= doctor detail =================
+  // ================= doctor / rep detail =================
+  var repTf='all', curRepDi=-1;
+  function repPoints(){ var ks = repTf==='ytd' ? CORE.filter(function(k){ return k.slice(0,4)===String(CUR_Y); }) : CORE; return ks.map(function(k){ return {key:k,label:monLabel(k),full:monFull(k)}; }); }
+  function renderRepCharts(){
+    if(curRepDi<0) return; var di=curRepDi, d=DOCS[di], pts=repPoints();
+    var actVals=pts.map(function(p){ return MD[p.key]?MD[p.key][di]:0; });
+    var totalActs=DOCS.reduce(function(s,x){return s+x.acts;},0)||1, share=d.acts/totalActs;
+    var refVals=pts.map(function(p){ return Math.round(refFor(p.key)*share); });
+    if($('dRepActChart')) drawTrend($('dRepActChart'), pts, [{name:'Activities',color:'#C0603C',values:actVals}], {area:true, unit:'activities'});
+    if($('dRepRefChart')) drawTrend($('dRepRefChart'), pts, [{name:'Referrals',color:'#16314F',values:refVals}], {area:true, unit:'referrals'});
+  }
   function openDoctor(name){
     var di=-1; for(var i=0;i<DOCS.length;i++){ if(DOCS[i].name===name){ di=i; break; } }
-    if(di<0) return; var d=DOCS[di];
+    if(di<0) return; var d=DOCS[di]; curRepDi=di;
     $('dName').textContent=d.name; $('dEmail').textContent=d.active?d.email:'— (no longer with GO)';
     $('dAv').textContent=initials(d.name); $('dTouches').textContent=d.acts; $('dPractices').textContent=d.practices;
     $('dLast').textContent=d.active?'recently':'—';
-    var pill=$('dStatus'); pill.textContent=d.active?'Active':'Inactive'; pill.className='pill '+(d.active?'good':'bad');
-    var mine=ACTS_SORTED.filter(function(a){ return a[1]===di; });
-    $('dActs').innerHTML = mine.length ? mine.map(function(a){ return actRow(a,false); }).join('') : '<tr><td colspan="4" class="empty">No activity in this view.</td></tr>';
-    show('docDetail');
+    var pill=$('dStatus'); pill.textContent=(d.active?'Active':'Inactive')+' · '+d.role; pill.className='pill '+(d.active?'good':'bad');
+    // report card
+    var tc=TYPES.map(function(){return 0;}), mine=[];
+    ACTS_SORTED.forEach(function(a){ if(a[1]===di){ mine.push(a); if(a[3]>=0)tc[a[3]]++; } });
+    var topTi=0; tc.forEach(function(v,i){ if(v>tc[topTi])topTi=i; });
+    var jun=MD['2026-06']?MD['2026-06'][di]:0, may=MD['2026-05']?MD['2026-05'][di]:0;
+    var delta = may ? Math.round((jun-may)/may*100) : 0;
+    var totalActs=DOCS.reduce(function(s,x){return s+x.acts;},0)||1, share=d.acts/totalActs;
+    var repRefTotal=Math.round(676*share), eff=d.acts?Math.round(repRefTotal/d.acts*100):0, avg=Math.round(d.acts/9);
+    if($('rcActs')){
+      $('rcActs').textContent=d.acts;
+      $('rcTrend').innerHTML=(delta>=0?'▲ ':'▼ ')+Math.abs(delta)+'% MoM'; $('rcTrend').style.color=delta>=0?'var(--good)':'var(--bad)';
+      $('rcTop').textContent=d.acts?TYPES[topTi]:'—'; $('rcTopSub').textContent=d.acts?tc[topTi]+' logged':'';
+      $('rcEff').textContent=eff; $('rcAvg').textContent=avg;
+    }
+    var reppracs=PRACS.filter(function(p){return p.doctor===d.name;}).sort(function(a,b){return b.acts-a.acts;});
+    if($('dRepPracN')) $('dRepPracN').textContent=reppracs.length;
+    if($('dRepPracs')){
+      $('dRepPracs').innerHTML = reppracs.length ? reppracs.map(function(p){ return '<tr class="link" data-pn="'+esc(p.name)+'"><td class="p">'+esc(p.name)+'</td><td class="m">'+esc(p.type)+'</td><td class="num-col">'+p.acts+'</td></tr>'; }).join('') : '<tr><td colspan="3" class="empty">No practices assigned.</td></tr>';
+      $('dRepPracs').querySelectorAll('tr.link').forEach(function(r){ r.addEventListener('click', function(){ openPractice(r.getAttribute('data-pn')); }); });
+    }
+    $('dActs').innerHTML = mine.length ? mine.slice(0,60).map(function(a){ return actRow(a,false); }).join('') : '<tr><td colspan="4" class="empty">No activity in this view.</td></tr>';
+    show('docDetail'); renderRepCharts();
   }
   $('docBack').addEventListener('click', function(){ show('doctors'); });
+  document.querySelectorAll('[data-reptf]').forEach(function(c){ c.addEventListener('click', function(){ repTf=c.dataset.reptf; document.querySelectorAll('[data-reptf]').forEach(function(x){ x.classList.toggle('act',x===c); }); renderRepCharts(); }); });
 
-  // ================= dashboard chart (multi-view) =================
-  function dashSeries(view){
-    if(view==='type') return TYPES.map(function(t,ti){ return {name:t,color:TYPECOLORS[ti],values:CORE.map(function(k){ return MT[k][ti]; })}; });
-    if(view==='doctor') return DOCS.map(function(d,di){ return {name:shortDoc(d.name),color:DOCCOLORS[di%DOCCOLORS.length],values:CORE.map(function(k){ return MD[k][di]; })}; });
-    return [{name:'Touchpoints',color:'#C0603C',values:CORE.map(function(k){ return MTOT[k]; })}];
+  // ================= practice detail (tap-through) =================
+  var curPrac=null, pracReturn='practices';
+  function openPractice(name){
+    var pi=-1; for(var i=0;i<PRACS.length;i++){ if(PRACS[i].name===name){ pi=i; break; } }
+    if(pi<0) return; var p=PRACS[pi]; curPrac=p;
+    var cur=document.querySelector('.screen.on'); pracReturn=cur?cur.id:'practices';
+    $('pdName').textContent=p.name; $('pdType').textContent=p.type; $('pdRep').textContent=p.doctor; $('pdAv').textContent=initials(p.name);
+    var mine=ACTS_SORTED.filter(function(a){ return a[2]===pi; });
+    var totalActs=DOCS.reduce(function(s,x){return s+x.acts;},0)||1;
+    var refs=Math.round(676*(p.acts/totalActs)), roi=p.acts?Math.round(refs/p.acts*100):0;
+    $('pdActs').textContent=p.acts; $('pdRefs').textContent=refs; $('pdRoi').textContent=roi; $('pdLast').textContent=mine.length?fmtDate(mine[0][0]):'—';
+    var tc=TYPES.map(function(){return 0;}); mine.forEach(function(a){ if(a[3]>=0)tc[a[3]]++; });
+    barRows($('pdTypeBars'), TYPES.map(function(t,ti){return [t,tc[ti]];}).filter(function(r){return r[1]>0;}).sort(function(a,b){return b[1]-a[1];}));
+    var pts=CORE.map(function(k){return {key:k,label:monLabel(k),full:monFull(k)};});
+    var vals=pts.map(function(pt){ var c=0; mine.forEach(function(a){ if(ym(a[0])===pt.key)c++; }); return c; });
+    drawTrend($('pdChart'), pts, [{name:'Activities',color:'#C0603C',values:vals}], {area:true, unit:'activities'});
+    $('pdRecs').innerHTML = mine.length ? mine.slice(0,40).map(function(a){ var doc=a[1]>=0?DOCS[a[1]].name:'—'; return '<tr><td class="m">'+fmtDate(a[0])+'</td><td class="p">'+esc(doc)+'</td><td><span class="tag">'+tagFor(a[3])+'</span></td><td class="m">'+(a[4]?esc(a[4]):'—')+'</td></tr>'; }).join('') : '<tr><td colspan="4" class="empty">No activity.</td></tr>';
+    show('pracDetail');
   }
-  function drawDash(view){ drawTrend($('dashChart'), CORE, dashSeries(view), {area:view==='total', click:openMonth}); }
-  document.querySelectorAll('#dashViews .cv').forEach(function(c){
-    c.addEventListener('click', function(){ document.querySelectorAll('#dashViews .cv').forEach(function(x){ x.classList.toggle('act',x===c); }); drawDash(c.dataset.cview); });
-  });
+  if($('pdBack')) $('pdBack').addEventListener('click', function(){ show(pracReturn); });
+  if($('pdRep')) $('pdRep').addEventListener('click', function(){ if(curPrac) openDoctor(curPrac.doctor); });
+  if($('pdReassign')) $('pdReassign').addEventListener('click', function(){ if(curPrac) loadAssign(curPrac.name, curPrac.doctor); });
 
-  // ================= month detail (the per-month story) =================
+  // ================= referrals (monthly analysis + two-way entry) =================
+  function refTargets(kind){ return kind==='Rep' ? DOCS.map(function(d){return d.name;}) : PRACS.map(function(p){return p.name.replace(/&/g,'&amp;');}); }
+  var refBatch=[];
+  function renderRefTable(){ var el=$('refBody'); if(!el)return; var max=Math.max.apply(null,CORE.map(function(k){return refFor(k);}))||1;
+    el.innerHTML=CORE.map(function(k){ return '<tr><td class="p">'+monFull(k)+'</td><td class="num-col">'+refFor(k)+'</td><td class="num-col">'+MTOT[k]+'</td><td><div class="barbg"><div class="bar" style="width:'+Math.round(refFor(k)/max*100)+'%"></div></div></td></tr>'; }).join(''); }
+  function renderRefPreview(){ var w=$('refPreviewWrap'); if(!w)return; if(!refBatch.length){ w.style.display='none'; return; } w.style.display=''; $('refPrevN').textContent=refBatch.length;
+    $('refPreview').innerHTML=refBatch.map(function(r){ return '<tr><td class="m">'+esc(r.month)+'</td><td class="p">'+esc(r.target)+'</td><td class="num-col">'+r.count+'</td></tr>'; }).join(''); }
+  function initReferrals(){
+    if(!$('refMonth')) return;
+    $('refMonth').setAttribute('data-options', CORE.map(function(k){return monLabel(k);}).join('|'));
+    $('refMonth').querySelector('.dd-val').textContent=monLabel('2026-06');
+    $('refTarget').setAttribute('data-options', refTargets('Practice').join('|'));
+    renderRefTable();
+    document.querySelectorAll('[data-refm]').forEach(function(c){ c.addEventListener('click', function(){ document.querySelectorAll('[data-refm]').forEach(function(x){x.classList.toggle('act',x===c);}); var m=c.dataset.refm; $('refForm').style.display=m==='form'?'':'none'; $('refPdf').style.display=m==='pdf'?'':'none'; }); });
+    $('refAdd').addEventListener('click', function(){ var m=$('refMonth').querySelector('.dd-val').textContent; var t=$('refTarget').querySelector('.dd-val').textContent.replace(/&amp;/g,'&'); var c=parseInt($('refCount').value,10); if(!t||t==='Select…'||!c){ toast('Pick a target and a count'); return; } refBatch.push({month:m,target:t,count:c}); $('refCount').value=''; renderRefPreview(); toast('Added to batch'); });
+    $('refFile').addEventListener('change', function(){ var file=this.files&&this.files[0]; if(!file)return; var st=$('refPdfStatus'); st.textContent='Reading '+file.name+'…'; var m=$('refMonth').querySelector('.dd-val').textContent; var totalActs=DOCS.reduce(function(s,x){return s+x.acts;},0)||1;
+      setTimeout(function(){ var top=PRACS.slice().sort(function(a,b){return b.acts-a.acts;}).slice(0,6); top.forEach(function(p){ refBatch.push({month:m,target:p.name,count:Math.max(1,Math.round(refFor('2026-06')*(p.acts/totalActs)))}); }); st.textContent='Parsed '+top.length+' lines from '+file.name+' — review below, then accept.'; renderRefPreview(); }, 650);
+      this.value=''; });
+    $('refAccept').addEventListener('click', function(){ var n=refBatch.length; if(!n){ toast('Nothing to import'); return; } refBatch=[]; renderRefPreview(); if($('refPdfStatus'))$('refPdfStatus').textContent=''; toast(n+' referral rows imported ✓'); });
+    $('refClear').addEventListener('click', function(){ refBatch=[]; renderRefPreview(); if($('refPdfStatus'))$('refPdfStatus').textContent=''; });
+    $('refExport').addEventListener('click', function(){ curReport={title:'Monthly referrals', headers:['Month','Referrals','Outreach'], data:CORE.map(function(k){return [monFull(k),String(refFor(k)),String(MTOT[k])];}), share:false}; exportExcel(); });
+  }
+
+  // ================= dashboard (role + timeframe + view) =================
+  var dash={ tf:'all', role:null, view:'total' };
+  function tfPred(tf){ if(tf==='month'){ var mk=resolveMonth(); return function(a){ return ym(a[0])===mk; }; } if(tf==='ytd'){ return function(a){ return (a[0]||'').slice(0,4)===String(CUR_Y); }; } return function(){ return true; }; }
+  function resolveMonth(){ var c=ACTS.filter(function(a){return ym(a[0])===CUR_KEY;}).length; return c>0?CUR_KEY:LATEST; }
+  function pointsFor(tf){
+    if(tf==='month'){ var mk=resolveMonth(), nd=daysInMonth(mk), arr=[]; for(var dd=1;dd<=nd;dd++){ var d2=('0'+dd).slice(-2); arr.push({key:mk+'-'+d2, label:String(dd), full:monFull(mk)+' '+dd}); } return {points:arr, keyOf:function(a){return a[0];}, monthly:false, mk:mk}; }
+    if(tf==='ytd'){ var ks=CORE.filter(function(k){return k.slice(0,4)===String(CUR_Y);}); return {points:ks.map(function(k){return {key:k,label:monLabel(k),full:monFull(k)};}), keyOf:function(a){return ym(a[0]);}, monthly:true}; }
+    return {points:CORE.map(function(k){return {key:k,label:monLabel(k),full:monFull(k)};}), keyOf:function(a){return ym(a[0]);}, monthly:true};
+  }
+  function buildSeries(view, points, keyOf, roleF){
+    var base=roleF?ACTS.filter(function(a){ return roleOf(a)===roleF; }):ACTS;
+    function countBy(pred){ return points.map(function(p){ var c=0; base.forEach(function(a){ if(keyOf(a)===p.key && pred(a)) c++; }); return c; }); }
+    if(view==='type') return TYPES.map(function(t,ti){ return {name:t,color:TYPECOLORS[ti],values:countBy(function(a){return a[3]===ti;})}; });
+    if(view==='doctor') return DOCS.map(function(d,di){ return {name:shortDoc(d.name),color:DOCCOLORS[di%DOCCOLORS.length],values:countBy(function(a){return a[1]===di;})}; });
+    return [{name:'Touchpoints',color:'#C0603C',values:countBy(function(){return true;})}];
+  }
+  function setKpi(key, num, lab, sub){ var card=document.querySelector('.kpi.clk[data-kpi="'+key+'"]'); if(!card)return; card.querySelector('.num').innerHTML=num; if(lab)card.querySelector('.lab').textContent=lab; if(sub!=null)card.querySelector('.sub').textContent=sub; }
+  function updateDashKpis(){
+    var pred=tfPred(dash.tf);
+    var base=dash.role?ACTS.filter(function(a){return roleOf(a)===dash.role;}):ACTS;
+    var f=base.filter(pred);
+    var tfLab=dash.tf==='month'?('· '+monLabel(resolveMonth())):(dash.tf==='ytd'?'· YTD '+CUR_Y:'· all-time');
+    var roleLab=dash.role?(' · '+dash.role):'';
+    var pset={}, dset={}; f.forEach(function(a){ if(a[2]>=0)pset[a[2]]=1; if(a[1]>=0)dset[a[1]]=1; });
+    setKpi('activities', f.length, 'Activities '+tfLab, '▲ live from the field'+roleLab);
+    setKpi('practices', Object.keys(pset).length, 'Practices touched '+tfLab, 'of '+PRACS.length+' total');
+    setKpi('doctors', Object.keys(dset).length+' <small>/ '+DOCS.length+'</small>', 'Active reps '+tfLab, dash.role?dash.role:'Doctor + Marketer');
+    var ref = dash.tf==='month'?refFor(resolveMonth()):(dash.tf==='ytd'?CORE.filter(function(k){return k.slice(0,4)===String(CUR_Y);}).reduce(function(s,k){return s+refFor(k);},0):676);
+    setKpi('referrals', ref, 'Referrals '+tfLab, 'illustrative until import');
+  }
+  function drawDash(){
+    var pf=pointsFor(dash.tf);
+    if(pf.monthly && dash.view==='effectiveness'){
+      var base=dash.role?ACTS.filter(function(a){return roleOf(a)===dash.role;}):ACTS;
+      var act=pf.points.map(function(p){ var c=0; base.forEach(function(a){ if(pf.keyOf(a)===p.key)c++; }); return c; });
+      var ref=pf.points.map(function(p){ return refFor(p.key); });
+      drawDualAxis($('dashChart'), pf.points, {name:'Activities',color:'#C0603C',values:act}, {name:'Referrals',color:'#16314F',values:ref});
+      document.querySelectorAll('#dashViews .cv').forEach(function(c){ c.classList.remove('disabled'); c.classList.toggle('act', c.dataset.cview==='effectiveness'); });
+      var ch=document.querySelector('#dash .chart .chint'); if(ch) ch.textContent='Activity vs referrals on a dual axis — who’s busy vs whose activity converts. Referrals illustrative until Edge import.';
+      updateDashKpis(); return;
+    }
+    var view=pf.monthly?dash.view:'total';
+    drawTrend($('dashChart'), pf.points, buildSeries(view, pf.points, pf.keyOf, dash.role), {area:view==='total', click: pf.monthly?openMonth:null});
+    document.querySelectorAll('#dashViews .cv').forEach(function(c){ c.classList.toggle('disabled', !pf.monthly && c.dataset.cview!=='total'); });
+    var chint=document.querySelector('#dash .chart .chint');
+    if(chint){ chint.textContent = pf.monthly
+      ? "Hover for exact counts · click a month for its full story"+(dash.tf==='all'?" · 957 dated Oct '25–Jun '26 (38 undated)":"")
+      : 'Daily activity for '+monFull(pf.mk)+' — hover any day for the count.'; }
+    updateDashKpis();
+  }
+
+  // ================= month detail =================
   function openMonth(key){
     var acts=actsByMonth[key]||[];
     $('mdTitle').textContent=monFull(key);
@@ -759,20 +1078,16 @@
     $('mdActs').textContent=acts.length; $('mdPracs').textContent=Object.keys(pset).length; $('mdDocs').textContent=Object.keys(dset).length;
     var topTi=0; tc.forEach(function(v,i){ if(v>tc[topTi])topTi=i; });
     $('mdTop').textContent=acts.length?TYPES[topTi]:'—'; $('mdTopSub').textContent=acts.length?tc[topTi]+' this month':'';
-    var trows=TYPES.map(function(t,ti){ return [t,tc[ti]]; }).filter(function(r){return r[1]>0;}).sort(function(a,b){return b[1]-a[1];});
-    barRows($('mdTypeBars'), trows.length?trows:[['—',0]]);
-    var drows=DOCS.map(function(d,di){ return [shortDoc(d.name),dc[di]]; }).filter(function(r){return r[1]>0;}).sort(function(a,b){return b[1]-a[1];});
-    barRows($('mdDocBars'), drows.length?drows:[['—',0]]);
+    barRows($('mdTypeBars'), TYPES.map(function(t,ti){return [t,tc[ti]];}).filter(function(r){return r[1]>0;}).sort(function(a,b){return b[1]-a[1];}));
+    barRows($('mdDocBars'), DOCS.map(function(d,di){return [shortDoc(d.name),dc[di]];}).filter(function(r){return r[1]>0;}).sort(function(a,b){return b[1]-a[1];}));
     $('mdRecsTitle').textContent='Records · '+acts.length;
-    var body=$('mdRecs');
     var sorted=acts.slice().sort(function(a,b){ return a[0]<b[0]?1:(a[0]>b[0]?-1:0); });
-    body.innerHTML = sorted.length ? sorted.map(function(a){ return actRow(a,true); }).join('') : '<tr><td colspan="5" class="empty">No activity this month.</td></tr>';
+    $('mdRecs').innerHTML = sorted.length ? sorted.map(function(a){ return actRow(a,true); }).join('') : '<tr><td colspan="5" class="empty">No activity this month.</td></tr>';
     show('monthDetail');
   }
   $('mdBack').addEventListener('click', function(){ show('dash'); });
 
-  // ================= KPI card drill-in =================
-  var REFERRALS=[60,58,55,74,70,92,84,82,101]; // illustrative until Edge import (676 total)
+  // ================= KPI drill-in =================
   document.querySelectorAll('.kpi.clk').forEach(function(k){ k.addEventListener('click', function(){ renderKpi(k.dataset.kpi); }); });
   function renderKpi(key){
     var title,sub,colA,barsTitle,rows,chart=null,chartTitle,records=null,recHead=null,recsTitle;
@@ -780,32 +1095,31 @@
       title='Activities · all-time'; sub=ACTS.length+' logged touches'; colA='Activity type'; barsTitle='By activity type';
       var tc=TYPES.map(function(){return 0;}); ACTS.forEach(function(a){ if(a[3]>=0)tc[a[3]]++; });
       rows=TYPES.map(function(t,ti){return [t,tc[ti]];}).sort(function(a,b){return b[1]-a[1];});
-      chartTitle='Monthly touchpoints'; chart={months:CORE,series:[{name:'Touchpoints',color:'#C0603C',values:CORE.map(function(k){return MTOT[k];})}],area:true,click:openMonth};
-      recHead=['Date','Doctor','Practice','Type','Note']; recsTitle='Records (recent 12 of '+ACTS.length+')';
+      chartTitle='Monthly touchpoints'; chart={points:CORE.map(function(k){return {key:k,label:monLabel(k),full:monFull(k)};}),series:[{name:'Touchpoints',color:'#C0603C',values:CORE.map(function(k){return MTOT[k];})}],area:true,click:openMonth};
+      recHead=['Date','Rep','Practice','Type','Note']; recsTitle='Records (recent 12 of '+ACTS.length+')';
       records=ACTS_SORTED.slice(0,12).map(function(a){ return [fmtDate(a[0]), a[1]>=0?DOCS[a[1]].name:'—', a[2]>=0?PRACS[a[2]].name:'—', tagFor(a[3]), a[4]||'—']; });
     } else if(key==='practices'){
-      title='Practices'; sub=PRACS.length+' practices across the GO network'; colA='Doctor'; barsTitle='By connected doctor';
+      title='Practices'; sub=PRACS.length+' practices across the GO network'; colA='Rep'; barsTitle='By connected rep';
       rows=DOCS.map(function(d){return [d.name,d.practices];}).sort(function(a,b){return b[1]-a[1];});
-      recHead=['Practice','Connected doctor','Activities']; recsTitle='Top practices by outreach (of '+PRACS.length+')';
+      recHead=['Practice','Connected rep','Activities']; recsTitle='Top practices by outreach (of '+PRACS.length+')';
       records=PRACS.slice().sort(function(a,b){return b.acts-a.acts;}).slice(0,12).map(function(p){ return [p.name,p.doctor,String(p.acts)]; });
     } else if(key==='doctors'){
       var act=DOCS.filter(function(d){return d.active;}).length;
-      title='Active doctors'; sub=act+' of '+DOCS.length+' active — activities per doctor'; colA='Doctor'; barsTitle='Activities per doctor';
+      title='Reps'; sub=act+' of '+DOCS.length+' active — activities per rep'; colA='Rep'; barsTitle='Activities per rep';
       rows=DOCS.map(function(d){return [d.name,d.acts];}).sort(function(a,b){return b[1]-a[1];});
-      recHead=['Doctor','Practices','Activities']; recsTitle='Account holders · '+DOCS.length;
-      records=DOCS.map(function(d){ return [d.name+(d.active?'':' (inactive)'),String(d.practices),String(d.acts)]; });
+      recHead=['Rep','Role','Practices','Activities']; recsTitle='Users · '+DOCS.length;
+      records=DOCS.map(function(d){ return [d.name+(d.active?'':' (inactive)'),d.role,String(d.practices),String(d.acts)]; });
     } else if(key==='referrals'){
       title='Referrals · YTD'; sub='676 referrals · Oct 2025 – Jun 2026 (illustrative until Edge import)'; colA='Month'; barsTitle='By month';
       rows=CORE.map(function(k,i){return [monLabel(k),REFERRALS[i]];});
-      chartTitle='Monthly referrals'; chart={months:CORE,series:[{name:'Referrals',color:'#16314F',values:REFERRALS}],area:true,unit:'referrals'};
-      records=null; recHead=null; // referrals = values only
+      chartTitle='Monthly referrals'; chart={points:CORE.map(function(k){return {key:k,label:monLabel(k),full:monFull(k)};}),series:[{name:'Referrals',color:'#16314F',values:REFERRALS}],area:true,unit:'referrals'};
+      records=null; recHead=null;
     } else return;
     $('kpiTitle').textContent=title; $('kpiSub').textContent=sub;
     var cw=$('kpiChartWrap');
-    if(chart){ $('kpiChartTitle').textContent=chartTitle; drawTrend($('kpiChart'), chart.months, chart.series, {area:chart.area, click:chart.click, unit:chart.unit}); cw.style.display=''; }
+    if(chart){ $('kpiChartTitle').textContent=chartTitle; drawTrend($('kpiChart'), chart.points, chart.series, {area:chart.area, click:chart.click, unit:chart.unit}); cw.style.display=''; }
     else cw.style.display='none';
-    $('kpiBarsTitle').textContent=barsTitle; $('kpiColA').textContent=colA;
-    barRows($('kpiBars'), rows);
+    $('kpiBarsTitle').textContent=barsTitle; $('kpiColA').textContent=colA; barRows($('kpiBars'), rows);
     var rw=$('kpiRecsWrap');
     if(records&&recHead){ $('kpiRecsTitle').textContent=recsTitle;
       $('kpiRecsHead').innerHTML='<tr>'+recHead.map(function(h){return '<th>'+h+'</th>';}).join('')+'</tr>';
@@ -816,161 +1130,211 @@
   }
   $('kpiBack').addEventListener('click', function(){ show('dash'); });
 
-  // ================= assign (doctor -> their exact practices) =================
+  // ================= assign =================
   function renderAsgList(doctorName){
     var mine=PRACS.filter(function(p){ return p.doctor===doctorName; }).sort(function(a,b){ return b.acts-a.acts; });
     var lab=$('asgListLab'); if(lab) lab.textContent=mine.length+' '+(mine.length===1?'practice':'practices')+' assigned to '+doctorName;
-    var el=$('asgPracticeList');
-    el.innerHTML='<div class="ah">'+esc(doctorName)+' · '+mine.length+' practices</div>'+ (mine.length? mine.map(function(p){
+    $('asgPracticeList').innerHTML='<div class="ah">'+esc(doctorName)+' · '+mine.length+' practices</div>'+(mine.length?mine.map(function(p){
       return '<div class="arow"><span class="p">'+esc(p.name)+'</span><span class="m" style="font-size:11px">'+esc(p.type)+'</span><span class="n">'+p.acts+'</span></div>';
-    }).join('') : '<div class="arow"><span class="m">No practices assigned.</span></div>');
+    }).join(''):'<div class="arow"><span class="m">No practices assigned.</span></div>');
   }
   function loadAssign(name, rep){
     $('asgName').textContent=name;
     var p=null; for(var i=0;i<PRACS.length;i++){ if(PRACS[i].name===name){ p=PRACS[i]; break; } }
     var repDD=$('asgRep'); repDD.querySelector('.dd-val').textContent=rep; repDD.classList.add('act');
     if(p){ var t=document.querySelector('#practices .panel .dd .dd-val'); if(t) t.textContent=p.type; }
-    renderAsgList(rep);
-    show('practices'); toast('Loaded '+name+' into Assign');
+    renderAsgList(rep); show('practices'); toast('Loaded '+name+' into Assign');
   }
-
-  // ================= new task (doctor -> practice options) =================
   function syncTaskPractices(doctorName){
     var mine=PRACS.filter(function(p){ return p.doctor===doctorName; }).sort(function(a,b){ return b.acts-a.acts; });
     var dd=$('taskPractice'); if(!dd) return;
-    dd.setAttribute('data-options', mine.length?mine.map(function(p){return p.name.replace(/&/g,'&amp;');}).join('|'):'No practices for this doctor');
-    dd.querySelector('.dd-val').textContent=mine.length?mine[0].name:'No practices for this doctor';
+    dd.setAttribute('data-options', mine.length?mine.map(function(p){return p.name.replace(/&/g,'&amp;');}).join('|'):'No practices for this user');
+    dd.querySelector('.dd-val').textContent=mine.length?mine[0].name:'No practices for this user';
   }
 
   // ================= reports (real export) =================
   var curReport={ title:'Touchpoints by doctor', headers:[], data:[] };
   function reportModel(view){
     if(view==='Outreach by practice'){
-      var rows=PRACS.slice().sort(function(a,b){return b.acts-a.acts;});
-      var max=Math.max.apply(null,rows.map(function(p){return p.acts;}))||1;
-      return { title:view, headers:['Practice','Connected doctor','Activities','Share'],
-        data:rows.map(function(p){ return [p.name,p.doctor,String(p.acts),Math.round(p.acts/max*100)+'%']; }),
-        share:{col:2,max:max} };
+      var rows=PRACS.slice().sort(function(a,b){return b.acts-a.acts;}); var max=Math.max.apply(null,rows.map(function(p){return p.acts;}))||1;
+      return { title:view, headers:['Practice','Connected rep','Activities','Share'], data:rows.map(function(p){ return [p.name,p.doctor,String(p.acts),Math.round(p.acts/max*100)+'%']; }), share:true };
     }
     if(view==='Monthly trend'){
       var max2=Math.max.apply(null,CORE.map(function(k){return MTOT[k];}))||1;
-      return { title:view, headers:['Month','Activities','Trend'],
-        data:CORE.map(function(k){ return [monFull(k),String(MTOT[k]),Math.round(MTOT[k]/max2*100)+'%']; }),
-        share:{col:1,max:max2} };
+      return { title:view, headers:['Month','Activities','Trend'], data:CORE.map(function(k){ return [monFull(k),String(MTOT[k]),Math.round(MTOT[k]/max2*100)+'%']; }), share:true };
     }
     if(view==='Activity-type mix'){
       var tc=TYPES.map(function(){return 0;}); ACTS.forEach(function(a){ if(a[3]>=0)tc[a[3]]++; });
-      var rows3=TYPES.map(function(t,ti){return [t,tc[ti]];}).sort(function(a,b){return b[1]-a[1];});
-      var max3=Math.max.apply(null,rows3.map(function(r){return r[1];}))||1;
-      return { title:view, headers:['Activity type','Activities','Share'],
-        data:rows3.map(function(r){ return [r[0],String(r[1]),Math.round(r[1]/max3*100)+'%']; }),
-        share:{col:1,max:max3} };
+      var rows3=TYPES.map(function(t,ti){return [t,tc[ti]];}).sort(function(a,b){return b[1]-a[1];}); var max3=Math.max.apply(null,rows3.map(function(r){return r[1];}))||1;
+      return { title:view, headers:['Activity type','Activities','Share'], data:rows3.map(function(r){ return [r[0],String(r[1]),Math.round(r[1]/max3*100)+'%']; }), share:true };
     }
     if(view==='Referral vs outreach'){
-      return { title:view, headers:['Month','Referrals (illustrative)','Outreach (activities)'],
-        data:CORE.map(function(k,i){ return [monFull(k),String(REFERRALS[i]),String(MTOT[k])]; }), share:null };
+      return { title:view, headers:['Month','Referrals (illustrative)','Outreach (activities)'], data:CORE.map(function(k,i){ return [monFull(k),String(REFERRALS[i]),String(MTOT[k])]; }), share:false };
     }
-    // default: Touchpoints by doctor
-    var rows0=DOCS.map(function(d){return d;}).sort(function(a,b){return b.acts-a.acts;});
-    var max0=Math.max.apply(null,rows0.map(function(d){return d.acts;}))||1;
-    return { title:'Touchpoints by doctor', headers:['Doctor','Practices','Activities','Share of outreach'],
-      data:rows0.map(function(d){ return [d.name,String(d.practices),String(d.acts),Math.round(d.acts/max0*100)+'%']; }),
-      share:{col:2,max:max0} };
+    var rows0=DOCS.slice().sort(function(a,b){return b.acts-a.acts;}); var max0=Math.max.apply(null,rows0.map(function(d){return d.acts;}))||1;
+    return { title:'Touchpoints by doctor', headers:['Rep','Role','Practices','Activities','Share of outreach'], data:rows0.map(function(d){ return [d.name,d.role,String(d.practices),String(d.acts),Math.round(d.acts/max0*100)+'%']; }), share:true };
   }
   function renderReport(view){
     var m=reportModel(view); curReport=m;
-    $('repTitle').textContent=REPORTS[view]||m.title;
+    var t=$('repTitle'); if(t) t.textContent=m.title;
     var tbl=document.querySelector('#reports .card table');
-    var head='<tr>'+m.headers.map(function(h,i){ return '<th'+([1,2].indexOf(i)>-1&&/Activities|Practices|Referrals|Outreach/.test(h)?' class="num-col"':'')+(i===m.headers.length-1&&m.share?' style="width:34%"':'')+'>'+esc(h)+'</th>'; }).join('')+'</tr>';
-    var body=m.data.map(function(r){
+    tbl.querySelector('thead').innerHTML='<tr>'+m.headers.map(function(h,i){ return '<th'+(/Activities|Practices|Referrals|Outreach/.test(h)?' class="num-col"':'')+(i===m.headers.length-1&&m.share?' style="width:34%"':'')+'>'+esc(h)+'</th>'; }).join('')+'</tr>';
+    tbl.querySelector('tbody').innerHTML=m.data.map(function(r){
       return '<tr>'+r.map(function(c,i){
         if(m.share && i===m.headers.length-1){ var pct=parseInt(c,10)||0; return '<td><div class="barbg"><div class="bar" style="width:'+pct+'%"></div></div></td>'; }
-        var cls = i===0?'p':(/^\d+$/.test(c)?'num-col':'m'); return '<td class="'+cls+'">'+esc(c)+'</td>';
+        var cls=i===0?'p':(/^\d+$/.test(c)?'num-col':'m'); return '<td class="'+cls+'">'+esc(c)+'</td>';
       }).join('')+'</tr>';
     }).join('');
-    tbl.querySelector('thead').innerHTML=head; tbl.querySelector('tbody').innerHTML=body;
   }
   function dl(blob,name){ var u=URL.createObjectURL(blob); var a=document.createElement('a'); a.href=u; a.download=name; document.body.appendChild(a); a.click(); setTimeout(function(){ URL.revokeObjectURL(u); a.remove(); },600); }
   function exportExcel(){
     var m=curReport, h='<table border="1"><tr><td colspan="'+m.headers.length+'" style="font-weight:bold;font-size:15px">Referra — '+esc(m.title)+' (Gladwell Orthodontics · Oct 2025–Jun 2026)</td></tr><tr>'+m.headers.map(function(x){return '<td style="font-weight:bold;background:#16314F;color:#fff">'+esc(x)+'</td>';}).join('')+'</tr>';
-    m.data.forEach(function(r){ h+='<tr>'+r.map(function(c){return '<td>'+esc(c)+'</td>';}).join('')+'</tr>'; });
-    h+='</table>';
+    m.data.forEach(function(r){ h+='<tr>'+r.map(function(c){return '<td>'+esc(c)+'</td>';}).join('')+'</tr>'; }); h+='</table>';
     dl(new Blob(['﻿<html><head><meta charset="utf-8"></head><body>'+h+'</body></html>'],{type:'application/vnd.ms-excel'}), 'Referra — '+m.title+'.xls');
     toast('Excel downloaded — '+m.title+'.xls');
   }
   function exportPdf(){
     var m=curReport;
-    var h='<div class="pr"><div class="prh"><div class="prb">Referra</div><div class="prm">Gladwell Orthodontics · Report</div></div>';
-    h+='<h2>'+esc(m.title)+'</h2><div class="prd">Oct 2025 – Jun 2026 · generated from live activity data</div>';
-    h+='<table><thead><tr>'+m.headers.map(function(x){return '<th>'+esc(x)+'</th>';}).join('')+'</tr></thead><tbody>';
+    var h='<div class="pr"><div class="prh"><div class="prb">Referra</div><div class="prm">Gladwell Orthodontics · Report</div></div><h2>'+esc(m.title)+'</h2><div class="prd">Oct 2025 – Jun 2026 · generated from live activity data</div><table><thead><tr>'+m.headers.map(function(x){return '<th>'+esc(x)+'</th>';}).join('')+'</tr></thead><tbody>';
     m.data.forEach(function(r){ h+='<tr>'+r.map(function(c){return '<td>'+esc(c)+'</td>';}).join('')+'</tr>'; });
     h+='</tbody></table><div class="prf">Referra · powered by Gladwell Practice Solutions · '+m.data.length+' rows</div></div>';
-    $('printArea').innerHTML=h; window.print();
-    toast('Print dialog open — choose “Save as PDF”.');
+    $('printArea').innerHTML=h; window.print(); toast('Print dialog open — choose “Save as PDF”.');
   }
-  $('expExcel').addEventListener('click', exportExcel);
-  $('expPdf').addEventListener('click', exportPdf);
 
-  // ================= login gate + sign out =================
+  // ================= gate + sign out + admin avatar =================
   $('gSignin').addEventListener('click', function(){ $('gate').classList.add('hidden'); });
   var so=$('signout'); if(so) so.addEventListener('click', function(){ $('gate').classList.remove('hidden'); show('dash'); });
 
-  // ================= search (per-table + global) =================
+  // ================= search =================
   document.querySelectorAll('[data-tsearch]').forEach(function(inp){
     inp.addEventListener('input', function(){
       var t=inp.getAttribute('data-tsearch'), qq=inp.value.trim().toLowerCase();
+      if(t==='acts'){ actFilter.q=qq; pg.acts.page=0; renderActs(); return; }
+      if(t==='practices'){ pracFilter.q=qq; pg.practices.page=0; renderPractices(); return; }
       document.querySelectorAll('table[data-table="'+t+'"] tbody tr').forEach(function(r){ r.style.display=r.textContent.toLowerCase().indexOf(qq)>-1?'':'none'; });
     });
   });
   var gs=$('gsearch'), gr=$('gsearchRes');
-  var NPAGES=[['Dashboard','dash'],['Doctors','doctors'],['Practices','practices'],['Activities','activities'],['Tasks','tasks'],['Reports','reports'],['Settings','settings']];
+  var NPAGES=[['Dashboard','dash'],['Reps','doctors'],['Practices','practices'],['Activities','activities'],['Tasks','tasks'],['Referrals','referrals'],['Reports','reports'],['Settings','settings']];
   function rowsOf(t){ return Array.prototype.slice.call(document.querySelectorAll('table[data-table="'+t+'"] tbody tr')); }
   gs.addEventListener('input', function(){
     var qq=gs.value.trim().toLowerCase();
     if(!qq){ gr.classList.remove('on'); gr.innerHTML=''; return; }
     var html='';
-    var d=rowsOf('doctors').filter(function(r){return r.textContent.toLowerCase().indexOf(qq)>-1;}).slice(0,4);
-    if(d.length) html+='<div class="nsg">Doctors</div>'+d.map(function(r){return '<div class="nsi" data-go="doctor" data-name="'+esc(r.getAttribute('data-person'))+'"><span class="t">DR</span>'+esc(r.getAttribute('data-person'))+'</div>';}).join('');
-    var p=rowsOf('practices').filter(function(r){return r.textContent.toLowerCase().indexOf(qq)>-1;}).slice(0,5);
-    if(p.length) html+='<div class="nsg">Practices</div>'+p.map(function(r){return '<div class="nsi" data-go="practice" data-name="'+esc(r.getAttribute('data-name'))+'"><span class="t">PR</span>'+esc(r.querySelector('.p').textContent)+'</div>';}).join('');
-    var a=rowsOf('acts').filter(function(r){return r.textContent.toLowerCase().indexOf(qq)>-1;}).slice(0,5);
-    if(a.length) html+='<div class="nsg">Activities</div>'+a.map(function(r){return '<div class="nsi" data-go="tab" data-tab="activities"><span class="t">ACT</span>'+esc(r.children[1].textContent)+' · '+esc(r.children[2].textContent)+'</div>';}).join('');
-    var pg=NPAGES.filter(function(x){return x[0].toLowerCase().indexOf(qq)>-1;});
-    if(pg.length) html+='<div class="nsg">Pages</div>'+pg.map(function(x){return '<div class="nsi" data-go="tab" data-tab="'+x[1]+'"><span class="t">PG</span>'+x[0]+'</div>';}).join('');
-    gr.innerHTML=html||'<div class="nsi" style="cursor:default;color:var(--faint-2)">No matches</div>';
-    gr.classList.add('on');
+    var d=DOCS.filter(function(x){return (x.name+' '+x.role+' '+x.email).toLowerCase().indexOf(qq)>-1;}).slice(0,4);
+    if(d.length) html+='<div class="nsg">Reps</div>'+d.map(function(x){return '<div class="nsi" data-go="doctor" data-name="'+esc(x.name)+'"><span class="t">'+(x.role==='Doctor'?'DR':'MK')+'</span>'+esc(x.name)+'</div>';}).join('');
+    var p=PRACS.filter(function(x){return (x.name+' '+x.doctor).toLowerCase().indexOf(qq)>-1;}).slice(0,5);
+    if(p.length) html+='<div class="nsg">Practices</div>'+p.map(function(x){return '<div class="nsi" data-go="practice" data-name="'+esc(x.name)+'"><span class="t">PR</span>'+esc(x.name)+'</div>';}).join('');
+    var a=computeActs().slice(0,5).filter(function(a){ return (fmtDate(a[0])+' '+(DOCS[a[1]]?DOCS[a[1]].name:'')+' '+(PRACS[a[2]]?PRACS[a[2]].name:'')).toLowerCase().indexOf(qq)>-1; });
+    // fallback simple activity search
+    var av=ACTS_SORTED.filter(function(x){ return ((DOCS[x[1]]?DOCS[x[1]].name:'')+' '+(PRACS[x[2]]?PRACS[x[2]].name:'')+' '+(TYPES[x[3]]||'')).toLowerCase().indexOf(qq)>-1; }).slice(0,5);
+    if(av.length) html+='<div class="nsg">Activities</div>'+av.map(function(x){return '<div class="nsi" data-go="tab" data-tab="activities"><span class="t">ACT</span>'+esc(DOCS[x[1]]?DOCS[x[1]].name:'—')+' · '+esc(PRACS[x[2]]?PRACS[x[2]].name:'—')+'</div>';}).join('');
+    var pgm=NPAGES.filter(function(x){return x[0].toLowerCase().indexOf(qq)>-1;});
+    if(pgm.length) html+='<div class="nsg">Pages</div>'+pgm.map(function(x){return '<div class="nsi" data-go="tab" data-tab="'+x[1]+'"><span class="t">PG</span>'+x[0]+'</div>';}).join('');
+    gr.innerHTML=html||'<div class="nsi" style="cursor:default;color:var(--faint-2)">No matches</div>'; gr.classList.add('on');
   });
   gr.addEventListener('click', function(e){
-    var it=e.target.closest('.nsi'); if(!it||!it.dataset.go) return;
-    gr.classList.remove('on'); gs.value='';
-    if(it.dataset.go==='doctor'){ openDoctor(it.getAttribute('data-name')); }
-    else if(it.dataset.go==='practice'){ var nm=it.getAttribute('data-name'); var row=rowsOf('practices').find(function(r){return r.getAttribute('data-name')===nm;}); if(row) row.click(); }
-    else if(it.dataset.go==='tab'){ show(it.dataset.tab); }
+    var it=e.target.closest('.nsi'); if(!it||!it.dataset.go) return; gr.classList.remove('on'); gs.value='';
+    if(it.dataset.go==='doctor') openDoctor(it.getAttribute('data-name'));
+    else if(it.dataset.go==='practice'){ openPractice(it.getAttribute('data-name')); }
+    else if(it.dataset.go==='tab') show(it.dataset.tab);
   });
   document.addEventListener('click', function(e){ if(!e.target.closest('.navsearch')) gr.classList.remove('on'); });
 
   // ================= assign frequency stepper =================
   var fv=2; document.querySelectorAll('[data-freq]').forEach(function(b){ b.addEventListener('click', function(){ fv=Math.max(1,Math.min(7,fv+parseInt(b.dataset.freq,10))); $('fv').textContent=fv; }); });
 
-  // ================= invite modal =================
+  // ================= invite (user + role) =================
+  var mInviteRole='Doctor';
   function openM(kind){
-    $('mtitle').textContent=kind==='admin'?'Add admin':'Invite doctor';
-    $('mhint').textContent=kind==='admin'?'Send a secure link. They set their own password and get full organization access.':"Send a secure link. They'll set their own password and land in the app.";
+    $('mtitle').textContent=kind==='admin'?'Add admin':'Invite user';
+    $('mhint').textContent=kind==='admin'?'Send a secure link. They set their own password and get full organization access.':"Send a secure link. They set their own password and land in the app — with the role you pick.";
     $('mpracticewrap').style.display=kind==='admin'?'none':'block';
+    var rw=$('mRoleWrap'); if(rw) rw.style.display=kind==='admin'?'none':'block';
     $('mbg').classList.add('on');
   }
   function closeM(){ $('mbg').classList.remove('on'); }
   document.querySelectorAll('[data-invite]').forEach(function(b){ b.addEventListener('click', function(){ openM(b.dataset.invite); }); });
   $('mcancel').addEventListener('click', closeM);
-  $('msend').addEventListener('click', function(){ var em=$('memail').value||'them'; closeM(); toast('Invite sent to '+em); $('mname').value=''; $('memail').value=''; });
+  $('msend').addEventListener('click', function(){ var em=$('memail').value||'them'; var isAdmin=$('mtitle').textContent==='Add admin'; closeM(); toast('Invite sent to '+em+(isAdmin?' (admin)':' as '+mInviteRole)); $('mname').value=''; $('memail').value=''; });
   $('mbg').addEventListener('click', function(e){ if(e.target.id==='mbg') closeM(); });
 
+  // ================= dynamic controls (injected) =================
+  function injectDashControls(){
+    var views=$('dashViews'); if(!views) return;
+    var ctrls=document.createElement('div'); ctrls.className='cbar dashctrls';
+    ctrls.innerHTML='<div class="tfseg"><div class="chip cv tfb act" data-tf="all">All time</div><div class="chip cv tfb" data-tf="month">This month</div><div class="chip cv tfb" data-tf="ytd">YTD</div></div>'
+      +'<div class="chip dd rolef" data-rolef="1" data-options="All roles|Doctor|Marketer/Staff"><span class="dd-val">All roles</span><span class="car">▾</span></div>';
+    views.parentNode.insertBefore(ctrls, views.nextSibling);
+    ctrls.querySelectorAll('.tfb').forEach(function(c){ c.addEventListener('click', function(){ if(c.classList.contains('disabled'))return; ctrls.querySelectorAll('.tfb').forEach(function(x){x.classList.toggle('act',x===c);}); dash.tf=c.dataset.tf; drawDash(); }); });
+    var eff=document.createElement('div'); eff.className='chip cv'; eff.setAttribute('data-cview','effectiveness'); eff.textContent='Effectiveness'; views.appendChild(eff);
+    views.querySelectorAll('.cv').forEach(function(c){ c.addEventListener('click', function(){ if(c.classList.contains('disabled'))return; views.querySelectorAll('.cv').forEach(function(x){x.classList.toggle('act',x===c);}); dash.view=c.dataset.cview; drawDash(); }); });
+  }
+  function injectActControls(){
+    var filters=document.querySelector('#activities .card-h .filters'); if(!filters) return;
+    // Role filter
+    var role=document.createElement('div'); role.className='chip dd'; role.setAttribute('data-table','acts'); role.setAttribute('data-filter','role'); role.setAttribute('data-options','All roles|Doctor|Marketer/Staff');
+    role.innerHTML='<span class="dd-val">All roles</span><span class="car">▾</span>'; filters.appendChild(role);
+    // Date range
+    var dr=document.createElement('div'); dr.className='daterange';
+    dr.innerHTML='<label>From</label><input type="date" id="actFrom" min="2025-01-01" max="2026-12-31"><label>To</label><input type="date" id="actTo" min="2025-01-01" max="2026-12-31"><button class="pgprev" id="actClear" style="height:34px">Clear</button>';
+    filters.appendChild(dr);
+    $('actFrom').addEventListener('change', function(){ actFilter.from=this.value; pg.acts.page=0; renderActs(); });
+    $('actTo').addEventListener('change', function(){ actFilter.to=this.value; pg.acts.page=0; renderActs(); });
+    $('actClear').addEventListener('click', function(){ actFilter.from=''; actFilter.to=''; $('actFrom').value=''; $('actTo').value=''; pg.acts.page=0; renderActs(); });
+  }
+  function injectPracControls(){
+    var filters=document.querySelector('#practices .card-h .filters'); if(!filters) return;
+    var role=document.createElement('div'); role.className='chip dd rolef-prac'; role.setAttribute('data-options','All roles|Doctor|Marketer/Staff');
+    role.innerHTML='<span class="dd-val">All roles</span><span class="car">▾</span>';
+    role.addEventListener('click', function(){});
+    // hook role via pick using a custom flag
+    role.setAttribute('data-pracrole','1'); filters.insertBefore(role, filters.firstChild);
+  }
+  function injectInviteRole(){
+    var pw=$('mpracticewrap'); if(!pw) return;
+    var w=document.createElement('div'); w.className='fld'; w.id='mRoleWrap';
+    w.innerHTML='<label>Role</label><div class="inp dd" id="mRole" data-options="Doctor|Marketer/Staff"><span class="dd-val">Doctor</span><span class="car">▾</span></div>';
+    pw.parentNode.insertBefore(w, pw);
+  }
+  function injectAdminAvatar(){
+    var input=document.createElement('input'); input.type='file'; input.accept='image/*'; input.id='meFile'; input.style.display='none';
+    document.body.appendChild(input);
+    var me=document.querySelector('nav .me');
+    var btn=document.createElement('button'); btn.className='btn ghost'; btn.textContent='Upload photo'; btn.style.marginTop='10px';
+    var krRow=null; document.querySelectorAll('#settings .adminrow').forEach(function(r){ if(r.textContent.indexOf('Kelly')>-1) krRow=r; });
+    if(krRow) krRow.appendChild(btn);
+    function trigger(){ input.click(); }
+    if(me) me.addEventListener('click', function(e){ /* keep nav→settings, long-press not needed */ });
+    btn.addEventListener('click', function(e){ e.stopPropagation(); trigger(); });
+    input.addEventListener('change', function(){
+      var f=input.files&&input.files[0]; if(!f) return;
+      var rd=new FileReader();
+      rd.onload=function(){ var url=rd.result;
+        if(me){ me.style.backgroundImage='url('+url+')'; me.style.backgroundSize='cover'; me.style.color='transparent'; }
+        if(krRow){ var av=krRow.querySelector('.av'); if(av){ av.style.backgroundImage='url('+url+')'; av.style.backgroundSize='cover'; av.style.color='transparent'; } }
+        toast('Profile photo updated'); };
+      rd.readAsDataURL(f);
+    });
+  }
+  // route practice-role dd through pick's generic handler
+  var origPick=pick;
+  pick=function(dd,val){ origPick(dd,val); if(dd.getAttribute&&dd.getAttribute('data-pracrole')){ pracFilter.role=/^All/.test(val)?null:val.replace(/&amp;/g,'&'); pg.practices.page=0; renderPractices(); } };
+
   // ================= init =================
-  renderDoctors(); renderPractices(); renderActs(); renderFeed();
-  drawDash('total');
+  injectDashControls();
+  injectActControls();
+  injectPracControls();
+  injectInviteRole();
+  injectAdminAvatar();
+  injectPager('acts');
+  injectPager('practices');
+  renderReps(); renderPractices(); renderActs(); renderFeed();
+  drawDash();
   renderReport('Touchpoints by doctor');
   renderAsgList('Dr. Anders');
   syncTaskPractices('Dr. Laster');
+  initReferrals();
 })();
 
 </script>
